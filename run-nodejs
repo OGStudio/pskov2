@@ -6,5 +6,4 @@ REYARN=$1
 if [ "$REYARN" == "1" ]; then
     $SCRIPT_DIR/gradlew kotlinUpgradeYarnLock
 fi
-$SCRIPT_DIR/gradlew jsTODO
-#jsBrowserProductionRun
+$SCRIPT_DIR/gradlew jsNodeDevelopmentRun
