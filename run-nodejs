@@ -1,0 +1,10 @@
+#!/bin/bash
+SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
+
+REYARN=$1
+
+if [ "$REYARN" == "1" ]; then
+    $SCRIPT_DIR/gradlew kotlinUpgradeYarnLock
+fi
+$SCRIPT_DIR/gradlew jsTODO
+#jsBrowserProductionRun
