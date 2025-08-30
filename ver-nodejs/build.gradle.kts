@@ -8,7 +8,7 @@ repositories {
 
 kotlin {
     js {
-        nodejs { }
+        browser { }
         binaries.executable()
     }
 
