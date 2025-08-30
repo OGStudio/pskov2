@@ -8,3 +8,5 @@ if [ "$REYARN" == "1" ]; then
 fi
 $SCRIPT_DIR/gradlew jsNodeDevelopmentRun
 #jsBrowserDevelopmentExecutableDistribution
+
+node build/js/packages/pskov-ver-nodejs/kotlin/srv.js
