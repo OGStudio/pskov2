@@ -1,0 +1,23 @@
+#!/bin/bash
+SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
+KT_DIR=$SCRIPT_DIR/../ver-nodejs/src/commonMain/kotlin/org/opengamestudio
+
+CTRL=$KT_DIR/CLDController.kt
+CTX=$KT_DIR/CLDContext.kt
+
+function replace {
+    file=$1
+    was=$2
+    now=$3
+    cmd="sed -i '' 's/$was/$now/g' $file"
+    eval "$cmd"
+}
+
+for file in $CTRL $CTX; do
+    # Добавляем импорт для JS
+    replace $file "package org.opengamestudio" "package org.opengamestudio\nimport kotlin.js.JsExport"
+    # Добавляем префикс для доступа из JS
+    replace $file "interface CLD" "@JsExport\ninterface CLD"
+    replace $file "class CLD" "@JsExport\nclass CLD"
+done
+
