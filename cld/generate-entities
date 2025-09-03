@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+# Absolute path to this script
+SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
+
+# Path to Cross-language dialect's translator
+TR=$SCRIPT_DIR/../../cross-language-dialect/translator
+$TR/run/run-java --file=$SCRIPT_DIR/entities.yml --out=$SCRIPT_DIR/../ver-nodejs/src/commonMain/kotlin/org/opengamestudio
