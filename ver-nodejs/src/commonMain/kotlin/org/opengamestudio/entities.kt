@@ -1,3 +1,4 @@
+package org.opengamestudio
 import kotlin.js.JsExport
 
 
@@ -9,6 +10,7 @@ data class SrvContext(
     var httpPort: Int = 0,
     var inputDir: String = "",
     var inputHTTPPort: Int = 0,
+    var request: NetRequest = NetRequest(),
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
@@ -24,6 +26,8 @@ data class SrvContext(
             return inputDir as T
         } else if (name == "inputHTTPPort") {
             return inputHTTPPort as T
+        } else if (name == "request") {
+            return request as T
         }
         return "unknown-field-name" as T
     }
@@ -48,6 +52,16 @@ data class SrvContext(
             inputDir = value as String
         } else if (name == "inputHTTPPort") {
             inputHTTPPort = value as Int
+        } else if (name == "request") {
+            request = value as NetRequest
         }
     }
 }
+
+
+@JsExport
+data class NetRequest(
+    var body: String = "",
+    var method: String = "",
+    var url: String = "",
+) {}

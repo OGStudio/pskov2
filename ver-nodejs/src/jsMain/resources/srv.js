@@ -26,10 +26,15 @@ function SrvComponent() {
 
 //<!-- Installation -->
 
+let cmp = new SrvComponent();
+
 let srv = http.createServer((req, res) => {
-    console.log("ИГР req:", req);
-    console.log("ИГР res:", res);
-    res.write("Hello, world. Kotlin is in the console");
+    let netRequest = new KT.NetRequest("", req.method, req.url);
+    cmp.ctrl.set("request", netRequest);
+
+    console.log("ИГР req.url/method:", req.url, req.method);
+    //console.log("ИГР res:", res);
+    res.write("Hello, world. KT is in the console");
     res.end();
 });
 srv.listen(8099)

@@ -1,5 +1,6 @@
 version: 1
 
+kotlin: package org.opengamestudio
 kotlin: import kotlin.js.JsExport
 
 SrvContext:
@@ -12,3 +13,12 @@ SrvContext:
         httpPort: Int
         inputDir: String
         inputHTTPPort: Int
+        request: NetRequest
+
+NetRequest:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        body: String
+        method: String
+        url: String
