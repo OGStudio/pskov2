@@ -11,6 +11,7 @@ data class SrvContext(
     var inputDir: String = "",
     var inputHTTPPort: Int = 0,
     var request: NetRequest = NetRequest(),
+    var url: String = "",
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
@@ -28,6 +29,8 @@ data class SrvContext(
             return inputHTTPPort as T
         } else if (name == "request") {
             return request as T
+        } else if (name == "url") {
+            return url as T
         }
         return "unknown-field-name" as T
     }
@@ -54,6 +57,8 @@ data class SrvContext(
             inputHTTPPort = value as Int
         } else if (name == "request") {
             request = value as NetRequest
+        } else if (name == "url") {
+            url = value as String
         }
     }
 }

@@ -18,6 +18,11 @@ kotlin {
                 optIn("kotlin.js.ExperimentalJsExport")
             }
         }
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("open", "8.4.2"))
+            }
+        }
     }
 }
 

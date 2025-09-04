@@ -14,6 +14,7 @@ SrvContext:
         inputDir: String
         inputHTTPPort: Int
         request: NetRequest
+        url: String
 
 NetRequest:
     prefix-kotlin: @JsExport
