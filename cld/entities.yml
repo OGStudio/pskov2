@@ -14,12 +14,19 @@ SrvContext:
         inputDir: String
         inputHTTPPort: Int
         request: NetRequest
+        response: NetResponse
         url: String
 
 NetRequest:
     prefix-kotlin: @JsExport
     type: struct
     fields:
-        body: String
         method: String
+        url: String
+
+NetResponse:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        contents: String
         url: String

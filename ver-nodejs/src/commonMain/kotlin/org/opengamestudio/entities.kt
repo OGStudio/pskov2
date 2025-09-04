@@ -11,6 +11,7 @@ data class SrvContext(
     var inputDir: String = "",
     var inputHTTPPort: Int = 0,
     var request: NetRequest = NetRequest(),
+    var response: NetResponse = NetResponse(),
     var url: String = "",
     override var recentField: String = "",
 ): CLDContext {
@@ -29,6 +30,8 @@ data class SrvContext(
             return inputHTTPPort as T
         } else if (name == "request") {
             return request as T
+        } else if (name == "response") {
+            return response as T
         } else if (name == "url") {
             return url as T
         }
@@ -57,6 +60,8 @@ data class SrvContext(
             inputHTTPPort = value as Int
         } else if (name == "request") {
             request = value as NetRequest
+        } else if (name == "response") {
+            response = value as NetResponse
         } else if (name == "url") {
             url = value as String
         }
@@ -66,7 +71,13 @@ data class SrvContext(
 
 @JsExport
 data class NetRequest(
-    var body: String = "",
     var method: String = "",
+    var url: String = "",
+) {}
+
+
+@JsExport
+data class NetResponse(
+    var contents: String = "",
     var url: String = "",
 ) {}

@@ -32,6 +32,7 @@ function SrvComponent() {
         [
             KT.srvShouldOpenURL,
             KT.srvShouldResetHTTPPort,
+            KT.srvShouldResetResponse,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
         });
@@ -49,12 +50,9 @@ let ctrl = cmp.ctrl;
 ctrl.set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 
 let srv = http.createServer((req, res) => {
-    let netRequest = new KT.NetRequest("", req.method, req.url);
+    let netRequest = new KT.NetRequest(req.method, req.url);
     ctrl.set("request", netRequest);
-
-    console.log("ИГР req.url/method:", req.url, req.method);
-    //console.log("ИГР res:", res);
-    res.write("Hello, world. KT is in the console");
+    res.write(ctrl.context.response.contents);
     res.end();
 });
 
