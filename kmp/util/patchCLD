@@ -14,9 +14,8 @@ function replace {
 }
 
 for file in $CTRL $CTX; do
-    # Добавляем импорт для JS
+    # Add JS export
     replace $file "package org.opengamestudio" "package org.opengamestudio\nimport kotlin.js.JsExport"
-    # Добавляем префикс для доступа из JS
     replace $file "interface CLD" "@JsExport\ninterface CLD"
     replace $file "class CLD" "@JsExport\nclass CLD"
 done

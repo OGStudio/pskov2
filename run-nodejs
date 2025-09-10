@@ -3,10 +3,11 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
 
 REYARN=$1
 
-if [ "$REYARN" == "1" ]; then
-    $SCRIPT_DIR/gradlew kotlinUpgradeYarnLock
-fi
-$SCRIPT_DIR/gradlew jsNodeDevelopmentRun
-#jsBrowserDevelopmentExecutableDistribution
+cd $SCRIPT_DIR/kmp
 
-node build/js/packages/pskov-ver-nodejs/kotlin/srv.js
+if [ "$REYARN" == "1" ]; then
+    ./gradlew kotlinUpgradeYarnLock
+fi
+./gradlew jsNodeDevelopmentRun
+
+node $SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin/srv.js
