@@ -6,6 +6,7 @@ import kotlin.js.JsExport
 
 @JsExport val SRV_ARGUMENT_BROWSER_DIR = "--browserDir"
 @JsExport val SRV_DEFAULT_HTTP_PORT = 8000
+@JsExport val SRV_INDEX = "index.html"
 
 //<!-- Shoulds -->
  
@@ -26,6 +27,25 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
     return c
 }
 
+/* Read files
+ *
+ * Conditions:
+ * 1. Got / request
+ */
+@JsExport
+fun srvShouldReadFile(c: SrvContext): SrvContext {
+    if (
+        c.recentField == "request" &&
+        c.request.url == "/"
+      ) {
+        c.readFile = "${c.browserDir}/${SRV_INDEX}"
+        c.recentField = "readFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
 /* Path to web browser client to serve when requesting index.html and such
  *
  * Conditions:
@@ -63,12 +83,12 @@ fun srvShouldResetHTTPPort(c: SrvContext): SrvContext {
 /* Process request and generate response
  *
  * Conditions:
- * 1. Got request
+ * 1. Did receive file contents
  */
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
-    if (c.recentField == "request") {
-        c.response = NetResponse("This is a response, and you requested: " + c.request.url, c.request.url)
+    if (c.recentField == "readFileContents") {
+        c.response = NetResponse(c.readFileContents, c.request.url)
         c.recentField = "response"
         return c
     }

@@ -1,6 +1,13 @@
+let fs = require("fs");
 let http = require("http");
 let open = require("open");
 let KT = require("pskov-ver-nodejs").org.opengamestudio;
+
+//!<-- API -->
+
+function srvCtrl() {
+    return cmp.ctrl;
+}
 
 //!<-- Component -->
 
@@ -9,7 +16,12 @@ function SrvComponent() {
         this.ctrl = new KT.CLDController(new KT.SrvContext());
         // Debugging.
         this.ctrl.registerCallback((c) => {
-            console.log(`ИГР SrvC._construct ctrl key/value: '${c.recentField}'/'${c.field(c.recentField)}'`);
+            let key = c.recentField;
+            var val = `${c.field(c.recentField)}`;
+            if (val.length > 200) {
+                val = val.substring(0, 50);
+            }
+            console.log(`ИГР SrvC._construct ctrl key/value: '${key}'/'${val}'`);
         });
 
         this.setupEffects();
@@ -19,6 +31,7 @@ function SrvComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "readFile", (c) => { srvReadFile(c.readFile) },
             "url", (c) => { open(c.url) },
         ];
         let halfCount = oneliners.length / 2;
@@ -36,6 +49,7 @@ function SrvComponent() {
     this.setupShoulds = function() {
         [
             KT.srvShouldOpenURL,
+            KT.srvShouldReadFile,
             KT.srvShouldResetBrowserDir,
             KT.srvShouldResetHTTPPort,
             KT.srvShouldResetResponse,
@@ -47,21 +61,27 @@ function SrvComponent() {
     this._construct();
 }
 
+//<!-- Effects -->
+
+function srvReadFile(fileName) {
+    let contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+    srvCtrl().set("readFileContents", contents);
+}
+
 //<!-- Installation -->
 
 let cmp = new SrvComponent();
-let ctrl = cmp.ctrl;
 
 //<!-- Defaults -->
-ctrl.set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
+srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 
 let srv = http.createServer((req, res) => {
     let netRequest = new KT.NetRequest(req.method, req.url);
-    ctrl.set("request", netRequest);
-    res.write(ctrl.context.response.contents);
+    srvCtrl().set("request", netRequest);
+    res.write(srvCtrl().context.response.contents);
     res.end();
 });
 
-srv.listen(ctrl.context.httpPort, (e) => {
-  ctrl.set("didLaunch", true);
+srv.listen(srvCtrl().context.httpPort, (e) => {
+  srvCtrl().set("didLaunch", true);
 });
