@@ -13,6 +13,7 @@ function SrvComponent() {
         });
 
         this.setupEffects();
+        this.setupEvents();
         this.setupShoulds();
     };
 
@@ -28,9 +29,14 @@ function SrvComponent() {
         }
     };
 
+    this.setupEvents = function() {
+        this.ctrl.set("arguments", process.argv);
+    };
+
     this.setupShoulds = function() {
         [
             KT.srvShouldOpenURL,
+            KT.srvShouldResetBrowserDir,
             KT.srvShouldResetHTTPPort,
             KT.srvShouldResetResponse,
         ].forEach((f) => {
@@ -46,7 +52,7 @@ function SrvComponent() {
 let cmp = new SrvComponent();
 let ctrl = cmp.ctrl;
 
-// Defaults.
+//<!-- Defaults -->
 ctrl.set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 
 let srv = http.createServer((req, res) => {

@@ -8,6 +8,7 @@ SrvContext:
     type: context
     fields:
         arguments: [String]
+        browserDir: String
         didLaunch: Bool
         defaultHTTPPort: Int
         httpPort: Int

@@ -5,6 +5,7 @@ import kotlin.js.JsExport
 @JsExport
 data class SrvContext(
     var arguments: Array<String> = arrayOf(),
+    var browserDir: String = "",
     var defaultHTTPPort: Int = 0,
     var didLaunch: Boolean = false,
     var httpPort: Int = 0,
@@ -18,6 +19,8 @@ data class SrvContext(
     override fun <T> field(name: String): T {
         if (name == "arguments") {
             return arguments as T
+        } else if (name == "browserDir") {
+            return browserDir as T
         } else if (name == "defaultHTTPPort") {
             return defaultHTTPPort as T
         } else if (name == "didLaunch") {
@@ -48,6 +51,8 @@ data class SrvContext(
     ) {
         if (name == "arguments") {
             arguments = value as Array<String>
+        } else if (name == "browserDir") {
+            browserDir = value as String
         } else if (name == "defaultHTTPPort") {
             defaultHTTPPort = value as Int
         } else if (name == "didLaunch") {

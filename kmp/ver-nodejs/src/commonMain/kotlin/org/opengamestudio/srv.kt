@@ -4,6 +4,7 @@ import kotlin.js.JsExport
 
 //<!-- Constants -->
 
+@JsExport val SRV_ARGUMENT_BROWSER_DIR = "--browserDir"
 @JsExport val SRV_DEFAULT_HTTP_PORT = 8000
 
 //<!-- Shoulds -->
@@ -18,6 +19,23 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
     if (c.recentField == "didLaunch") {
         c.url = "http://localhost:" + c.httpPort
         c.recentField = "url"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Path to web browser client to serve when requesting index.html and such
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun srvShouldResetBrowserDir(c: SrvContext): SrvContext {
+    if (c.recentField == "didLaunch") {
+        c.browserDir = cliArgument(c.arguments, SRV_ARGUMENT_BROWSER_DIR)
+        c.recentField = "browserDir"
         return c
     }
 
