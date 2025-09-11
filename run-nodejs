@@ -8,6 +8,9 @@ cd $SCRIPT_DIR/kmp
 if [ "$REYARN" == "1" ]; then
     ./gradlew kotlinUpgradeYarnLock
 fi
+# Build client
+./gradlew jsBrowserDistribution
+# Build server
 ./gradlew jsNodeDevelopmentRun
-
+# Run server
 node $SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin/srv.js

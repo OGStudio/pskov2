@@ -19,4 +19,5 @@ plugins {
 }
 
 rootProject.name = "pskov"
+include("ver-browser")
 include("ver-nodejs")
