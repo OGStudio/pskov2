@@ -46,7 +46,8 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
     c.recentField = "none"
     return c
 }
-/* Path to web browser client to serve when requesting index.html and such
+
+/* Reset path to serve files requested by web browser
  *
  * Conditions:
  * 1. Did launch
