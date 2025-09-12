@@ -1,8 +1,8 @@
 package org.opengamestudio
 import kotlin.js.JsExport
 
-// Extract command line argument
-fun cliArgument(
+// Extract command line argument value
+fun cliArgumentValue(
     args: Array<String>,
     argument: String
 ): String {

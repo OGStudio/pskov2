@@ -54,7 +54,7 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
 @JsExport
 fun srvShouldResetBrowserDir(c: SrvContext): SrvContext {
     if (c.recentField == "didLaunch") {
-        c.browserDir = cliArgument(c.arguments, SRV_ARGUMENT_BROWSER_DIR)
+        c.browserDir = cliArgumentValue(c.arguments, SRV_ARGUMENT_BROWSER_DIR)
         c.recentField = "browserDir"
         return c
     }
