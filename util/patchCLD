@@ -1,6 +1,6 @@
 #!/bin/bash
 SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
-KT_DIR=$SCRIPT_DIR/../ver-nodejs/src/commonMain/kotlin/org/opengamestudio
+KT_DIR=$SCRIPT_DIR/../src
 
 CTRL=$KT_DIR/CLDController.kt
 CTX=$KT_DIR/CLDContext.kt
