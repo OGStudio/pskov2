@@ -1,0 +1,20 @@
+#!/bin/bash -e
+SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
+REYARN=$1
+
+BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin
+SERVER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin
+
+cd $SCRIPT_DIR/kmp
+
+if [ "$REYARN" == "1" ]; then
+    ./gradlew kotlinUpgradeYarnLock
+fi
+
+# Build client
+./gradlew jsBrowserDistribution
+# Build server
+./gradlew jsNodeDevelopmentRun
+
+# Run server
+node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR

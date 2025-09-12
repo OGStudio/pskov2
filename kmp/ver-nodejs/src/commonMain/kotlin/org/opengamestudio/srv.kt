@@ -1,0 +1,99 @@
+package org.opengamestudio
+
+import kotlin.js.JsExport
+
+//<!-- Constants -->
+
+@JsExport val SRV_ARGUMENT_BROWSER_DIR = "--browserDir"
+@JsExport val SRV_DEFAULT_HTTP_PORT = 8000
+@JsExport val SRV_INDEX = "index.html"
+
+//<!-- Shoulds -->
+ 
+/* Open URL in browser
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun srvShouldOpenURL(c: SrvContext): SrvContext {
+    if (c.recentField == "didLaunch") {
+        c.url = "http://localhost:" + c.httpPort
+        c.recentField = "url"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Read files
+ *
+ * Conditions:
+ * 1. Got / request
+ */
+@JsExport
+fun srvShouldReadFile(c: SrvContext): SrvContext {
+    if (
+        c.recentField == "request" &&
+        c.request.url == "/"
+      ) {
+        c.readFile = "${c.browserDir}/${SRV_INDEX}"
+        c.recentField = "readFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Reset path to serve files requested by web browser
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun srvShouldResetBrowserDir(c: SrvContext): SrvContext {
+    if (c.recentField == "didLaunch") {
+        c.browserDir = cliArgumentValue(c.arguments, SRV_ARGUMENT_BROWSER_DIR)
+        c.recentField = "browserDir"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* HTTP port to use
+ *
+ * Conditions:
+ * 1. Did set default HTTP port
+ */
+@JsExport
+fun srvShouldResetHTTPPort(c: SrvContext): SrvContext {
+    if (c.recentField == "defaultHTTPPort") {
+        c.httpPort = c.defaultHTTPPort
+        c.recentField = "httpPort"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Generate HTTP response
+ *
+ * Conditions:
+ * 1. Did receive contents of a requested file
+ */
+@JsExport
+fun srvShouldResetResponse(c: SrvContext): SrvContext {
+    if (c.recentField == "readFileContents") {
+        c.response = NetResponse(c.readFileContents, c.request.url)
+        c.recentField = "response"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}

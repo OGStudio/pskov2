@@ -1,0 +1,98 @@
+package org.opengamestudio
+import kotlin.js.JsExport
+
+
+@JsExport
+data class SrvContext(
+    var arguments: Array<String> = arrayOf(),
+    var browserDir: String = "",
+    var defaultHTTPPort: Int = 0,
+    var didLaunch: Boolean = false,
+    var httpPort: Int = 0,
+    var inputDir: String = "",
+    var inputHTTPPort: Int = 0,
+    var readFile: String = "",
+    var readFileContents: String = "",
+    var request: NetRequest = NetRequest(),
+    var response: NetResponse = NetResponse(),
+    var url: String = "",
+    override var recentField: String = "",
+): CLDContext {
+    override fun <T> field(name: String): T {
+        if (name == "arguments") {
+            return arguments as T
+        } else if (name == "browserDir") {
+            return browserDir as T
+        } else if (name == "defaultHTTPPort") {
+            return defaultHTTPPort as T
+        } else if (name == "didLaunch") {
+            return didLaunch as T
+        } else if (name == "httpPort") {
+            return httpPort as T
+        } else if (name == "inputDir") {
+            return inputDir as T
+        } else if (name == "inputHTTPPort") {
+            return inputHTTPPort as T
+        } else if (name == "readFile") {
+            return readFile as T
+        } else if (name == "readFileContents") {
+            return readFileContents as T
+        } else if (name == "request") {
+            return request as T
+        } else if (name == "response") {
+            return response as T
+        } else if (name == "url") {
+            return url as T
+        }
+        return "unknown-field-name" as T
+    }
+
+    override fun selfCopy(): CLDContext {
+        return this.copy()
+    }
+
+    override fun setField(
+        name: String,
+        value: Any?
+    ) {
+        if (name == "arguments") {
+            arguments = value as Array<String>
+        } else if (name == "browserDir") {
+            browserDir = value as String
+        } else if (name == "defaultHTTPPort") {
+            defaultHTTPPort = value as Int
+        } else if (name == "didLaunch") {
+            didLaunch = value as Boolean
+        } else if (name == "httpPort") {
+            httpPort = value as Int
+        } else if (name == "inputDir") {
+            inputDir = value as String
+        } else if (name == "inputHTTPPort") {
+            inputHTTPPort = value as Int
+        } else if (name == "readFile") {
+            readFile = value as String
+        } else if (name == "readFileContents") {
+            readFileContents = value as String
+        } else if (name == "request") {
+            request = value as NetRequest
+        } else if (name == "response") {
+            response = value as NetResponse
+        } else if (name == "url") {
+            url = value as String
+        }
+    }
+}
+
+
+@JsExport
+data class NetRequest(
+    var method: String = "",
+    var url: String = "",
+) {}
+
+
+@JsExport
+data class NetResponse(
+    var contents: String = "",
+    var url: String = "",
+) {}
