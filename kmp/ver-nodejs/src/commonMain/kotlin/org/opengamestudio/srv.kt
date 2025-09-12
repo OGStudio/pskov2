@@ -30,15 +30,22 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
 /* Read files
  *
  * Conditions:
- * 1. Got / request
+ * 1. "/" was requested
+ * 2. "/<file>" was requested
  */
 @JsExport
 fun srvShouldReadFile(c: SrvContext): SrvContext {
     if (
         c.recentField == "request" &&
         c.request.url == "/"
-      ) {
+    ) {
         c.readFile = "${c.browserDir}/${SRV_INDEX}"
+        c.recentField = "readFile"
+        return c
+    }
+
+    if (c.recentField == "request") {
+        c.readFile = "${c.browserDir}${c.request.url}"
         c.recentField = "readFile"
         return c
     }

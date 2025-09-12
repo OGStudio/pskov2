@@ -57,7 +57,12 @@ function SrvComponent() {
 //<!-- Effects -->
 
 function srvReadFile(fileName) {
-    let contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+    var contents = "";
+    try {
+        contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+    } catch (e) {
+        // Do nothing
+    }
     srvCtrl().set("readFileContents", contents);
 }
 
