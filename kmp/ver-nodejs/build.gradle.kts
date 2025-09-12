@@ -20,6 +20,9 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
+                // Convert file name to MIME type
+                implementation(npm("mime-types", "3.0.1"))
+                // Open URL in browser
                 implementation(npm("open", "8.4.2"))
             }
         }

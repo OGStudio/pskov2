@@ -1,5 +1,6 @@
 let fs = require("fs");
 let http = require("http");
+let mime = require("mime-types");
 let open = require("open");
 let KT = require("pskov-ver-nodejs").org.opengamestudio;
 
@@ -8,6 +9,10 @@ let KT = require("pskov-ver-nodejs").org.opengamestudio;
 function srvCtrl() {
     return cmp.ctrl;
 }
+
+//!<-- Constants -->
+
+let SRV_ERR_HTTP_404 = "404";
 
 //!<-- Component -->
 
@@ -61,7 +66,7 @@ function srvReadFile(fileName) {
     try {
         contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
     } catch (e) {
-        // Do nothing
+        contents = SRV_ERR_HTTP_404;
     }
     srvCtrl().set("readFileContents", contents);
 }
@@ -80,8 +85,21 @@ srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 let srv = http.createServer((req, res) => {
     let netRequest = new KT.NetRequest(req.method, req.url);
     srvCtrl().set("request", netRequest);
-    res.write(srvCtrl().context.response.contents);
-    res.end();
+    let response = srvCtrl().context.response;
+
+    // File does not exist
+    if (response.contents == SRV_ERR_HTTP_404) {
+        res.writeHead(404);
+        res.end();
+    }
+
+    // File exists
+    if (response.contents != SRV_ERR_HTTP_404) {
+        let type = mime.lookup(response.url);
+        res.setHeader("Content-Type", type);
+        res.writeHead(200);
+        res.end(response.contents);
+    }
 });
 
 srv.listen(srvCtrl().context.httpPort, (e) => {
