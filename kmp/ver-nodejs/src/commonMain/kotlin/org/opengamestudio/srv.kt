@@ -81,10 +81,10 @@ fun srvShouldResetHTTPPort(c: SrvContext): SrvContext {
     return c
 }
 
-/* Process request and generate response
+/* Generate HTTP response
  *
  * Conditions:
- * 1. Did receive file contents
+ * 1. Did receive contents of a requested file
  */
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
