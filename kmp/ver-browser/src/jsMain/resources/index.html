@@ -3,14 +3,37 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="kotlin-kotlin-stdlib.js"></script>
+    <script src="kotlin_org_jetbrains_kotlin_kotlin_dom_api_compat.js"></script>
     <script src="uikit-3.23.11.min.js"></script>
+    <script src="pskov-ver-browser.js"></script>
+    <script>
+        let KT = window["pskov:ver-browser"].org.opengamestudio;
+        window.components = [];
+    </script>
     <link rel="stylesheet" href="uikit-3.23.11.min.css" />
+    <link rel="stylesheet" href="style.css" />
     <title>PSKOV 2</title>
   </head>
   <body>
-    <div>
-      <h1>TODO select project dir</h1>
-    </div>
+    <!-- Select project directory -->
+	<div id="select-project-dir" uk-modal>
+			<div class="uk-modal-dialog">
+					<div class="uk-modal-header">
+							<h2 class="uk-modal-title">Select project</h2>
+					</div>
+					<div class="uk-modal-body">
+							<p>Select directory that hosts pskov.cfg or an empty one</p>
+					</div>
+					<div class="uk-modal-footer uk-text-right">
+							<button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+							<button class="uk-button uk-button-primary" type="button">OK</button>
+					</div>
+			</div>
+	  </div>
+
+    <a class="uk-button uk-button-default" href="#select-project-dir" uk-toggle>Open selecton dialog TODO do it in JS</a>
+
     <div>
       <div id="panel-header"></div>
       <div id="panel-left"></div>

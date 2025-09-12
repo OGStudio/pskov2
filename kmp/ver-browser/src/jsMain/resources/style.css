@@ -1,0 +1,5 @@
+.center-contents-vertically {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
