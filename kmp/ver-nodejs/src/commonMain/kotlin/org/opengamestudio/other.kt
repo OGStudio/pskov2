@@ -15,3 +15,12 @@ fun cliArgumentValue(
     }
     return ""
 }
+
+// Shorten field values that are too lengthy for debug output
+@JsExport
+fun shortFieldValue(v: String): String {
+    if (v.length > 200) {
+        return v.take(50)
+    }
+    return v
+}

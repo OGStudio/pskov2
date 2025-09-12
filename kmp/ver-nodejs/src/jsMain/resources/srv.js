@@ -16,12 +16,10 @@ function SrvComponent() {
         this.ctrl = new KT.CLDController(new KT.SrvContext());
         // Debugging.
         this.ctrl.registerCallback((c) => {
-            let key = c.recentField;
-            var val = `${c.field(c.recentField)}`;
-            if (val.length > 200) {
-                val = val.substring(0, 50);
-            }
-            console.log(`ИГР SrvC._construct ctrl key/value: '${key}'/'${val}'`);
+            let k = c.recentField;
+            var v = `${c.field(c.recentField)}`;
+            v = KT.shortFieldValue(v);
+            console.log(`ИГР SrvC._construct ctrl key/value: '${k}'/'${v}'`);
         });
 
         this.setupEffects();
