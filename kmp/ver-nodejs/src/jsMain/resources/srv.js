@@ -23,7 +23,6 @@ function SrvComponent() {
         });
 
         this.setupEffects();
-        this.setupEvents();
         this.setupShoulds();
     };
 
@@ -38,10 +37,6 @@ function SrvComponent() {
             let cb = oneliners[i * 2 + 1];
             this.ctrl.registerFieldCallback(field, cb);
         }
-    };
-
-    this.setupEvents = function() {
-        this.ctrl.set("arguments", process.argv);
     };
 
     this.setupShoulds = function() {
@@ -71,7 +66,11 @@ function srvReadFile(fileName) {
 let cmp = new SrvComponent();
 
 //<!-- Defaults -->
+
+srvCtrl().set("arguments", process.argv);
 srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
+
+//<!-- Server -->
 
 let srv = http.createServer((req, res) => {
     let netRequest = new KT.NetRequest(req.method, req.url);
