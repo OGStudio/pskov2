@@ -11,6 +11,8 @@ data class SrvContext(
     var httpPort: Int = 0,
     var inputDir: String = "",
     var inputHTTPPort: Int = 0,
+    var projectAbsPath: String = "",
+    var projectDir: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
     var request: NetRequest = NetRequest(),
@@ -33,6 +35,10 @@ data class SrvContext(
             return inputDir as T
         } else if (name == "inputHTTPPort") {
             return inputHTTPPort as T
+        } else if (name == "projectAbsPath") {
+            return projectAbsPath as T
+        } else if (name == "projectDir") {
+            return projectDir as T
         } else if (name == "readFile") {
             return readFile as T
         } else if (name == "readFileContents") {
@@ -69,6 +75,10 @@ data class SrvContext(
             inputDir = value as String
         } else if (name == "inputHTTPPort") {
             inputHTTPPort = value as Int
+        } else if (name == "projectAbsPath") {
+            projectAbsPath = value as String
+        } else if (name == "projectDir") {
+            projectDir = value as String
         } else if (name == "readFile") {
             readFile = value as String
         } else if (name == "readFileContents") {

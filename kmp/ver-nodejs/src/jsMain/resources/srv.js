@@ -2,6 +2,7 @@ let fs = require("fs");
 let http = require("http");
 let mime = require("mime-types");
 let open = require("open");
+let path = require("path");
 let KT = require("pskov-ver-nodejs").org.opengamestudio;
 
 //!<-- API -->
@@ -33,6 +34,7 @@ function SrvComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "projectDir", (c) => { srvResolvePath(c.projectDir) },
             "readFile", (c) => { srvReadFile(c.readFile) },
             "url", (c) => { open(c.url) },
         ];
@@ -50,6 +52,7 @@ function SrvComponent() {
             KT.srvShouldReadFile,
             KT.srvShouldResetBrowserDir,
             KT.srvShouldResetHTTPPort,
+            KT.srvShouldResetProjectDir,
             KT.srvShouldResetResponse,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
@@ -69,6 +72,11 @@ function srvReadFile(fileName) {
         contents = SRV_ERR_HTTP_404;
     }
     srvCtrl().set("readFileContents", contents);
+}
+
+function srvResolvePath(relative) {
+    let p = path.resolve(relative);
+    srvCtrl().set("projectAbsPath", p);
 }
 
 //<!-- Installation -->

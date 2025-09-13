@@ -5,6 +5,7 @@ import kotlin.js.JsExport
 //<!-- Constants -->
 
 @JsExport val SRV_ARGUMENT_BROWSER_DIR = "--browserDir"
+@JsExport val SRV_ARGUMENT_PROJECT_DIR = "--projectDir"
 @JsExport val SRV_DEFAULT_HTTP_PORT = 8000
 @JsExport val SRV_INDEX = "index.html"
 
@@ -81,6 +82,23 @@ fun srvShouldResetHTTPPort(c: SrvContext): SrvContext {
     if (c.recentField == "defaultHTTPPort") {
         c.httpPort = c.defaultHTTPPort
         c.recentField = "httpPort"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Reset path to where PSKOV files are located
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun srvShouldResetProjectDir(c: SrvContext): SrvContext {
+    if (c.recentField == "didLaunch") {
+        c.projectDir = cliArgumentValue(c.arguments, SRV_ARGUMENT_PROJECT_DIR)
+        c.recentField = "projectDir"
         return c
     }
 

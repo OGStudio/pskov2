@@ -1,14 +1,19 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
-REYARN=$1
 
-BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin
-SERVER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin
+PROJECT_DIR=$1
+
+if [ -z "$PROJECT_DIR" ]; then
+    echo "Usage: $0 PROJECT_DIR"
+    exit 1
+fi
 
 cd $SCRIPT_DIR/kmp
 
-if [ "$REYARN" == "1" ]; then
+# Special case to rerun yarn only
+if [ "$PROJECT_DIR" == "reyarn" ]; then
     ./gradlew kotlinUpgradeYarnLock
+    exit
 fi
 
 # Build client
@@ -17,4 +22,6 @@ fi
 ./gradlew jsNodeDevelopmentRun
 
 # Run server
-node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR
+BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin
+SERVER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin
+node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
