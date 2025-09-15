@@ -3,6 +3,17 @@ version: 1
 kotlin: package org.opengamestudio
 kotlin: import kotlin.js.JsExport
 
+AppContext:
+    prefix-kotlin: @JsExport
+    type: context
+    fields:
+        baseURL: String
+        didLaunch: Bool
+        projectPath: String
+        request: NetRequest
+        response: NetResponse
+        responseError: NetResponse
+
 SrvContext:
     prefix-kotlin: @JsExport
     type: context
@@ -26,6 +37,7 @@ NetRequest:
     prefix-kotlin: @JsExport
     type: struct
     fields:
+        body: String
         method: String
         url: String
 

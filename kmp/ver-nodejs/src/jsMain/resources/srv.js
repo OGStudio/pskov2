@@ -91,7 +91,7 @@ srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 //<!-- Server -->
 
 let srv = http.createServer((req, res) => {
-    let netRequest = new KT.NetRequest(req.method, req.url);
+    let netRequest = new KT.NetRequest("", req.method, req.url);
     srvCtrl().set("request", netRequest);
     let response = srvCtrl().context.response;
 

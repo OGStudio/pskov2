@@ -1,0 +1,51 @@
+// Shortcut to get an element by id
+function deId(id) {
+    return document.getElementById(id);
+}
+
+// Load date over HTTP
+function loadURL(p, onload, onerror) {
+    console.log(`ИГР loadURL p.url: '${p.url}'`);
+    let req = new XMLHttpRequest();
+    req.open(p.method, p.url);
+
+    req.onerror = function(event) {
+        onerror({
+            contents: "",
+            url: p.url,
+        });
+        console.log("ИГР loadURL onerror event/req:", event, req);
+    };
+
+    req.onload = function() {
+        if (
+            req.readyState == 4 &&
+            req.status == 200
+        ) {
+            onload(req);
+        } else {
+            onerror({
+                contents: req.responseText,
+                url: p.url,
+            });
+            console.log("ИГР loadURL onload error req:", req);
+        }
+    };
+    req.send(p.body);
+}
+
+// Make element visible
+function setUIVisibility(id, isVisible) {
+    let el = deId(id);
+    // Hide
+    if (!isVisible) {
+        el.setAttribute("hidden", true);
+    }
+    // Show
+    if (
+        isVisible &&
+        el.hasAttribute("hidden")
+    ) {
+        el.removeAttribute("hidden");
+    }
+}

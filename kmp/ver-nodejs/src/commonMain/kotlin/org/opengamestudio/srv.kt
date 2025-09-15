@@ -1,5 +1,4 @@
 package org.opengamestudio
-
 import kotlin.js.JsExport
 
 //<!-- Constants -->

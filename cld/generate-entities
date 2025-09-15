@@ -3,6 +3,10 @@
 # Absolute path to this script
 SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
 
+DST_BROWSER=$SCRIPT_DIR/../kmp/ver-browser/src/commonMain/kotlin/org/opengamestudio/entities.kt
+DST_NODEJS=$SCRIPT_DIR/../kmp/ver-nodejs/src/commonMain/kotlin/org/opengamestudio/entities.kt
+
 # Path to Cross-language dialect's translator
 TR=$SCRIPT_DIR/../../cross-language-dialect/translator
-$TR/run/run-java --file=$SCRIPT_DIR/entities.yml --out=$SCRIPT_DIR/../kmp/ver-nodejs/src/commonMain/kotlin/org/opengamestudio/entities.kt
+$TR/run/run-java --file=$SCRIPT_DIR/entities.yml --out=$DST_NODEJS
+cp $DST_NODEJS $DST_BROWSER
