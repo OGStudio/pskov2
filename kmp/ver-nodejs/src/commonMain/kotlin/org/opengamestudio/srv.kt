@@ -3,8 +3,12 @@ import kotlin.js.JsExport
 
 //<!-- Constants -->
 
+@JsExport val SRV_API_PATH = "/path"
+@JsExport val SRV_API_ROOT = "/"
+
 @JsExport val SRV_ARGUMENT_BROWSER_DIR = "--browserDir"
 @JsExport val SRV_ARGUMENT_PROJECT_DIR = "--projectDir"
+
 @JsExport val SRV_DEFAULT_HTTP_PORT = 8000
 @JsExport val SRV_INDEX = "index.html"
 
@@ -30,21 +34,24 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
 /* Read files
  *
  * Conditions:
- * 1. "/" was requested
- * 2. "/<file>" was requested
+ * 1. GET /
+ * 2. GET /<file> (excluding GET /path)
  */
 @JsExport
 fun srvShouldReadFile(c: SrvContext): SrvContext {
     if (
         c.recentField == "request" &&
-        c.request.url == "/"
+        c.request.url == SRV_API_ROOT
     ) {
         c.readFile = "${c.browserDir}/${SRV_INDEX}"
         c.recentField = "readFile"
         return c
     }
 
-    if (c.recentField == "request") {
+    if (
+        c.recentField == "request" &&
+        c.request.url != SRV_API_PATH
+    ) {
         c.readFile = "${c.browserDir}${c.request.url}"
         c.recentField = "readFile"
         return c
@@ -109,11 +116,21 @@ fun srvShouldResetProjectDir(c: SrvContext): SrvContext {
  *
  * Conditions:
  * 1. Did receive contents of a requested file
+ * 2. GET /path
  */
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
     if (c.recentField == "readFileContents") {
         c.response = NetResponse(c.readFileContents, c.request.url)
+        c.recentField = "response"
+        return c
+    }
+
+    if (
+        c.recentField == "request" &&
+        c.request.url == SRV_API_PATH
+    ) {
+        c.response = NetResponse(c.projectAbsPath, c.request.url)
         c.recentField = "response"
         return c
     }
