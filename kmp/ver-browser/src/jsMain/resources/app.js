@@ -6,7 +6,8 @@ function appCtrl() {
 
 //<!-- Constants -->
 
-//APP_SPLASH_ID = "splash";
+let APP_HEADER_PATH_ID = "header-path";
+let APP_SPLASH_ID = "splash";
 
 //<!-- Component -->
 
@@ -28,7 +29,9 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
-            "request", (c) => { appLoad(c.request); },
+            "projectPath", (c) => { appDisplayPath(c.projectPath) },
+            "request", (c) => { appLoad(c.request) },
+            "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
         let halfCount = oneliners.length / 2;
         for (let i = 0; i < halfCount; ++i) {
@@ -46,7 +49,9 @@ function AppComponent() {
 
     this.setupShoulds = function() {
         [
+            KT.appShouldHideSplash,
             KT.appShouldLoad,
+            KT.appShouldResetProjectPath,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
         });
@@ -56,6 +61,17 @@ function AppComponent() {
 }
 
 //<!-- Effects -->
+
+function appDisplayPath(path) {
+    setUIText(APP_HEADER_PATH_ID, path);
+}
+
+function appHideSplash(timeout) {
+    setTimeout(
+        () => { setUIVisibility(APP_SPLASH_ID, false) },
+        timeout
+    );
+}
 
 function appLoad(req) {
     loadURL(

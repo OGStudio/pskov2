@@ -34,7 +34,15 @@ function loadURL(p, onload, onerror) {
     req.send(p.body);
 }
 
-// Make element visible
+// Change element text
+function setUIText(id, text) {
+    let el = deId(id);
+    if (el != null) {
+        el.innerHTML = text;
+    }
+}
+
+// Change element visibility
 function setUIVisibility(id, isVisible) {
     let el = deId(id);
     // Hide

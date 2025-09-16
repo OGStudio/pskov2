@@ -8,7 +8,9 @@ if [ -z "$PROJECT_DIR" ]; then
     exit 1
 fi
 
-cd $SCRIPT_DIR/kmp
+# Enter KMP dir to run Gradle
+wasDir=$(pwd)
+cd $SCRIPT_DIR/kmp 
 
 # Special case to rerun yarn only
 if [ "$PROJECT_DIR" == "reyarn" ]; then
@@ -20,6 +22,9 @@ fi
 ./gradlew jsBrowserDistribution
 # Build server
 ./gradlew jsNodeDevelopmentRun
+
+# Exit KMP dir
+cd $wasDir
 
 # Run server
 BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin

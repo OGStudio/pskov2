@@ -13,6 +13,7 @@ AppContext:
         request: NetRequest
         response: NetResponse
         responseError: NetResponse
+        splashTimeout: Int
 
 SrvContext:
     prefix-kotlin: @JsExport

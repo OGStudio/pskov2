@@ -10,6 +10,7 @@ data class AppContext(
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
+    var splashTimeout: Int = 0,
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
@@ -25,6 +26,8 @@ data class AppContext(
             return response as T
         } else if (name == "responseError") {
             return responseError as T
+        } else if (name == "splashTimeout") {
+            return splashTimeout as T
         }
         return "unknown-field-name" as T
     }
@@ -49,6 +52,8 @@ data class AppContext(
             response = value as NetResponse
         } else if (name == "responseError") {
             responseError = value as NetResponse
+        } else if (name == "splashTimeout") {
+            splashTimeout = value as Int
         }
     }
 }
