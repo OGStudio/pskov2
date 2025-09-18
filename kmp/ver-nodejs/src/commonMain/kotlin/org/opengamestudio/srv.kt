@@ -35,6 +35,7 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
  * Conditions:
  * 1. GET /
  * 2. GET /<file> (excluding reserved API calls)
+ * 3. POST /read
  */
 @JsExport
 fun srvShouldReadFile(c: SrvContext): SrvContext {
@@ -57,6 +58,17 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
         c.recentField = "readFile"
         return c
     }
+
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_POST && 
+        c.request.url == CONST_API_READ
+    ) {
+        c.readFile = "${c.projectAbsPath}/${c.request.body}"
+        c.recentField = "readFile"
+        return c
+    }
+
 
     c.recentField = "none"
     return c

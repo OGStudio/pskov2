@@ -91,7 +91,17 @@ srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 //<!-- Server -->
 
 let srv = http.createServer((req, res) => {
-    let netRequest = new KT.NetRequest("", req.method, req.url);
+    // Collect request body
+    var body = "";
+    if (req.method == KT.CONST_POST) {
+        console.log("ИГР method POST url:", req.url);
+        req.on("data", (chunk) => {
+            console.log("ИГР req.on data chunk:", chunk);
+            body = chunk.toString();
+        });
+    }
+    // Construct request
+    let netRequest = new KT.NetRequest(body, req.method, req.url);
     srvCtrl().set("request", netRequest);
     let response = srvCtrl().context.response;
 
