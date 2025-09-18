@@ -3,8 +3,10 @@ import kotlin.js.JsExport
 
 //<!-- Constants -->
 
-val APP_API_PATH = "/path"
-val APP_SPLASH_TIMEOUT = 1000
+@JsExport val APP_API_PATH = "/path"
+@JsExport val APP_API_READ = "/read"
+@JsExport val APP_CFG_FILE = "pskov.cfg"
+@JsExport val APP_SPLASH_TIMEOUT = 800
 
 //<!-- Shoulds -->
 
@@ -12,6 +14,7 @@ val APP_SPLASH_TIMEOUT = 1000
  *
  * Conditions:
  * 1. Did launch
+ * 2. Project path has been resolved
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -21,6 +24,17 @@ fun appShouldLoad(c: AppContext): AppContext {
                 "",
                 "GET",
                 appURL(c.baseURL, APP_API_PATH),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    if (c.recentField == "projectPath") {
+        c.request =
+            NetRequest(
+                APP_CFG_FILE,
+                "POST",
+                appURL(c.baseURL, APP_API_READ),
             )
         c.recentField = "request"
         return c

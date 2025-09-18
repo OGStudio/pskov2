@@ -10,6 +10,8 @@ AppContext:
         baseURL: String
         didLaunch: Bool
         projectPath: String
+        readCfgFile: String
+        readCfgFileContents: String
         request: NetRequest
         response: NetResponse
         responseError: NetResponse

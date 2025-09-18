@@ -7,6 +7,8 @@ data class AppContext(
     var baseURL: String = "",
     var didLaunch: Boolean = false,
     var projectPath: String = "",
+    var readCfgFile: String = "",
+    var readCfgFileContents: String = "",
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
@@ -20,6 +22,10 @@ data class AppContext(
             return didLaunch as T
         } else if (name == "projectPath") {
             return projectPath as T
+        } else if (name == "readCfgFile") {
+            return readCfgFile as T
+        } else if (name == "readCfgFileContents") {
+            return readCfgFileContents as T
         } else if (name == "request") {
             return request as T
         } else if (name == "response") {
@@ -46,6 +52,10 @@ data class AppContext(
             didLaunch = value as Boolean
         } else if (name == "projectPath") {
             projectPath = value as String
+        } else if (name == "readCfgFile") {
+            readCfgFile = value as String
+        } else if (name == "readCfgFileContents") {
+            readCfgFileContents = value as String
         } else if (name == "request") {
             request = value as NetRequest
         } else if (name == "response") {
