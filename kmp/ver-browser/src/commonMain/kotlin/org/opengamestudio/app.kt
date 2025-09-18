@@ -3,8 +3,6 @@ import kotlin.js.JsExport
 
 //<!-- Constants -->
 
-@JsExport val APP_API_PATH = "/path"
-@JsExport val APP_API_READ = "/read"
 @JsExport val APP_CFG_FILE = "pskov.cfg"
 @JsExport val APP_SPLASH_TIMEOUT = 800
 
@@ -23,7 +21,7 @@ fun appShouldLoad(c: AppContext): AppContext {
             NetRequest(
                 "",
                 "GET",
-                appURL(c.baseURL, APP_API_PATH),
+                appURL(c.baseURL, CONST_API_PATH),
             )
         c.recentField = "request"
         return c
@@ -34,7 +32,7 @@ fun appShouldLoad(c: AppContext): AppContext {
             NetRequest(
                 APP_CFG_FILE,
                 "POST",
-                appURL(c.baseURL, APP_API_READ),
+                appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
         return c
@@ -70,7 +68,7 @@ fun appShouldHideSplash(c: AppContext): AppContext {
 fun appShouldResetProjectPath(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.url == appURL(c.baseURL, APP_API_PATH)
+        c.response.url == appURL(c.baseURL, CONST_API_PATH)
     ) {
         c.projectPath = c.response.contents
         c.recentField = "projectPath"
