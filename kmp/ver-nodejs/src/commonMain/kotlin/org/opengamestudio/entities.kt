@@ -5,10 +5,9 @@ import kotlin.js.JsExport
 @JsExport
 data class AppContext(
     var baseURL: String = "",
+    var cfg: Map<String, String> = mapOf(),
     var didLaunch: Boolean = false,
     var projectPath: String = "",
-    var readCfgFile: String = "",
-    var readCfgFileContents: String = "",
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
@@ -18,14 +17,12 @@ data class AppContext(
     override fun <T> field(name: String): T {
         if (name == "baseURL") {
             return baseURL as T
+        } else if (name == "cfg") {
+            return cfg as T
         } else if (name == "didLaunch") {
             return didLaunch as T
         } else if (name == "projectPath") {
             return projectPath as T
-        } else if (name == "readCfgFile") {
-            return readCfgFile as T
-        } else if (name == "readCfgFileContents") {
-            return readCfgFileContents as T
         } else if (name == "request") {
             return request as T
         } else if (name == "response") {
@@ -48,14 +45,12 @@ data class AppContext(
     ) {
         if (name == "baseURL") {
             baseURL = value as String
+        } else if (name == "cfg") {
+            cfg = value as Map<String, String>
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
         } else if (name == "projectPath") {
             projectPath = value as String
-        } else if (name == "readCfgFile") {
-            readCfgFile = value as String
-        } else if (name == "readCfgFileContents") {
-            readCfgFileContents = value as String
         } else if (name == "request") {
             request = value as NetRequest
         } else if (name == "response") {
@@ -172,5 +167,5 @@ data class NetRequest(
 @JsExport
 data class NetResponse(
     var contents: String = "",
-    var url: String = "",
+    var req: NetRequest = NetRequest(),
 ) {}

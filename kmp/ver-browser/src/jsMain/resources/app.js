@@ -51,6 +51,7 @@ function AppComponent() {
         [
             KT.appShouldHideSplash,
             KT.appShouldLoad,
+            KT.appShouldParseCfg,
             KT.appShouldResetProjectPath,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
@@ -76,13 +77,13 @@ function appHideSplash(timeout) {
 function appLoad(req) {
     loadURL(
         req,
-        (res) => {
-            var resp = new KT.NetResponse(res.responseText, res.responseURL);
-            appCtrl().set("response", resp);
+        (resOk) => {
+            var r = new KT.NetResponse(resOk.response.responseText, req);
+            appCtrl().set("response", r);
         },
-        (res) => {
-            var err = new KT.NetResponse(res.contents, res.url);
-            appCtrl().set("responseError", err);
+        (resErr) => {
+            var r = new KT.NetResponse(resErr.contents, req);
+            appCtrl().set("responseError", r);
         }
     );
 }

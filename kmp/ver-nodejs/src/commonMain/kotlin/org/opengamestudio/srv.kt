@@ -134,7 +134,7 @@ fun srvShouldResetProjectDir(c: SrvContext): SrvContext {
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
     if (c.recentField == "readFileContents") {
-        c.response = NetResponse(c.readFileContents, c.request.url)
+        c.response = NetResponse(c.readFileContents, c.request)
         c.recentField = "response"
         return c
     }
@@ -144,7 +144,7 @@ fun srvShouldResetResponse(c: SrvContext): SrvContext {
         c.request.method == CONST_GET &&
         c.request.url == CONST_API_PATH
     ) {
-        c.response = NetResponse(c.projectAbsPath, c.request.url)
+        c.response = NetResponse(c.projectAbsPath, c.request)
         c.recentField = "response"
         return c
     }

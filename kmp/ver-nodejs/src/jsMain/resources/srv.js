@@ -94,7 +94,6 @@ let srv = http.createServer((req, res) => {
     // Collect request body
     var body = "";
     req.on("data", (chunk) => {
-        console.log("ИГР req.on data chunk:", chunk);
         body = chunk.toString();
     });
 
@@ -111,7 +110,7 @@ let srv = http.createServer((req, res) => {
         }
         // File exists
         if (response.contents != SRV_ERR_HTTP_404) {
-            let type = mime.lookup(response.url);
+            let type = mime.lookup(response.req.url);
             res.setHeader("Content-Type", type);
             res.writeHead(200);
             res.end(response.contents);

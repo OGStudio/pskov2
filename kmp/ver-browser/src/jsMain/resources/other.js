@@ -12,7 +12,7 @@ function loadURL(p, onload, onerror) {
     req.onerror = function(event) {
         onerror({
             contents: "",
-            url: p.url,
+            orig: p,
         });
         console.log("ИГР loadURL onerror event/req:", event, req);
     };
@@ -22,11 +22,14 @@ function loadURL(p, onload, onerror) {
             req.readyState == 4 &&
             req.status == 200
         ) {
-            onload(req);
+            onload({
+                response: req,
+                orig: p,
+            });
         } else {
             onerror({
                 contents: req.responseText,
-                url: p.url,
+                orig: p,
             });
             console.log("ИГР loadURL onload error req:", req);
         }

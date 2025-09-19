@@ -11,8 +11,8 @@ import kotlin.js.JsExport
 /* Make HTTP request
  *
  * Conditions:
- * 1. Did launch
- * 2. Project path has been resolved
+ * 1. Did launch: Get project path
+ * 2. Project path has been resolved: Get pskov.cfg contents
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -20,7 +20,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 "",
-                "GET",
+                CONST_GET,
                 appURL(c.baseURL, CONST_API_PATH),
             )
         c.recentField = "request"
@@ -31,7 +31,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 APP_CFG_FILE,
-                "POST",
+                CONST_POST,
                 appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
@@ -59,6 +59,27 @@ fun appShouldHideSplash(c: AppContext): AppContext {
     return c
 }
 
+/* Parse pskov.cfg
+ *
+ * Conditions:
+ * 1. Got pskov.cfg contents as response
+ */
+@JsExport
+fun appShouldParseCfg(c: AppContext): AppContext {
+    if (
+        c.recentField == "response" &&
+        c.response.req.method == CONST_POST &&
+        c.response.req.url == appURL(c.baseURL, CONST_API_READ) &&
+        c.response.req.body == APP_CFG_FILE
+    ) {
+        c.recentField = "cfg"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Display project path
  *
  * Conditions:
@@ -68,7 +89,7 @@ fun appShouldHideSplash(c: AppContext): AppContext {
 fun appShouldResetProjectPath(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.url == appURL(c.baseURL, CONST_API_PATH)
+        c.response.req.url == appURL(c.baseURL, CONST_API_PATH)
     ) {
         c.projectPath = c.response.contents
         c.recentField = "projectPath"

@@ -8,10 +8,9 @@ AppContext:
     type: context
     fields:
         baseURL: String
+        cfg: [String: String]
         didLaunch: Bool
         projectPath: String
-        readCfgFile: String
-        readCfgFileContents: String
         request: NetRequest
         response: NetResponse
         responseError: NetResponse
@@ -49,4 +48,4 @@ NetResponse:
     type: struct
     fields:
         contents: String
-        url: String
+        req: NetRequest
