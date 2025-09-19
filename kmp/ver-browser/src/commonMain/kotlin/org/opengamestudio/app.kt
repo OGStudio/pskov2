@@ -4,6 +4,7 @@ import kotlin.js.JsExport
 //<!-- Constants -->
 
 @JsExport val APP_CFG_FILE = "pskov.cfg"
+@JsExport val APP_CFG_KEY_INPUT = "input"
 @JsExport val APP_SPLASH_TIMEOUT = 800
 
 //<!-- Shoulds -->
@@ -80,6 +81,25 @@ fun appShouldParseCfg(c: AppContext): AppContext {
     c.recentField = "none"
     return c
 }
+
+/* Construct an array of input directories based on config's input key values
+ *
+ * Conditions:
+ * 1. Config has been parsed
+ */
+@JsExport
+fun appShouldResetInputDirs(c: AppContext): AppContext {
+    if (c.recentField == "cfg") {
+        val dirs = c.cfg[APP_CFG_KEY_INPUT]?.split(";") ?: emptyList<String>()
+        c.inputDirs = dirs.toTypedArray()
+        c.recentField = "inputDirs"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 
 /* Display project path
  *

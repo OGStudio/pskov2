@@ -10,6 +10,7 @@ AppContext:
         baseURL: String
         cfg: [String: String]
         didLaunch: Bool
+        inputDirs: [String]
         projectPath: String
         request: NetRequest
         response: NetResponse

@@ -7,6 +7,7 @@ data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
     var didLaunch: Boolean = false,
+    var inputDirs: Array<String> = arrayOf(),
     var projectPath: String = "",
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
@@ -21,6 +22,8 @@ data class AppContext(
             return cfg as T
         } else if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "inputDirs") {
+            return inputDirs as T
         } else if (name == "projectPath") {
             return projectPath as T
         } else if (name == "request") {
@@ -49,6 +52,8 @@ data class AppContext(
             cfg = value as Map<String, String>
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "inputDirs") {
+            inputDirs = value as Array<String>
         } else if (name == "projectPath") {
             projectPath = value as String
         } else if (name == "request") {

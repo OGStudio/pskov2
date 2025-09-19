@@ -52,6 +52,7 @@ function AppComponent() {
             KT.appShouldHideSplash,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
+            KT.appShouldResetInputDirs,
             KT.appShouldResetProjectPath,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
