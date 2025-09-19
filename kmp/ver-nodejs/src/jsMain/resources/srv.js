@@ -93,31 +93,30 @@ srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 let srv = http.createServer((req, res) => {
     // Collect request body
     var body = "";
-    if (req.method == KT.CONST_POST) {
-        console.log("ИГР method POST url:", req.url);
-        req.on("data", (chunk) => {
-            console.log("ИГР req.on data chunk:", chunk);
-            body = chunk.toString();
-        });
-    }
-    // Construct request
-    let netRequest = new KT.NetRequest(body, req.method, req.url);
-    srvCtrl().set("request", netRequest);
-    let response = srvCtrl().context.response;
+    req.on("data", (chunk) => {
+        console.log("ИГР req.on data chunk:", chunk);
+        body = chunk.toString();
+    });
 
-    // File does not exist
-    if (response.contents == SRV_ERR_HTTP_404) {
-        res.writeHead(404);
-        res.end();
-    }
-
-    // File exists
-    if (response.contents != SRV_ERR_HTTP_404) {
-        let type = mime.lookup(response.url);
-        res.setHeader("Content-Type", type);
-        res.writeHead(200);
-        res.end(response.contents);
-    }
+    // Process request when finished collecting the body
+    req.on("end", () => {
+        let netRequest = new KT.NetRequest(body, req.method, req.url);
+        srvCtrl().set("request", netRequest);
+        let response = srvCtrl().context.response;
+ 
+        // File does not exist
+        if (response.contents == SRV_ERR_HTTP_404) {
+            res.writeHead(404);
+            res.end();
+        }
+        // File exists
+        if (response.contents != SRV_ERR_HTTP_404) {
+            let type = mime.lookup(response.url);
+            res.setHeader("Content-Type", type);
+            res.writeHead(200);
+            res.end(response.contents);
+        }
+    });
 });
 
 srv.listen(srvCtrl().context.httpPort, (e) => {
