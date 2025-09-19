@@ -72,6 +72,7 @@ fun appShouldParseCfg(c: AppContext): AppContext {
         c.response.req.url == appURL(c.baseURL, CONST_API_READ) &&
         c.response.req.body == APP_CFG_FILE
     ) {
+        c.cfg = parseCfg(c.response.contents)
         c.recentField = "cfg"
         return c
     }
