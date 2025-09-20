@@ -41,7 +41,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
-            "inputDirs", (c) => { appDisplayInputDirItems(c.inputDirs) },
+            "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "projectPath", (c) => { appDisplayPath(c.projectPath) },
             "request", (c) => { appLoad(c.request) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
@@ -77,11 +77,11 @@ function AppComponent() {
 
 //<!-- Effects -->
 
-function appDisplayInputDirItems(items) {
+function appDisplayInputDirSections(items) {
     var html = "";
     for (let i in items) {
         let item = items[i];
-        let id = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%, i);
+        let id = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", i);
         html += APP_INPUT_DIR_SECTION_T
             .replaceAll("%ID%", id)
             .replaceAll("%NAME%", item)
