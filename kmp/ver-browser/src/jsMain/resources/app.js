@@ -7,6 +7,15 @@ function appCtrl() {
 //<!-- Constants -->
 
 let APP_HEADER_PATH_ID = "header-path";
+
+let APP_INPUT_DIR_TITLE_T = `
+<div class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom">
+    <span class="uk-article-title highlight-article-digit">%ID%</span>
+    <span class="uk-article-title">%NAME%</span>
+</div>
+`;
+let APP_INPUT_DIRS_ID = "input-dirs";
+
 let APP_SPLASH_ID = "splash";
 
 //<!-- Component -->
@@ -29,6 +38,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "inputDirs", (c) => { appDisplayInputDirs(c.inputDirs) },
             "projectPath", (c) => { appDisplayPath(c.projectPath) },
             "request", (c) => { appLoad(c.request) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
@@ -63,6 +73,18 @@ function AppComponent() {
 }
 
 //<!-- Effects -->
+
+function appDisplayInputDirs(items) {
+    var html = "";
+    for (let i in items) {
+        let item = items[i];
+        html += APP_INPUT_DIR_TITLE_T
+            .replaceAll("%ID%", Number(i) + 1)
+            .replaceAll("%NAME%", item);
+    }
+
+    setUIText(APP_INPUT_DIRS_ID, html);
+}
 
 function appDisplayPath(path) {
     setUIText(APP_HEADER_PATH_ID, path);
