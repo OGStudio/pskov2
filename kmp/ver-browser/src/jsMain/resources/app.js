@@ -8,6 +8,14 @@ function appCtrl() {
 
 let APP_HEADER_PATH_ID = "header-path";
 
+let APP_INPUT_DIR_FILE_T = `
+    <div>
+        <div class="uk-card uk-card-default uk-card-body">
+            <p>%DATE%</p>
+            <h3 class="uk-card-title">%NAME%</h3>
+        </div>
+    </div>
+`;
 let APP_INPUT_DIR_SECTION_ID_T = "input-dir-%I%";
 let APP_INPUT_DIR_SECTION_T = `
 <div class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom">
