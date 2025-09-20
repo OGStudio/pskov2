@@ -8,10 +8,13 @@ function appCtrl() {
 
 let APP_HEADER_PATH_ID = "header-path";
 
-let APP_INPUT_DIR_TITLE_T = `
+let APP_INPUT_DIR_SECTION_ID_T = "input-dir-%I%";
+let APP_INPUT_DIR_SECTION_T = `
 <div class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom">
-    <span class="uk-article-title highlight-article-digit">%ID%</span>
+    <span class="uk-article-title highlight-article-digit">%NUM%</span>
     <span class="uk-article-title">%NAME%</span>
+</div>
+<div id="%ID%" class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@s" uk-grid>
 </div>
 `;
 let APP_INPUT_DIRS_ID = "input-dirs";
@@ -38,7 +41,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
-            "inputDirs", (c) => { appDisplayInputDirs(c.inputDirs) },
+            "inputDirs", (c) => { appDisplayInputDirItems(c.inputDirs) },
             "projectPath", (c) => { appDisplayPath(c.projectPath) },
             "request", (c) => { appLoad(c.request) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
@@ -74,15 +77,16 @@ function AppComponent() {
 
 //<!-- Effects -->
 
-function appDisplayInputDirs(items) {
+function appDisplayInputDirItems(items) {
     var html = "";
     for (let i in items) {
         let item = items[i];
-        html += APP_INPUT_DIR_TITLE_T
-            .replaceAll("%ID%", Number(i) + 1)
-            .replaceAll("%NAME%", item);
+        let id = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%, i);
+        html += APP_INPUT_DIR_SECTION_T
+            .replaceAll("%ID%", id)
+            .replaceAll("%NAME%", item)
+            .replaceAll("%NUM%", Number(i) + 1);
     }
-
     setUIText(APP_INPUT_DIRS_ID, html);
 }
 
