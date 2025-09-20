@@ -29,6 +29,7 @@ SrvContext:
         httpPort: Int
         inputDir: String
         inputHTTPPort: Int
+        listDir: String
         projectAbsPath: String
         projectDir: String
         readFile: String

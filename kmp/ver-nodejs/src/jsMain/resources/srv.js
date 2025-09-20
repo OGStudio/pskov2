@@ -34,6 +34,7 @@ function SrvComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "listDir", (c) => { srvListDir(c.listDir) },
             "projectDir", (c) => { srvResolvePath(c.projectDir) },
             "readFile", (c) => { srvReadFile(c.readFile) },
             "url", (c) => { open(c.url) },
@@ -48,6 +49,7 @@ function SrvComponent() {
 
     this.setupShoulds = function() {
         [
+            KT.srvShouldListDir,
             KT.srvShouldOpenURL,
             KT.srvShouldReadFile,
             KT.srvShouldResetBrowserDir,
@@ -63,6 +65,17 @@ function SrvComponent() {
 }
 
 //<!-- Effects -->
+
+function srvListDir(path) {
+    var items = [];
+    try {
+        items = fs.readdirSync(path);
+        console.log("ИГР srvLD items:", items);
+    } catch (e) {
+        //???contents = SRV_ERR_HTTP_404;
+    }
+    //srvCtrl().set("readFileContents", contents);
+}
 
 function srvReadFile(fileName) {
     var contents = "";

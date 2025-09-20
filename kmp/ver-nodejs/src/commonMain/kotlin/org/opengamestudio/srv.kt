@@ -13,6 +13,28 @@ import kotlin.js.JsExport
 
 //<!-- Shoulds -->
  
+/* List directory files
+ *
+ * Conditions:
+ * 1. POST /list
+ */
+@JsExport
+fun srvShouldListDir(c: SrvContext): SrvContext {
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_POST && 
+        c.request.url == CONST_API_LIST
+    ) {
+        c.listDir = "${c.projectAbsPath}/${c.request.body}"
+        c.recentField = "listDir"
+        return c
+    }
+
+
+    c.recentField = "none"
+    return c
+}
+
 /* Open URL in browser
  *
  * Conditions:
