@@ -11,6 +11,7 @@ AppContext:
         cfg: [String: String]
         didLaunch: Bool
         inputDirs: [String]
+        listInputDirId: Int
         projectPath: String
         request: NetRequest
         response: NetResponse

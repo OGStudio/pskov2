@@ -8,6 +8,7 @@ data class AppContext(
     var cfg: Map<String, String> = mapOf(),
     var didLaunch: Boolean = false,
     var inputDirs: Array<String> = arrayOf(),
+    var listInputDirId: Int = 0,
     var projectPath: String = "",
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
@@ -24,6 +25,8 @@ data class AppContext(
             return didLaunch as T
         } else if (name == "inputDirs") {
             return inputDirs as T
+        } else if (name == "listInputDirId") {
+            return listInputDirId as T
         } else if (name == "projectPath") {
             return projectPath as T
         } else if (name == "request") {
@@ -54,6 +57,8 @@ data class AppContext(
             didLaunch = value as Boolean
         } else if (name == "inputDirs") {
             inputDirs = value as Array<String>
+        } else if (name == "listInputDirId") {
+            listInputDirId = value as Int
         } else if (name == "projectPath") {
             projectPath = value as String
         } else if (name == "request") {

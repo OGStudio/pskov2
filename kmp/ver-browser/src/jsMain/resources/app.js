@@ -71,6 +71,7 @@ function AppComponent() {
     this.setupShoulds = function() {
         [
             KT.appShouldHideSplash,
+            KT.appShouldListInputDir,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldResetInputDirs,

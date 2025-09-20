@@ -14,6 +14,7 @@ import kotlin.js.JsExport
  * Conditions:
  * 1. Did launch: Get project path
  * 2. Project path has been resolved: Get pskov.cfg contents
+ * 3. Listing directory
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -39,6 +40,18 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
+    if (c.recentField == "listInputDirId") {
+        val dir = c.inputDirs[c.listInputDirId]
+        c.request =
+            NetRequest(
+                dir,
+                CONST_POST,
+                appURL(c.baseURL, CONST_API_LIST),
+            )
+        c.recentField = "request"
+        return c
+    }
+
     c.recentField = "none"
     return c
 }
@@ -53,6 +66,26 @@ fun appShouldHideSplash(c: AppContext): AppContext {
     if (c.recentField == "didLaunch") {
         c.splashTimeout = APP_SPLASH_TIMEOUT
         c.recentField = "splashTimeout"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Start, continue, or finish listing contents of one of the input dirs
+ *
+ * Conditions:
+ * 1. Input dirs are available and not empty
+ */
+@JsExport
+fun appShouldListInputDir(c: AppContext): AppContext {
+    if (
+        c.recentField == "inputDirs" &&
+        c.inputDirs.size > 0
+    ) {
+        c.listInputDirId = 0
+        c.recentField = "listInputDirId"
         return c
     }
 
