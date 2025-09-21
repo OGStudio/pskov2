@@ -150,8 +150,9 @@ fun srvShouldResetProjectDir(c: SrvContext): SrvContext {
 /* Generate HTTP response
  *
  * Conditions:
- * 1. Did receive contents of a requested file
+ * 1. Did receive contents of the requested file
  * 2. GET /path
+ * 3. Did receive contents of the requested directory
  */
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
@@ -167,6 +168,13 @@ fun srvShouldResetResponse(c: SrvContext): SrvContext {
         c.request.url == CONST_API_PATH
     ) {
         c.response = NetResponse(c.projectAbsPath, c.request)
+        c.recentField = "response"
+        return c
+    }
+
+    if (c.recentField == "dirFiles") {
+        val json = filesToJSON(c.dirFiles)
+        c.response = NetResponse(json, c.request)
         c.recentField = "response"
         return c
     }
