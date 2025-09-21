@@ -17,6 +17,19 @@ fun cliArgumentValue(
     return ""
 }
 
+// Convert list of files to JSON format
+@JsExport
+fun filesToJSON(files: Array<FSFile>): String {
+    var lines = arrayOf<String>()
+    for (file in files) {
+        val type = if (file.isFile) "file" else "dir"
+        val ln = "{\"path\":\"${file.path}\",\"type\":\"$type\"}"
+        lines += ln
+    }
+    val out = "[" + lines.joinToString(",") + "]"
+    return out
+}
+
 // Parse INI format file
 @JsExport
 fun parseCfg(raw: String): Map<String, String> {

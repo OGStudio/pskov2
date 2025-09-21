@@ -67,20 +67,23 @@ function SrvComponent() {
 //<!-- Effects -->
 
 function srvListDir(path) {
-    var items = [];
+    var files = [];
+
     try {
-        items = fs.readdirSync(path, { withFileTypes: true });
-        for (let i in items) {
-            let item = items[i];
-            if (item.isSymbolicLink()) {
-                let isDir2 = fs.statSync(path + "/" + item.name).isDirectory();
-                console.log("ИГР srvLD i/name/isF/isD/isSL/isD2:", i, item.name, item.isFile(), item.isDirectory(), item.isSymbolicLink(), isDir2);
-            }
+        var names = fs.readdirSync(path);
+        names.sort();
+        for (let i in names) {
+            let name = names[i];
+            let filePath = path + "/" + name;
+            let isFile = fs.statSync(filePath).isFile();
+            let f = new KT.FSFile(isFile, filePath);
+            files.push(f);
         }
     } catch (e) {
-        //???contents = SRV_ERR_HTTP_404;
+        console.log(e);
     }
-    //srvCtrl().set("readFileContents", contents);
+
+    srvCtrl().set("dirFiles", files);
 }
 
 function srvReadFile(fileName) {

@@ -18,14 +18,22 @@ AppContext:
         responseError: NetResponse
         splashTimeout: Int
 
+FSFile:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        isFile: Bool
+        path: String
+
 SrvContext:
     prefix-kotlin: @JsExport
     type: context
     fields:
         arguments: [String]
         browserDir: String
-        didLaunch: Bool
         defaultHTTPPort: Int
+        didLaunch: Bool
+        dirFiles: [FSFile]
         httpPort: Int
         inputDir: String
         inputHTTPPort: Int

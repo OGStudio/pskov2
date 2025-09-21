@@ -75,11 +75,19 @@ data class AppContext(
 
 
 @JsExport
+data class FSFile(
+    var isFile: Boolean = false,
+    var path: String = "",
+) {}
+
+
+@JsExport
 data class SrvContext(
     var arguments: Array<String> = arrayOf(),
     var browserDir: String = "",
     var defaultHTTPPort: Int = 0,
     var didLaunch: Boolean = false,
+    var dirFiles: Array<FSFile> = arrayOf(),
     var httpPort: Int = 0,
     var inputDir: String = "",
     var inputHTTPPort: Int = 0,
@@ -102,6 +110,8 @@ data class SrvContext(
             return defaultHTTPPort as T
         } else if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "dirFiles") {
+            return dirFiles as T
         } else if (name == "httpPort") {
             return httpPort as T
         } else if (name == "inputDir") {
@@ -144,6 +154,8 @@ data class SrvContext(
             defaultHTTPPort = value as Int
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "dirFiles") {
+            dirFiles = value as Array<FSFile>
         } else if (name == "httpPort") {
             httpPort = value as Int
         } else if (name == "inputDir") {
