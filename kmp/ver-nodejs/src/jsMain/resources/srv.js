@@ -69,8 +69,14 @@ function SrvComponent() {
 function srvListDir(path) {
     var items = [];
     try {
-        items = fs.readdirSync(path);
-        console.log("ИГР srvLD items:", items);
+        items = fs.readdirSync(path, { withFileTypes: true });
+        for (let i in items) {
+            let item = items[i];
+            if (item.isSymbolicLink()) {
+                let isDir2 = fs.statSync(path + "/" + item.name).isDirectory();
+                console.log("ИГР srvLD i/name/isF/isD/isSL/isD2:", i, item.name, item.isFile(), item.isDirectory(), item.isSymbolicLink(), isDir2);
+            }
+        }
     } catch (e) {
         //???contents = SRV_ERR_HTTP_404;
     }
