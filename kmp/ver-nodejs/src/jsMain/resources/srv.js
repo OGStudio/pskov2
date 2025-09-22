@@ -22,15 +22,6 @@ function SrvComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.SrvContext());
         other.registerCtrlDbgOutput(this.ctrl, "Srv", KT);
-        /*
-        // Debugging.
-        this.ctrl.registerCallback((c) => {
-            let k = c.recentField;
-            var v = `${c.field(c.recentField)}`;
-            v = KT.shortFieldValue(v);
-            console.log(`ИГР SrvC._construct ctrl key/value: '${k}'/'${v}'`);
-        });
-        */
 
         this.setupEffects();
         this.setupShoulds();

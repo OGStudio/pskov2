@@ -34,10 +34,7 @@ let APP_SPLASH_ID = "splash";
 function AppComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.AppContext());
-        // Debug.
-        this.ctrl.registerCallback((c) => {
-            console.log(`ИГР AppC._construct ctrl key/value: '${c.recentField}'/'${c.field(c.recentField)}'`);
-        });
+        registerCtrlDbgOutput(this.ctrl, "App", KT);
 
         // Defaults
         this.ctrl.set("baseURL", window.location.origin);
