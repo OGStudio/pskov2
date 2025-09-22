@@ -1,5 +1,13 @@
 package org.opengamestudio
 import kotlin.js.JsExport
+import kotlinx.serialization.Serializable
+
+
+@JsExport @Serializable
+data class APIListItem(
+    var path: String = "",
+    var type: String = "",
+) {}
 
 
 @JsExport
@@ -7,6 +15,7 @@ data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
     var didLaunch: Boolean = false,
+    var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
     var listInputDirId: Int = 0,
     var projectPath: String = "",
@@ -23,6 +32,8 @@ data class AppContext(
             return cfg as T
         } else if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "inputDirFiles") {
+            return inputDirFiles as T
         } else if (name == "inputDirs") {
             return inputDirs as T
         } else if (name == "listInputDirId") {
@@ -55,6 +66,8 @@ data class AppContext(
             cfg = value as Map<String, String>
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "inputDirFiles") {
+            inputDirFiles = value as Map<Int, Array<FSFile>>
         } else if (name == "inputDirs") {
             inputDirs = value as Array<String>
         } else if (name == "listInputDirId") {
@@ -78,6 +91,21 @@ data class AppContext(
 data class FSFile(
     var isFile: Boolean = false,
     var path: String = "",
+) {}
+
+
+@JsExport
+data class NetRequest(
+    var body: String = "",
+    var method: String = "",
+    var url: String = "",
+) {}
+
+
+@JsExport
+data class NetResponse(
+    var contents: String = "",
+    var req: NetRequest = NetRequest(),
 ) {}
 
 
@@ -181,18 +209,3 @@ data class SrvContext(
         }
     }
 }
-
-
-@JsExport
-data class NetRequest(
-    var body: String = "",
-    var method: String = "",
-    var url: String = "",
-) {}
-
-
-@JsExport
-data class NetResponse(
-    var contents: String = "",
-    var req: NetRequest = NetRequest(),
-) {}

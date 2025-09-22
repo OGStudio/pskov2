@@ -2,6 +2,14 @@ version: 1
 
 kotlin: package org.opengamestudio
 kotlin: import kotlin.js.JsExport
+kotlin: import kotlinx.serialization.Serializable
+
+APIListItem:
+    prefix-kotlin: @JsExport @Serializable
+    type: struct
+    fields:
+        path: String
+        type: String
 
 AppContext:
     prefix-kotlin: @JsExport
@@ -10,6 +18,7 @@ AppContext:
         baseURL: String
         cfg: [String: String]
         didLaunch: Bool
+        inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         listInputDirId: Int
         projectPath: String
@@ -24,6 +33,21 @@ FSFile:
     fields:
         isFile: Bool
         path: String
+
+NetRequest:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        body: String
+        method: String
+        url: String
+
+NetResponse:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        contents: String
+        req: NetRequest
 
 SrvContext:
     prefix-kotlin: @JsExport
@@ -45,18 +69,3 @@ SrvContext:
         request: NetRequest
         response: NetResponse
         url: String
-
-NetRequest:
-    prefix-kotlin: @JsExport
-    type: struct
-    fields:
-        body: String
-        method: String
-        url: String
-
-NetResponse:
-    prefix-kotlin: @JsExport
-    type: struct
-    fields:
-        contents: String
-        req: NetRequest

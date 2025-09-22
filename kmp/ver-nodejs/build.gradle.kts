@@ -18,6 +18,11 @@ kotlin {
                 optIn("kotlin.js.ExperimentalJsExport")
             }
         }
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+            }
+        }
         val jsMain by getting {
             dependencies {
                 // Convert file name to MIME type

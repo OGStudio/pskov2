@@ -1,5 +1,7 @@
 package org.opengamestudio
 import kotlin.js.JsExport
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.decodeFromString
 
 // Extract command line argument value
 @JsExport
@@ -30,6 +32,18 @@ fun filesToJSON(files: Array<FSFile>): String {
     return out
 }
 
+// Convert list of files of JSON format to list of FSFiles
+@JsExport
+fun jsonToFiles(raw: String): Array<FSFile> {
+    var items = arrayOf<FSFile>()
+    val abc = Json{ignoreUnknownKeys = true}.decodeFromString<Array<APIListItem>>(raw)
+    print("ИГР jsonTF abc: '$abc'")
+
+    // TODO
+
+    return items
+}
+
 // Parse INI format file
 @JsExport
 fun parseCfg(raw: String): Map<String, String> {
@@ -50,7 +64,7 @@ fun parseCfg(raw: String): Map<String, String> {
 @JsExport
 fun shortFieldValue(v: String): String {
     if (v.length > 200) {
-        return v.take(50) + "…";
+        return v.take(100) + "…";
     }
     return v
 }

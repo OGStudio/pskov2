@@ -71,7 +71,7 @@ function srvListDir(path) {
             let name = names[i];
             let filePath = path + "/" + name;
             let isFile = fs.statSync(filePath).isFile();
-            let f = new KT.FSFile(isFile, filePath);
+            let f = new KT.FSFile(isFile, name);
             files.push(f);
         }
     } catch (e) {

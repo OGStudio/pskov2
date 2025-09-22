@@ -37,6 +37,7 @@ function loadURL(p, onload, onerror) {
     req.send(p.body);
 }
 
+// Convenient function to print short debug output for aech Context change
 function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     ctrl.registerCallback((c) => {
         let k = c.recentField;

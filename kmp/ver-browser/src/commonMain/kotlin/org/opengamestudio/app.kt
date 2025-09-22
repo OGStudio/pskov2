@@ -14,7 +14,7 @@ import kotlin.js.JsExport
  * Conditions:
  * 1. Did launch: Get project path
  * 2. Project path has been resolved: Get pskov.cfg contents
- * 3. Listing directory
+ * 3. List input directory files
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -115,6 +115,30 @@ fun appShouldParseCfg(c: AppContext): AppContext {
     return c
 }
 
+/* Collect list of files of each input dir
+ *
+ * Conditions:
+ * 1. Received a list of files of an input dir
+ */
+@JsExport
+fun appShouldResetInputDirFiles(c: AppContext): AppContext {
+    if (
+        c.recentField == "response" &&
+        c.listInputDirId < c.inputDirs.size &&
+        c.inputDirs[c.listInputDirId] == c.request.body &&
+        c.request.url == appURL(c.baseURL, CONST_API_LIST)
+    ) {
+        var d = c.inputDirFiles.toMutableMap()
+        d[c.listInputDirId] = jsonToFiles(c.response.contents)
+        c.inputDirFiles = d
+        c.recentField = "inputDirFiles"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Construct an array of input directories based on config's input key values
  *
  * Conditions:
@@ -132,7 +156,6 @@ fun appShouldResetInputDirs(c: AppContext): AppContext {
     c.recentField = "none"
     return c
 }
-
 
 /* Display project path
  *

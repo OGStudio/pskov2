@@ -71,6 +71,7 @@ function AppComponent() {
             KT.appShouldListInputDir,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
+            KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
             KT.appShouldResetProjectPath,
         ].forEach((f) => {
