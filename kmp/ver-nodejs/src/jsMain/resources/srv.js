@@ -2,6 +2,7 @@ let fs = require("fs");
 let http = require("http");
 let mime = require("mime-types");
 let open = require("open");
+let other = require("./other");
 let path = require("path");
 let KT = require("pskov-ver-nodejs").org.opengamestudio;
 
@@ -20,6 +21,8 @@ let SRV_ERR_HTTP_404 = "404";
 function SrvComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.SrvContext());
+        other.registerCtrlDbgOutput(this.ctrl, "Srv", KT);
+        /*
         // Debugging.
         this.ctrl.registerCallback((c) => {
             let k = c.recentField;
@@ -27,6 +30,7 @@ function SrvComponent() {
             v = KT.shortFieldValue(v);
             console.log(`ИГР SrvC._construct ctrl key/value: '${k}'/'${v}'`);
         });
+        */
 
         this.setupEffects();
         this.setupShoulds();

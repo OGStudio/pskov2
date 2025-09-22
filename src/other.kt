@@ -50,7 +50,7 @@ fun parseCfg(raw: String): Map<String, String> {
 @JsExport
 fun shortFieldValue(v: String): String {
     if (v.length > 200) {
-        return v.take(50)
+        return v.take(50) + "…";
     }
     return v
 }
