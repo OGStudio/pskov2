@@ -47,6 +47,7 @@ function AppComponent() {
     this.setupEffects = function() {
         let oneliners = [ 
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
+            "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "projectPath", (c) => { appDisplayPath(c.projectPath) },
             "request", (c) => { appLoad(c.request) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
@@ -96,6 +97,22 @@ function appDisplayInputDirSections(items) {
             .replaceAll("%NUM%", Number(i) + 1);
     }
     setUIText(APP_INPUT_DIRS_ID, html);
+}
+
+function appDisplayInputMDFiles(d) {
+    /*
+    var html = "";
+    for (let id in d) {
+        let item = d[id];
+
+        let id = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", i);
+        html += APP_INPUT_DIR_SECTION_T
+            .replaceAll("%ID%", id)
+            .replaceAll("%NAME%", item)
+            .replaceAll("%NUM%", Number(i) + 1);
+    }
+    setUIText(APP_INPUT_DIRS_ID, html);
+    */
 }
 
 function appDisplayPath(path) {
