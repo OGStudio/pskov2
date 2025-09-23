@@ -50,6 +50,25 @@ fun jsonToFiles(raw: String): Array<FSFile> {
     return items
 }
 
+// Filter out non-Markdown files
+@JsExport
+fun mdFiles(d: Map<Int, Array<FSFile>>): Map<Int, Array<String>> {
+    var mds = mutableMapOf<Int, Array<String>>()
+
+    for (id in d.keys) {
+        val files = d[id]!!
+        var mdFiles = arrayOf<String>()
+        for (f in files) {
+            if (f.path.endsWith("." + CONST_EXT_MD)) {
+                mdFiles += f.path
+            }
+        }
+        mds[id] = mdFiles
+    }
+
+    return mds
+}
+
 // Parse INI format file
 @JsExport
 fun parseCfg(raw: String): Map<String, String> {

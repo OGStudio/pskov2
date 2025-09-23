@@ -73,6 +73,7 @@ function AppComponent() {
             KT.appShouldParseCfg,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
+            KT.appShouldResetInputMDFiles,
             KT.appShouldResetProjectPath,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);

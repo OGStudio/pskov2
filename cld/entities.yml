@@ -12,6 +12,7 @@ AppContext:
         didLaunch: Bool
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
+        inputMDFiles: [Int: [String]]
         listInputDirId: Int
         projectPath: String
         request: NetRequest

@@ -167,6 +167,26 @@ fun appShouldResetInputDirs(c: AppContext): AppContext {
     return c
 }
 
+/* Filter out non-Markdown files
+ *
+ * Conditions:
+ * 1. Finished requesting to list files
+ */
+@JsExport
+fun appShouldResetInputMDFiles(c: AppContext): AppContext {
+    if (
+        c.recentField == "inputDirFiles" &&
+        c.listInputDirId + 1 == c.inputDirs.size
+    ) {
+        c.inputMDFiles = mdFiles(c.inputDirFiles)
+        c.recentField = "inputMDFiles"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Display project path
  *
  * Conditions:

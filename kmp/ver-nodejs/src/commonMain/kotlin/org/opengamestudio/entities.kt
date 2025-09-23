@@ -9,6 +9,7 @@ data class AppContext(
     var didLaunch: Boolean = false,
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
+    var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var listInputDirId: Int = 0,
     var projectPath: String = "",
     var request: NetRequest = NetRequest(),
@@ -28,6 +29,8 @@ data class AppContext(
             return inputDirFiles as T
         } else if (name == "inputDirs") {
             return inputDirs as T
+        } else if (name == "inputMDFiles") {
+            return inputMDFiles as T
         } else if (name == "listInputDirId") {
             return listInputDirId as T
         } else if (name == "projectPath") {
@@ -62,6 +65,8 @@ data class AppContext(
             inputDirFiles = value as Map<Int, Array<FSFile>>
         } else if (name == "inputDirs") {
             inputDirs = value as Array<String>
+        } else if (name == "inputMDFiles") {
+            inputMDFiles = value as Map<Int, Array<String>>
         } else if (name == "listInputDirId") {
             listInputDirId = value as Int
         } else if (name == "projectPath") {
