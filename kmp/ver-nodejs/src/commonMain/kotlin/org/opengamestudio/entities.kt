@@ -1,13 +1,5 @@
 package org.opengamestudio
 import kotlin.js.JsExport
-import kotlinx.serialization.Serializable
-
-
-@JsExport @Serializable
-data class APIListItem(
-    var path: String = "",
-    var type: String = "",
-) {}
 
 
 @JsExport

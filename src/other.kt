@@ -1,7 +1,5 @@
 package org.opengamestudio
 import kotlin.js.JsExport
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
 
 // Extract command line argument value
 @JsExport
@@ -32,14 +30,22 @@ fun filesToJSON(files: Array<FSFile>): String {
     return out
 }
 
-// Convert list of files of JSON format to list of FSFiles
+// Convert list of files in JSON format to list of FSFiles
 @JsExport
 fun jsonToFiles(raw: String): Array<FSFile> {
     var items = arrayOf<FSFile>()
-    val abc = Json{ignoreUnknownKeys = true}.decodeFromString<Array<APIListItem>>(raw)
-    print("ИГР jsonTF abc: '$abc'")
 
-    // TODO
+    val lessBrackets = raw.substring(2, raw.length - 1)
+    val lines = lessBrackets.split(",{")
+    val prefix = "\"path\":\""
+    val suffix = "\"}"
+    val middle = "\",\"type\":\""
+    for (ln in lines) {
+        val lessLn = ln.substring(prefix.length, ln.length - suffix.length)
+        val parts = lessLn.split(middle)
+        val f = FSFile(parts[1] == "file", parts[0])
+        items += f
+    }
 
     return items
 }

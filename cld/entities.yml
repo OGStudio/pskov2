@@ -2,14 +2,6 @@ version: 1
 
 kotlin: package org.opengamestudio
 kotlin: import kotlin.js.JsExport
-kotlin: import kotlinx.serialization.Serializable
-
-APIListItem:
-    prefix-kotlin: @JsExport @Serializable
-    type: struct
-    fields:
-        path: String
-        type: String
 
 AppContext:
     prefix-kotlin: @JsExport
