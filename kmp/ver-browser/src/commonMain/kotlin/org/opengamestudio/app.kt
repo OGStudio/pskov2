@@ -77,6 +77,7 @@ fun appShouldHideSplash(c: AppContext): AppContext {
  *
  * Conditions:
  * 1. Input dirs are available and not empty
+ * 2. Input dir files received a new entry
  */
 @JsExport
 fun appShouldListInputDir(c: AppContext): AppContext {
@@ -85,6 +86,15 @@ fun appShouldListInputDir(c: AppContext): AppContext {
         c.inputDirs.size > 0
     ) {
         c.listInputDirId = 0
+        c.recentField = "listInputDirId"
+        return c
+    }
+
+    if (
+        c.recentField == "inputDirFiles" &&
+        c.listInputDirId + 1 < c.inputDirs.size
+    ) {
+        c.listInputDirId += 1
         c.recentField = "listInputDirId"
         return c
     }
