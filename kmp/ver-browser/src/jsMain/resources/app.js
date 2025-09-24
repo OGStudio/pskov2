@@ -11,8 +11,9 @@ let APP_HEADER_PATH_ID = "header-path";
 let APP_INPUT_DIR_FILE_T = `
     <div>
         <div class="uk-card uk-card-default uk-card-body">
-            <p>%DATE%</p>
-            <h3 class="uk-card-title">%NAME%</h3>
+            <p><span uk-icon="file-text"></span>%NAME%</p>
+            <p>TODO-Date</p>
+            <h3 class="uk-card-title">TODO-Title</h3>
         </div>
     </div>
 `;
@@ -22,7 +23,7 @@ let APP_INPUT_DIR_SECTION_T = `
     <span class="uk-article-title highlight-article-digit">%NUM%</span>
     <span class="uk-article-title">%NAME%</span>
 </div>
-<div id="%ID%" class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@s" uk-grid>
+<div id="%ID%" class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>
 </div>
 `;
 let APP_INPUT_DIRS_ID = "input-dirs";
