@@ -100,19 +100,21 @@ function appDisplayInputDirSections(items) {
 }
 
 function appDisplayInputMDFiles(d) {
-    /*
-    var html = "";
-    for (let id in d) {
-        let item = d[id];
-
-        let id = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", i);
-        html += APP_INPUT_DIR_SECTION_T
-            .replaceAll("%ID%", id)
-            .replaceAll("%NAME%", item)
-            .replaceAll("%NUM%", Number(i) + 1);
+    // For each section
+    for (let i in d) {
+        let files = d[i];
+        /**/console.log("ИГР appDIMF-0 i/files:", i, files);
+        var html = "";
+        // For each file
+        for (let fi in files) {
+            let name = files[fi];
+            /**/console.log("ИГР appDIMF-1 name:", name);
+            html += APP_INPUT_DIR_FILE_T
+                .replaceAll("%NAME%", name);
+        }
+        let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", i);
+        setUIText(sectionId, html);
     }
-    setUIText(APP_INPUT_DIRS_ID, html);
-    */
 }
 
 function appDisplayPath(path) {
