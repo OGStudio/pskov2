@@ -101,20 +101,17 @@ function appDisplayInputDirSections(items) {
 
 function appDisplayInputMDFiles(d) {
     // For each section
-    for (let i in d) {
-        let files = d[i];
-        /**/console.log("ИГР appDIMF-0 i/files:", i, files);
+    KT.forKIntVArrayString(d, (id, files) => {
         var html = "";
         // For each file
-        for (let fi in files) {
-            let name = files[fi];
-            /**/console.log("ИГР appDIMF-1 name:", name);
+        for (let i in files) {
+            let name = files[i];
             html += APP_INPUT_DIR_FILE_T
                 .replaceAll("%NAME%", name);
         }
-        let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", i);
+        let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", id);
         setUIText(sectionId, html);
-    }
+    });
 }
 
 function appDisplayPath(path) {

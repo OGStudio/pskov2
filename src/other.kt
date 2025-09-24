@@ -30,6 +30,18 @@ fun filesToJSON(files: Array<FSFile>): String {
     return out
 }
 
+// Iterate over all keys and associated values of Map<Int, Array<String>>
+@JsExport
+fun forKIntVArrayString(
+    dict: Map<Int, Array<String>>,
+    cb: (key: Int, values: Array<String>) -> Unit
+) {
+    for (key in dict.keys) {
+        val items = dict[key]!!
+        cb(key, items)
+    }
+}
+
 // Convert list of files in JSON format to list of FSFiles
 @JsExport
 fun jsonToFiles(raw: String): Array<FSFile> {
