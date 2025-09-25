@@ -10,7 +10,7 @@ let APP_HEADER_PATH_ID = "header-path";
 
 let APP_INPUT_DIR_FILE_T = `
     <div>
-        <div class="uk-card uk-card-default uk-card-body">
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
             <p><span uk-icon="file-text"></span>%NAME%</p>
             <p>TODO-Date</p>
             <h3 class="uk-card-title">TODO-Title</h3>
