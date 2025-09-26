@@ -3,27 +3,35 @@ version: 1
 kotlin: package org.opengamestudio
 kotlin: import kotlin.js.JsExport
 
-SrvContext:
+AppContext:
     prefix-kotlin: @JsExport
     type: context
     fields:
-        arguments: [String]
-        browserDir: String
+        baseURL: String
+        cfg: [String: String]
         didLaunch: Bool
-        defaultHTTPPort: Int
-        httpPort: Int
-        inputDir: String
-        inputHTTPPort: Int
-        readFile: String
-        readFileContents: String
+        inputDirFiles: [Int: [FSFile]]
+        inputDirs: [String]
+        inputMDFiles: [Int: [String]]
+        listInputDirId: Int
+        projectPath: String
         request: NetRequest
         response: NetResponse
-        url: String
+        responseError: NetResponse
+        splashTimeout: Int
+
+FSFile:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        isFile: Bool
+        path: String
 
 NetRequest:
     prefix-kotlin: @JsExport
     type: struct
     fields:
+        body: String
         method: String
         url: String
 
@@ -32,4 +40,25 @@ NetResponse:
     type: struct
     fields:
         contents: String
+        req: NetRequest
+
+SrvContext:
+    prefix-kotlin: @JsExport
+    type: context
+    fields:
+        arguments: [String]
+        browserDir: String
+        defaultHTTPPort: Int
+        didLaunch: Bool
+        dirFiles: [FSFile]
+        httpPort: Int
+        inputDir: String
+        inputHTTPPort: Int
+        listDir: String
+        projectAbsPath: String
+        projectDir: String
+        readFile: String
+        readFileContents: String
+        request: NetRequest
+        response: NetResponse
         url: String

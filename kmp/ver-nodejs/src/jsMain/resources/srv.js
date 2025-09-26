@@ -1,6 +1,9 @@
 let fs = require("fs");
 let http = require("http");
+let mime = require("mime-types");
 let open = require("open");
+let other = require("./other");
+let path = require("path");
 let KT = require("pskov-ver-nodejs").org.opengamestudio;
 
 //!<-- API -->
@@ -9,18 +12,16 @@ function srvCtrl() {
     return cmp.ctrl;
 }
 
+//!<-- Constants -->
+
+let SRV_ERR_HTTP_404 = "404";
+
 //!<-- Component -->
 
 function SrvComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.SrvContext());
-        // Debugging.
-        this.ctrl.registerCallback((c) => {
-            let k = c.recentField;
-            var v = `${c.field(c.recentField)}`;
-            v = KT.shortFieldValue(v);
-            console.log(`ИГР SrvC._construct ctrl key/value: '${k}'/'${v}'`);
-        });
+        other.registerCtrlDbgOutput(this.ctrl, "Srv", KT);
 
         this.setupEffects();
         this.setupShoulds();
@@ -28,6 +29,8 @@ function SrvComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "listDir", (c) => { srvListDir(c.listDir) },
+            "projectDir", (c) => { srvResolvePath(c.projectDir) },
             "readFile", (c) => { srvReadFile(c.readFile) },
             "url", (c) => { open(c.url) },
         ];
@@ -41,10 +44,12 @@ function SrvComponent() {
 
     this.setupShoulds = function() {
         [
+            KT.srvShouldListDir,
             KT.srvShouldOpenURL,
             KT.srvShouldReadFile,
             KT.srvShouldResetBrowserDir,
             KT.srvShouldResetHTTPPort,
+            KT.srvShouldResetProjectDir,
             KT.srvShouldResetResponse,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
@@ -56,9 +61,39 @@ function SrvComponent() {
 
 //<!-- Effects -->
 
+function srvListDir(path) {
+    var files = [];
+
+    try {
+        var names = fs.readdirSync(path);
+        names.sort();
+        for (let i in names) {
+            let name = names[i];
+            let filePath = path + "/" + name;
+            let isFile = fs.statSync(filePath).isFile();
+            let f = new KT.FSFile(isFile, name);
+            files.push(f);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+
+    srvCtrl().set("dirFiles", files);
+}
+
 function srvReadFile(fileName) {
-    let contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+    var contents = "";
+    try {
+        contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+    } catch (e) {
+        contents = SRV_ERR_HTTP_404;
+    }
     srvCtrl().set("readFileContents", contents);
+}
+
+function srvResolvePath(relative) {
+    let p = path.resolve(relative);
+    srvCtrl().set("projectAbsPath", p);
 }
 
 //<!-- Installation -->
@@ -73,10 +108,31 @@ srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 //<!-- Server -->
 
 let srv = http.createServer((req, res) => {
-    let netRequest = new KT.NetRequest(req.method, req.url);
-    srvCtrl().set("request", netRequest);
-    res.write(srvCtrl().context.response.contents);
-    res.end();
+    // Collect request body
+    var body = "";
+    req.on("data", (chunk) => {
+        body = chunk.toString();
+    });
+
+    // Process request when finished collecting the body
+    req.on("end", () => {
+        let netRequest = new KT.NetRequest(body, req.method, req.url);
+        srvCtrl().set("request", netRequest);
+        let response = srvCtrl().context.response;
+ 
+        // File does not exist
+        if (response.contents == SRV_ERR_HTTP_404) {
+            res.writeHead(404);
+            res.end();
+        }
+        // File exists
+        if (response.contents != SRV_ERR_HTTP_404) {
+            let type = mime.lookup(response.req.url);
+            res.setHeader("Content-Type", type);
+            res.writeHead(200);
+            res.end(response.contents);
+        }
+    });
 });
 
 srv.listen(srvCtrl().context.httpPort, (e) => {

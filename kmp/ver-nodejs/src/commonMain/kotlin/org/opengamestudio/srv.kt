@@ -1,15 +1,40 @@
 package org.opengamestudio
-
 import kotlin.js.JsExport
 
 //<!-- Constants -->
 
+@JsExport val SRV_API_ROOT = "/"
+
 @JsExport val SRV_ARGUMENT_BROWSER_DIR = "--browserDir"
+@JsExport val SRV_ARGUMENT_PROJECT_DIR = "--projectDir"
+
 @JsExport val SRV_DEFAULT_HTTP_PORT = 8000
 @JsExport val SRV_INDEX = "index.html"
 
 //<!-- Shoulds -->
  
+/* List directory files
+ *
+ * Conditions:
+ * 1. POST /list
+ */
+@JsExport
+fun srvShouldListDir(c: SrvContext): SrvContext {
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_POST && 
+        c.request.url == CONST_API_LIST
+    ) {
+        c.listDir = "${c.projectAbsPath}/${c.request.body}"
+        c.recentField = "listDir"
+        return c
+    }
+
+
+    c.recentField = "none"
+    return c
+}
+
 /* Open URL in browser
  *
  * Conditions:
@@ -30,18 +55,42 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
 /* Read files
  *
  * Conditions:
- * 1. Got / request
+ * 1. GET /
+ * 2. GET /<file> (excluding reserved API calls)
+ * 3. POST /read
  */
 @JsExport
 fun srvShouldReadFile(c: SrvContext): SrvContext {
     if (
         c.recentField == "request" &&
-        c.request.url == "/"
-      ) {
+        c.request.method == CONST_GET && 
+        c.request.url == SRV_API_ROOT
+    ) {
         c.readFile = "${c.browserDir}/${SRV_INDEX}"
         c.recentField = "readFile"
         return c
     }
+
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_GET && 
+        c.request.url != CONST_API_PATH
+    ) {
+        c.readFile = "${c.browserDir}${c.request.url}"
+        c.recentField = "readFile"
+        return c
+    }
+
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_POST && 
+        c.request.url == CONST_API_READ
+    ) {
+        c.readFile = "${c.projectAbsPath}/${c.request.body}"
+        c.recentField = "readFile"
+        return c
+    }
+
 
     c.recentField = "none"
     return c
@@ -81,15 +130,51 @@ fun srvShouldResetHTTPPort(c: SrvContext): SrvContext {
     return c
 }
 
+/* Reset path to where PSKOV files are located
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun srvShouldResetProjectDir(c: SrvContext): SrvContext {
+    if (c.recentField == "didLaunch") {
+        c.projectDir = cliArgumentValue(c.arguments, SRV_ARGUMENT_PROJECT_DIR)
+        c.recentField = "projectDir"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Generate HTTP response
  *
  * Conditions:
- * 1. Did receive contents of a requested file
+ * 1. Did receive contents of the requested file
+ * 2. GET /path
+ * 3. Did receive contents of the requested directory
  */
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
     if (c.recentField == "readFileContents") {
-        c.response = NetResponse(c.readFileContents, c.request.url)
+        c.response = NetResponse(c.readFileContents, c.request)
+        c.recentField = "response"
+        return c
+    }
+
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_GET &&
+        c.request.url == CONST_API_PATH
+    ) {
+        c.response = NetResponse(c.projectAbsPath, c.request)
+        c.recentField = "response"
+        return c
+    }
+
+    if (c.recentField == "dirFiles") {
+        val json = filesToJSON(c.dirFiles)
+        c.response = NetResponse(json, c.request)
         c.recentField = "response"
         return c
     }

@@ -1,14 +1,21 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
-REYARN=$1
 
-BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin
-SERVER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin
+PROJECT_DIR=$1
 
-cd $SCRIPT_DIR/kmp
+if [ -z "$PROJECT_DIR" ]; then
+    echo "Usage: $0 PROJECT_DIR"
+    exit 1
+fi
 
-if [ "$REYARN" == "1" ]; then
+# Enter KMP dir to run Gradle
+wasDir=$(pwd)
+cd $SCRIPT_DIR/kmp 
+
+# Special case to rerun yarn only
+if [ "$PROJECT_DIR" == "reyarn" ]; then
     ./gradlew kotlinUpgradeYarnLock
+    exit
 fi
 
 # Build client
@@ -16,5 +23,10 @@ fi
 # Build server
 ./gradlew jsNodeDevelopmentRun
 
+# Exit KMP dir
+cd $wasDir
+
 # Run server
-node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR
+BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin
+SERVER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin
+node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR

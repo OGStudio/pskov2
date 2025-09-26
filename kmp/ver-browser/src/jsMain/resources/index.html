@@ -3,19 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="kotlin-kotlin-stdlib.js"></script>
+    <script src="kotlin_org_jetbrains_kotlin_kotlin_dom_api_compat.js"></script>
     <script src="uikit-3.23.11.min.js"></script>
+    <script src="uikit-icons-3.23.11.min.js"></script>
+    <script src="pskov-ver-browser.js"></script>
+    <script>
+        let KT = window["pskov:ver-browser"].org.opengamestudio;
+        window.components = [];
+    </script>
     <link rel="stylesheet" href="uikit-3.23.11.min.css" />
+    <link rel="stylesheet" href="style.css" />
     <title>PSKOV 2</title>
   </head>
   <body>
-    <div>
-      <h1>TODO select project dir</h1>
+    <!-- SPLASH -->
+    <div id="splash" class="center-contents-vertically">
+      <div class="uk-animation-fade uk-animation-reverse">
+        <img class="uk-align-center uk-animation-stroke" src="pskov_out_1.svg" width="200" height="200" uk-svg="stroke-animation: true">
+      </div>
     </div>
-    <div>
-      <div id="panel-header"></div>
-      <div id="panel-left"></div>
-      <div id="panel-main"></div>
-      <div id="panel-internal"></div>
+
+    <!-- HEADER -->
+    <div class="uk-padding">
+      <div class="uk-container">
+        <strong>Project:</strong>
+        <span id="header-path"></span>
+      </div>
     </div>
+
+    <!-- INPUT DIRS -->
+    <div id="input-dirs" class="uk-container">
+    </div>
+
+    <!-- FOOTER -->
+    <div class="uk-padding">
+      <div class="uk-container">
+        <img src="pskov_out_1.svg" width="70" height="70" uk-svg>
+        <strong>Version:</strong>
+        <span id="footer-version">TODO-Version</span>
+      </div>
+    </div>
+
+    <script src="other.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

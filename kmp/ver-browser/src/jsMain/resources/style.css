@@ -1,0 +1,11 @@
+.center-contents-vertically {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+.highlight-article-digit {
+  background-color: #666;
+  color: white;
+  padding-right: 1em;
+}
