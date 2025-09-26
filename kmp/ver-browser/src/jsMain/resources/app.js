@@ -49,7 +49,7 @@ function AppComponent() {
         let oneliners = [ 
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
-            "projectPath", (c) => { appDisplayPath(c.projectPath) },
+            "projectPath", (c) => { setUIText(APP_HEADER_PATH_ID, c.projectPath) },
             "request", (c) => { appLoad(c.request) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
@@ -113,10 +113,6 @@ function appDisplayInputMDFiles(d) {
         let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", id);
         setUIText(sectionId, html);
     });
-}
-
-function appDisplayPath(path) {
-    setUIText(APP_HEADER_PATH_ID, path);
 }
 
 function appHideSplash(timeout) {
