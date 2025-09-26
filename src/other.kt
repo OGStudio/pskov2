@@ -69,18 +69,13 @@ fun mdFiles(d: Map<Int, Array<FSFile>>): Map<Int, Array<String>> {
 
     for (id in d.keys) {
         val files = d[id]!!
-        /**/println("ИГР mdF-1 id: '$id'")
         var mdFiles = arrayOf<String>()
         for (f in files) {
-            /**/println("ИГР mdF-2 f.path: '${f.path}'")
             if (f.path.endsWith("." + CONST_EXT_MD)) {
                 mdFiles += f.path
             }
         }
         mds[id] = mdFiles
-        /**/for (name in mdFiles) {
-            /**/println("ИГР mdF-3 name: '$name'")
-        }
     }
 
     return mds
