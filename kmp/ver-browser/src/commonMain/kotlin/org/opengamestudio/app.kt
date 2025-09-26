@@ -149,7 +149,7 @@ fun appShouldResetInputDirFiles(c: AppContext): AppContext {
     return c
 }
 
-/* Construct an array of input directories based on config's input key values
+/* Construct an array of input directories based on config's `input` key values
  *
  * Conditions:
  * 1. Config has been parsed
