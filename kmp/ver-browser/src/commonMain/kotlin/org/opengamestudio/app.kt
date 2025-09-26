@@ -170,7 +170,7 @@ fun appShouldResetInputDirs(c: AppContext): AppContext {
 /* Filter out non-Markdown files
  *
  * Conditions:
- * 1. Finished requesting to list files
+ * 1. Requestes to list files have completed
  */
 @JsExport
 fun appShouldResetInputMDFiles(c: AppContext): AppContext {
