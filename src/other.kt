@@ -42,7 +42,7 @@ fun forKIntVArrayString(
     }
 }
 
-// Convert list of files in JSON format to list of FSFiles
+// Convert a list of files in JSON format to a list of FSFiles
 @JsExport
 fun jsonToFiles(raw: String): Array<FSFile> {
     var items = arrayOf<FSFile>()
