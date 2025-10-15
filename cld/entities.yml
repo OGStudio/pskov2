@@ -18,6 +18,7 @@ AppContext:
         request: NetRequest
         response: NetResponse
         responseError: NetResponse
+        selectedFile: String
         splashTimeout: Int
 
 FSFile:
