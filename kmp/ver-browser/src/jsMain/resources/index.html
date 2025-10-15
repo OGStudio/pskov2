@@ -12,21 +12,21 @@
         let KT = window["pskov:ver-browser"].org.opengamestudio;
         window.components = [];
     </script>
-    <link rel="stylesheet" href="uikit-3.23.11.min.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/uikit-3.23.11.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <title>PSKOV 2</title>
   </head>
   <body>
     <!-- SPLASH -->
     <div id="splash" class="center-contents-vertically">
       <div class="uk-animation-fade uk-animation-reverse">
-        <img class="uk-align-center uk-animation-stroke" src="pskov_out_1.svg" width="200" height="200" uk-svg="stroke-animation: true">
+        <img class="uk-align-center uk-animation-stroke" src="img/pskov_out_1.svg" width="200" height="200" uk-svg="stroke-animation: true">
       </div>
     </div>
 
     <!-- HEADER -->
-    <div class="uk-padding">
-      <div class="uk-container">
+    <div class="uk-padding uk-padding-remove-top uk-padding-remove-bottom">
+      <div class="uk-container uk-padding-small uk-padding-remove-left uk-padding-remove-right">
         <strong>Project:</strong>
         <span id="header-path"></span>
       </div>
@@ -39,7 +39,7 @@
     <!-- FOOTER -->
     <div class="uk-padding">
       <div class="uk-container">
-        <img src="pskov_out_1.svg" width="70" height="70" uk-svg>
+        <img src="img/pskov_out_1.svg" width="70" height="70" uk-svg>
         <strong>Version:</strong>
         <span id="footer-version">TODO-Version</span>
       </div>
