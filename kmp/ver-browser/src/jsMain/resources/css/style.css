@@ -4,6 +4,10 @@
   height: 100vh;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .highlight-article-digit {
   background-color: #666;
   color: white;
