@@ -78,6 +78,7 @@ function AppComponent() {
             KT.appShouldResetInputDirs,
             KT.appShouldResetInputMDFiles,
             KT.appShouldResetProjectPath,
+            KT.appShouldResetReadFileContents,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
         });

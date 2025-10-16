@@ -240,6 +240,28 @@ fun appShouldResetProjectPath(c: AppContext): AppContext {
     return c
 }
 
+/* Report contents of a read file
+ *
+ * Conditions:
+ * 1. Received POST /read response
+ */
+@JsExport
+fun appShouldResetReadFileContents(c: AppContext): AppContext {
+    if (
+        c.recentField == "response" &&
+        c.response.req.method == CONST_POST &&
+        c.response.req.url == appURL(c.baseURL, CONST_API_READ) &&
+        c.response.req.body == c.readFile
+    ) {
+        c.readFileContents = c.response.contents
+        c.recentField = "readFileContents"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 //<!-- Other functions -->
 
 @JsExport
