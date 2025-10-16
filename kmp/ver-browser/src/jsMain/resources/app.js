@@ -10,7 +10,7 @@ let APP_HEADER_PATH_ID = "header-path";
 
 let APP_INPUT_DIR_FILE_T = `
     <div>
-        <div class='uk-card uk-card-default uk-card-hover uk-card-body cursor-pointer' onclick='appCtrl().set("selectedFile", "%NAME%")'>
+        <div class='uk-card uk-card-default uk-card-hover uk-card-body cursor-pointer' onclick='appCtrl().set("selectedPageId", [%PAGE_ID%])'>
             <p><span uk-icon="file-text"></span>%NAME%</p>
             <p>TODO-Date</p>
             <h3 class="uk-card-title">TODO-Title</h3>
@@ -107,8 +107,10 @@ function appDisplayInputMDFiles(d) {
         // For each file
         for (let i in files) {
             let name = files[i];
+            let pageId = [id, i];
             html += APP_INPUT_DIR_FILE_T
-                .replaceAll("%NAME%", name);
+                .replaceAll("%NAME%", name)
+                .replaceAll("%PAGE_ID%", pageId);
         }
         let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", id);
         setUIText(sectionId, html);

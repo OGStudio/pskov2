@@ -15,7 +15,7 @@ data class AppContext(
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
-    var selectedFileName: String = "",
+    var selectedPageId: Array<Int> = arrayOf(),
     var splashTimeout: Int = 0,
     override var recentField: String = "",
 ): CLDContext {
@@ -42,8 +42,8 @@ data class AppContext(
             return response as T
         } else if (name == "responseError") {
             return responseError as T
-        } else if (name == "selectedFileName") {
-            return selectedFileName as T
+        } else if (name == "selectedPageId") {
+            return selectedPageId as T
         } else if (name == "splashTimeout") {
             return splashTimeout as T
         }
@@ -80,8 +80,8 @@ data class AppContext(
             response = value as NetResponse
         } else if (name == "responseError") {
             responseError = value as NetResponse
-        } else if (name == "selectedFileName") {
-            selectedFileName = value as String
+        } else if (name == "selectedPageId") {
+            selectedPageId = value as Array<Int>
         } else if (name == "splashTimeout") {
             splashTimeout = value as Int
         }
