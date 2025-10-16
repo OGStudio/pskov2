@@ -262,6 +262,23 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
     return c
 }
 
+/* Select tab
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun appShouldSelectTab(c: AppContext): AppContext {
+    if (c.recentField == "didLaunch") {
+        c.selectedTabId = 0
+        c.recentField = "selectedTabId"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 //<!-- Other functions -->
 
 @JsExport

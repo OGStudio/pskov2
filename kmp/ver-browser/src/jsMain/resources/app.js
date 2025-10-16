@@ -26,9 +26,10 @@ let APP_INPUT_DIR_SECTION_T = `
 <div id="%ID%" class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>
 </div>
 `;
-let APP_INPUT_DIRS_ID = "input-dirs";
 
 let APP_SPLASH_ID = "splash";
+let APP_TAB_FILES_ID = "files";
+let APP_TAB_MARKDOWN_ID = "markdown";
 
 //<!-- Component -->
 
@@ -51,6 +52,7 @@ function AppComponent() {
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "projectPath", (c) => { setUIText(APP_HEADER_PATH_ID, c.projectPath) },
             "request", (c) => { appLoad(c.request) },
+            "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
         let halfCount = oneliners.length / 2;
@@ -79,6 +81,7 @@ function AppComponent() {
             KT.appShouldResetInputMDFiles,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
+            KT.appShouldSelectTab,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
         });
@@ -99,7 +102,7 @@ function appDisplayInputDirSections(items) {
             .replaceAll("%NAME%", item)
             .replaceAll("%NUM%", Number(i) + 1);
     }
-    setUIText(APP_INPUT_DIRS_ID, html);
+    setUIText(APP_TAB_FILES_ID, html);
 }
 
 function appDisplayInputMDFiles(d) {
@@ -138,6 +141,12 @@ function appLoad(req) {
             appCtrl().set("responseError", r);
         }
     );
+}
+
+function appSelectTab(id) {
+    setUIVisibility(APP_TAB_FILES_ID, id == 0);
+    setUIVisibility(APP_TAB_MARKDOWN_ID, id == 1);
+    //setUIVisibility(APP_TAB_RENDERING_ID, id == 2);
 }
 
 //<!-- Other functions -->

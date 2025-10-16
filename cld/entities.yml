@@ -21,6 +21,7 @@ AppContext:
         response: NetResponse
         responseError: NetResponse
         selectedPageId: [Int]
+        selectedTabId: Int
         splashTimeout: Int
 
 FSFile:

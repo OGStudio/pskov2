@@ -18,6 +18,7 @@ data class AppContext(
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
     var selectedPageId: Array<Int> = arrayOf(),
+    var selectedTabId: Int = 0,
     var splashTimeout: Int = 0,
     override var recentField: String = "",
 ): CLDContext {
@@ -50,6 +51,8 @@ data class AppContext(
             return responseError as T
         } else if (name == "selectedPageId") {
             return selectedPageId as T
+        } else if (name == "selectedTabId") {
+            return selectedTabId as T
         } else if (name == "splashTimeout") {
             return splashTimeout as T
         }
@@ -92,6 +95,8 @@ data class AppContext(
             responseError = value as NetResponse
         } else if (name == "selectedPageId") {
             selectedPageId = value as Array<Int>
+        } else if (name == "selectedTabId") {
+            selectedTabId = value as Int
         } else if (name == "splashTimeout") {
             splashTimeout = value as Int
         }
