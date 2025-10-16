@@ -13,8 +13,9 @@ import kotlin.js.JsExport
  *
  * Conditions:
  * 1. Did launch: Get project path
- * 2. Project path has been resolved: Get pskov.cfg contents
+ * 2. Project path has been resolved: Read pskov.cfg contents
  * 3. List input directory files
+ * 4. Read file
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -47,6 +48,17 @@ fun appShouldLoad(c: AppContext): AppContext {
                 dir,
                 CONST_POST,
                 appURL(c.baseURL, CONST_API_LIST),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    if (c.recentField == "readFile") {
+        c.request =
+            NetRequest(
+                c.readFile,
+                CONST_POST,
+                appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
         return c
@@ -118,6 +130,27 @@ fun appShouldParseCfg(c: AppContext): AppContext {
     ) {
         c.cfg = parseCfg(c.response.contents)
         c.recentField = "cfg"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Read markdown file
+ *
+ * Conditions:
+ * 1. User selected a page item
+ */
+@JsExport
+fun appShouldReadFile(c: AppContext): AppContext {
+    if (c.recentField == "selectedPageId") {
+        val inputDirId = c.selectedPageId[0]
+        val mdFileId = c.selectedPageId[1]
+        val dir = c.inputDirs[inputDirId]!!
+        val file = c.inputMDFiles[inputDirId]!![mdFileId]!!
+        c.readFile = "$dir/$file"
+        c.recentField = "readFile"
         return c
     }
 

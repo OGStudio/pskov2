@@ -73,6 +73,7 @@ function AppComponent() {
             KT.appShouldListInputDir,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
+            KT.appShouldReadFile,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
             KT.appShouldResetInputMDFiles,
