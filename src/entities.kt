@@ -6,10 +6,11 @@ import kotlin.js.JsExport
 data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
+    var didClickEditorTab: Boolean = false,
     var didClickFilesTab: Boolean = false,
-    var didClickMarkdownTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didLaunch: Boolean = false,
+    var editorContents: String = "",
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
@@ -20,7 +21,7 @@ data class AppContext(
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
-    var selectedPageId: Array<Int> = arrayOf(),
+    var selectedFileId: Array<Int> = arrayOf(),
     var selectedTabId: Int = 0,
     var splashTimeout: Int = 0,
     override var recentField: String = "",
@@ -30,14 +31,16 @@ data class AppContext(
             return baseURL as T
         } else if (name == "cfg") {
             return cfg as T
+        } else if (name == "didClickEditorTab") {
+            return didClickEditorTab as T
         } else if (name == "didClickFilesTab") {
             return didClickFilesTab as T
-        } else if (name == "didClickMarkdownTab") {
-            return didClickMarkdownTab as T
         } else if (name == "didClickRenderTab") {
             return didClickRenderTab as T
         } else if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "editorContents") {
+            return editorContents as T
         } else if (name == "inputDirFiles") {
             return inputDirFiles as T
         } else if (name == "inputDirs") {
@@ -58,8 +61,8 @@ data class AppContext(
             return response as T
         } else if (name == "responseError") {
             return responseError as T
-        } else if (name == "selectedPageId") {
-            return selectedPageId as T
+        } else if (name == "selectedFileId") {
+            return selectedFileId as T
         } else if (name == "selectedTabId") {
             return selectedTabId as T
         } else if (name == "splashTimeout") {
@@ -80,14 +83,16 @@ data class AppContext(
             baseURL = value as String
         } else if (name == "cfg") {
             cfg = value as Map<String, String>
+        } else if (name == "didClickEditorTab") {
+            didClickEditorTab = value as Boolean
         } else if (name == "didClickFilesTab") {
             didClickFilesTab = value as Boolean
-        } else if (name == "didClickMarkdownTab") {
-            didClickMarkdownTab = value as Boolean
         } else if (name == "didClickRenderTab") {
             didClickRenderTab = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "editorContents") {
+            editorContents = value as String
         } else if (name == "inputDirFiles") {
             inputDirFiles = value as Map<Int, Array<FSFile>>
         } else if (name == "inputDirs") {
@@ -108,8 +113,8 @@ data class AppContext(
             response = value as NetResponse
         } else if (name == "responseError") {
             responseError = value as NetResponse
-        } else if (name == "selectedPageId") {
-            selectedPageId = value as Array<Int>
+        } else if (name == "selectedFileId") {
+            selectedFileId = value as Array<Int>
         } else if (name == "selectedTabId") {
             selectedTabId = value as Int
         } else if (name == "splashTimeout") {

@@ -11,7 +11,7 @@ let APP_HEADER_PATH_ID = "header-path";
 
 let APP_INPUT_DIR_FILE_T = `
     <div>
-        <div class='uk-card uk-card-default uk-card-hover uk-card-body cursor-pointer' onclick='appCtrl().set("selectedPageId", [%PAGE_ID%])'>
+        <div class='uk-card uk-card-default uk-card-hover uk-card-body cursor-pointer' onclick='appCtrl().set("selectedFileId", [%PAGE_ID%])'>
             <p><span uk-icon="file-text"></span>%NAME%</p>
             <p>TODO-Date</p>
             <h3 class="uk-card-title">TODO-Title</h3>
@@ -28,11 +28,12 @@ let APP_INPUT_DIR_SECTION_T = `
 </div>
 `;
 
-let APP_MARKDOWN_ID = "markdown";
+let APP_EDITOR_ID = "editor";
+let APP_EDITOR_CONTENTS_ID = "editorContents";
 let APP_RENDER_ID = "render";
 let APP_SPLASH_ID = "splash";
 let APP_TAB_FILES_ID = "tabFiles";
-let APP_TAB_MARKDOWN_ID = "tabMarkdown";
+let APP_TAB_EDITOR_ID = "tabEditor";
 let APP_TAB_RENDER_ID = "tabRender";
 
 //<!-- Component -->
@@ -52,6 +53,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "editorContents", (c) => { setUIText(APP_EDITOR_CONTENTS_ID, c.editorContents) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "projectPath", (c) => { setUIText(APP_HEADER_PATH_ID, c.projectPath) },
@@ -80,6 +82,7 @@ function AppComponent() {
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
+            KT.appShouldResetEditorContents,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
             KT.appShouldResetInputMDFiles,
@@ -149,11 +152,11 @@ function appLoad(req) {
 
 function appSelectTab(id) {
     setUIVisibility(APP_FILES_ID, id == 0);
-    setUIVisibility(APP_MARKDOWN_ID, id == 1);
+    setUIVisibility(APP_EDITOR_ID, id == 1);
     setUIVisibility(APP_RENDER_ID, id == 2);
 
     setUIClassActive(APP_TAB_FILES_ID, "uk-active", id == 0);
-    setUIClassActive(APP_TAB_MARKDOWN_ID, "uk-active", id == 1);
+    setUIClassActive(APP_TAB_EDITOR_ID, "uk-active", id == 1);
     setUIClassActive(APP_TAB_RENDER_ID, "uk-active", id == 2);
 }
 

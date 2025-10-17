@@ -37,7 +37,7 @@
       <div class="uk-container uk-padding-small uk-padding-remove-left uk-padding-remove-right">
         <ul uk-tab>
           <li id="tabFiles" onclick='appCtrl().set("didClickFilesTab", true)'><a><span uk-icon="album"></span>Files</a></li>
-          <li id="tabMarkdown" onclick='appCtrl().set("didClickMarkdownTab", true)'><a><span uk-icon="file-edit"></span>Markdown</a></li>
+          <li id="tabEditor" onclick='appCtrl().set("didClickEditorTab", true)'><a><span uk-icon="file-edit"></span>Editor</a></li>
           <li id="tabRender" onclick='appCtrl().set("didClickRenderTab", true)'><a><span uk-icon="desktop"></span>Render</a></li>
         </ul>
       </div>
@@ -47,14 +47,14 @@
     <div id="files" class="uk-container" hidden>
     </div>
 
-    <!-- TAB: MARKDOWN -->
-    <div id="markdown" class="uk-container" hidden>
-      <p>TODO: Markdown pane</p>
+    <!-- TAB: EDITOR -->
+    <div id="editor" class="uk-container" hidden>
+      <pre id="editorContents">TODO-Editor</pre>
     </div>
 
     <!-- TAB: RENDER -->
     <div id="render" class="uk-container" hidden>
-      <p>TODO: Render pane</p>
+      <p>TODO-Render</p>
     </div>
 
     <!-- FOOTER -->

@@ -140,17 +140,34 @@ fun appShouldParseCfg(c: AppContext): AppContext {
 /* Read markdown file
  *
  * Conditions:
- * 1. User selected a page item
+ * 1. User selected file card
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
-    if (c.recentField == "selectedPageId") {
-        val inputDirId = c.selectedPageId[0]
-        val mdFileId = c.selectedPageId[1]
+    if (c.recentField == "selectedFileId") {
+        val inputDirId = c.selectedFileId[0]
+        val mdFileId = c.selectedFileId[1]
         val dir = c.inputDirs[inputDirId]!!
         val file = c.inputMDFiles[inputDirId]!![mdFileId]!!
         c.readFile = "$dir/$file"
         c.recentField = "readFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Set editor contents
+ *
+ * Conditions:
+ * 1. User selected file card
+ */
+@JsExport
+fun appShouldResetEditorContents(c: AppContext): AppContext {
+    if (c.recentField == "readFileContents") {
+        c.editorContents = c.readFileContents
+        c.recentField = "editorContents"
         return c
     }
 
@@ -267,8 +284,9 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
  * Conditions:
  * 1. Did launch
  * 2. User clicked `Files`
- * 3. User clicked `Markdown`
+ * 3. User clicked `Editor`
  * 4. User clicked `Render`
+ * 5. User selected file card
  */
 @JsExport
 fun appShouldSelectTab(c: AppContext): AppContext {
@@ -284,7 +302,7 @@ fun appShouldSelectTab(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "didClickMarkdownTab") {
+    if (c.recentField == "didClickEditorTab") {
         c.selectedTabId = 1
         c.recentField = "selectedTabId"
         return c
@@ -292,6 +310,12 @@ fun appShouldSelectTab(c: AppContext): AppContext {
 
     if (c.recentField == "didClickRenderTab") {
         c.selectedTabId = 2
+        c.recentField = "selectedTabId"
+        return c
+    }
+
+    if (c.recentField == "selectedFileId") {
+        c.selectedTabId = 1
         c.recentField = "selectedTabId"
         return c
     }

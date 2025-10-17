@@ -9,21 +9,22 @@ AppContext:
     fields:
         baseURL: String
         cfg: [String: String]
+        didClickEditorTab: Bool
         didClickFilesTab: Bool
-        didClickMarkdownTab: Bool
         didClickRenderTab: Bool
         didLaunch: Bool
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputMDFiles: [Int: [String]]
         listInputDirId: Int
+        editorContents: String
         projectPath: String
         readFile: String
         readFileContents: String
         request: NetRequest
         response: NetResponse
         responseError: NetResponse
-        selectedPageId: [Int]
+        selectedFileId: [Int]
         selectedTabId: Int
         splashTimeout: Int
 
