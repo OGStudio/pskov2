@@ -266,11 +266,32 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
  *
  * Conditions:
  * 1. Did launch
+ * 2. User clicked `Files`
+ * 3. User clicked `Markdown`
+ * 4. User clicked `Render`
  */
 @JsExport
 fun appShouldSelectTab(c: AppContext): AppContext {
     if (c.recentField == "didLaunch") {
         c.selectedTabId = 0
+        c.recentField = "selectedTabId"
+        return c
+    }
+
+    if (c.recentField == "didClickFilesTab") {
+        c.selectedTabId = 0
+        c.recentField = "selectedTabId"
+        return c
+    }
+
+    if (c.recentField == "didClickMarkdownTab") {
+        c.selectedTabId = 1
+        c.recentField = "selectedTabId"
+        return c
+    }
+
+    if (c.recentField == "didClickRenderTab") {
+        c.selectedTabId = 2
         c.recentField = "selectedTabId"
         return c
     }

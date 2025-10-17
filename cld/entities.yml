@@ -9,6 +9,9 @@ AppContext:
     fields:
         baseURL: String
         cfg: [String: String]
+        didClickFilesTab: Bool
+        didClickMarkdownTab: Bool
+        didClickRenderTab: Bool
         didLaunch: Bool
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]

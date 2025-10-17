@@ -6,6 +6,9 @@ import kotlin.js.JsExport
 data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
+    var didClickFilesTab: Boolean = false,
+    var didClickMarkdownTab: Boolean = false,
+    var didClickRenderTab: Boolean = false,
     var didLaunch: Boolean = false,
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
@@ -27,6 +30,12 @@ data class AppContext(
             return baseURL as T
         } else if (name == "cfg") {
             return cfg as T
+        } else if (name == "didClickFilesTab") {
+            return didClickFilesTab as T
+        } else if (name == "didClickMarkdownTab") {
+            return didClickMarkdownTab as T
+        } else if (name == "didClickRenderTab") {
+            return didClickRenderTab as T
         } else if (name == "didLaunch") {
             return didLaunch as T
         } else if (name == "inputDirFiles") {
@@ -71,6 +80,12 @@ data class AppContext(
             baseURL = value as String
         } else if (name == "cfg") {
             cfg = value as Map<String, String>
+        } else if (name == "didClickFilesTab") {
+            didClickFilesTab = value as Boolean
+        } else if (name == "didClickMarkdownTab") {
+            didClickMarkdownTab = value as Boolean
+        } else if (name == "didClickRenderTab") {
+            didClickRenderTab = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
         } else if (name == "inputDirFiles") {

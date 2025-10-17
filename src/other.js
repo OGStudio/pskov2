@@ -47,6 +47,17 @@ function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     });
 }
 
+// Toggle element class
+function setUIClassActive(id, className, isActive) {
+    let el = deId(id);
+    if (isActive) {
+        el.classList.add(className);
+    }
+    if (!isActive) {
+        el.classList.remove(className);
+    }
+}
+
 // Change element text
 function setUIText(id, text) {
     let el = deId(id);

@@ -6,6 +6,7 @@ function appCtrl() {
 
 //<!-- Constants -->
 
+let APP_FILES_ID = "files";
 let APP_HEADER_PATH_ID = "header-path";
 
 let APP_INPUT_DIR_FILE_T = `
@@ -27,9 +28,12 @@ let APP_INPUT_DIR_SECTION_T = `
 </div>
 `;
 
+let APP_MARKDOWN_ID = "markdown";
+let APP_RENDER_ID = "render";
 let APP_SPLASH_ID = "splash";
-let APP_TAB_FILES_ID = "files";
-let APP_TAB_MARKDOWN_ID = "markdown";
+let APP_TAB_FILES_ID = "tabFiles";
+let APP_TAB_MARKDOWN_ID = "tabMarkdown";
+let APP_TAB_RENDER_ID = "tabRender";
 
 //<!-- Component -->
 
@@ -102,7 +106,7 @@ function appDisplayInputDirSections(items) {
             .replaceAll("%NAME%", item)
             .replaceAll("%NUM%", Number(i) + 1);
     }
-    setUIText(APP_TAB_FILES_ID, html);
+    setUIText(APP_FILES_ID, html);
 }
 
 function appDisplayInputMDFiles(d) {
@@ -144,9 +148,13 @@ function appLoad(req) {
 }
 
 function appSelectTab(id) {
-    setUIVisibility(APP_TAB_FILES_ID, id == 0);
-    setUIVisibility(APP_TAB_MARKDOWN_ID, id == 1);
-    //setUIVisibility(APP_TAB_RENDERING_ID, id == 2);
+    setUIVisibility(APP_FILES_ID, id == 0);
+    setUIVisibility(APP_MARKDOWN_ID, id == 1);
+    setUIVisibility(APP_RENDER_ID, id == 2);
+
+    setUIClassActive(APP_TAB_FILES_ID, "uk-active", id == 0);
+    setUIClassActive(APP_TAB_MARKDOWN_ID, "uk-active", id == 1);
+    setUIClassActive(APP_TAB_RENDER_ID, "uk-active", id == 2);
 }
 
 //<!-- Other functions -->
