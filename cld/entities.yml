@@ -13,6 +13,7 @@ AppContext:
         didClickFilesTab: Bool
         didClickRenderTab: Bool
         didLaunch: Bool
+        header: [String]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputMDFiles: [Int: [String]]

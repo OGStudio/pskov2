@@ -5,6 +5,11 @@ import kotlin.js.JsExport
 
 @JsExport val APP_CFG_FILE = "pskov.cfg"
 @JsExport val APP_CFG_KEY_INPUT = "input"
+@JsExport val APP_HEADER_KEY_FILE = "File"
+@JsExport val APP_HEADER_KEY_PROJECT = "Project"
+@JsExport val APP_TAB_EDITOR_INDEX = 1
+@JsExport val APP_TAB_FILES_INDEX = 0
+@JsExport val APP_TAB_RENDER_INDEX = 2
 @JsExport val APP_SPLASH_TIMEOUT = 800
 
 //<!-- Shoulds -->
@@ -175,6 +180,47 @@ fun appShouldResetEditorContents(c: AppContext): AppContext {
     return c
 }
 
+/* Set header contents
+ *
+ * Conditions:
+ * 1. Files tab was selected
+ * 2. Project path was resolved
+ * 3. Editor tab was selected
+ */
+@JsExport
+fun appShouldResetHeader(c: AppContext): AppContext {
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId == APP_TAB_FILES_INDEX
+    ) {
+        c.header = arrayOf(APP_HEADER_KEY_PROJECT, c.projectPath)
+        c.recentField = "header"
+        return c
+    }
+
+    if (
+        c.recentField == "projectPath" &&
+        c.selectedTabId == APP_TAB_FILES_INDEX
+    ) {
+        c.header = arrayOf(APP_HEADER_KEY_PROJECT, c.projectPath)
+        c.recentField = "header"
+        return c
+    }
+
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId == APP_TAB_EDITOR_INDEX &&
+        !c.readFile.isEmpty()
+    ) {
+        c.header = arrayOf(APP_HEADER_KEY_FILE, c.readFile)
+        c.recentField = "header"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Collect list of files of each input dir
  *
  * Conditions:
@@ -237,7 +283,7 @@ fun appShouldResetInputMDFiles(c: AppContext): AppContext {
     return c
 }
 
-/* Display project path
+/* Resolve project path
  *
  * Conditions:
  * 1. Received GET /path response
@@ -291,31 +337,31 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
 @JsExport
 fun appShouldSelectTab(c: AppContext): AppContext {
     if (c.recentField == "didLaunch") {
-        c.selectedTabId = 0
+        c.selectedTabId = APP_TAB_FILES_INDEX
         c.recentField = "selectedTabId"
         return c
     }
 
     if (c.recentField == "didClickFilesTab") {
-        c.selectedTabId = 0
+        c.selectedTabId = APP_TAB_FILES_INDEX
         c.recentField = "selectedTabId"
         return c
     }
 
     if (c.recentField == "didClickEditorTab") {
-        c.selectedTabId = 1
+        c.selectedTabId = APP_TAB_EDITOR_INDEX
         c.recentField = "selectedTabId"
         return c
     }
 
     if (c.recentField == "didClickRenderTab") {
-        c.selectedTabId = 2
+        c.selectedTabId = APP_TAB_RENDER_INDEX
         c.recentField = "selectedTabId"
         return c
     }
 
     if (c.recentField == "selectedFileId") {
-        c.selectedTabId = 1
+        c.selectedTabId = APP_TAB_EDITOR_INDEX
         c.recentField = "selectedTabId"
         return c
     }

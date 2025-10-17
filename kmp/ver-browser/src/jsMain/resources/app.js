@@ -7,7 +7,8 @@ function appCtrl() {
 //<!-- Constants -->
 
 let APP_FILES_ID = "files";
-let APP_HEADER_PATH_ID = "header-path";
+let APP_HEADER_KEY_ID = "headerKey";
+let APP_HEADER_VALUE_ID = "headerValue";
 
 let APP_INPUT_DIR_FILE_T = `
     <div>
@@ -54,9 +55,10 @@ function AppComponent() {
     this.setupEffects = function() {
         let oneliners = [ 
             "editorContents", (c) => { setUIText(APP_EDITOR_CONTENTS_ID, c.editorContents) },
+            "header", (c) => { appResetHeader(c.header) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
-            "projectPath", (c) => { setUIText(APP_HEADER_PATH_ID, c.projectPath) },
+            //"projectPath", (c) => { setUIText(APP_HEADER_PATH_ID, c.projectPath) },
             "request", (c) => { appLoad(c.request) },
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
@@ -83,6 +85,7 @@ function AppComponent() {
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
             KT.appShouldResetEditorContents,
+            KT.appShouldResetHeader,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
             KT.appShouldResetInputMDFiles,
@@ -150,14 +153,19 @@ function appLoad(req) {
     );
 }
 
-function appSelectTab(id) {
-    setUIVisibility(APP_FILES_ID, id == 0);
-    setUIVisibility(APP_EDITOR_ID, id == 1);
-    setUIVisibility(APP_RENDER_ID, id == 2);
+function appResetHeader(texts) {
+    setUIText(APP_HEADER_KEY_ID, texts[0]);
+    setUIText(APP_HEADER_VALUE_ID, texts[1]);
+}
 
-    setUIClassActive(APP_TAB_FILES_ID, "uk-active", id == 0);
-    setUIClassActive(APP_TAB_EDITOR_ID, "uk-active", id == 1);
-    setUIClassActive(APP_TAB_RENDER_ID, "uk-active", id == 2);
+function appSelectTab(id) {
+    setUIVisibility(APP_FILES_ID, id == KT.APP_TAB_FILES_INDEX);
+    setUIVisibility(APP_EDITOR_ID, id == KT.APP_TAB_EDITOR_INDEX);
+    setUIVisibility(APP_RENDER_ID, id == KT.APP_TAB_RENDER_INDEX);
+
+    setUIClassActive(APP_TAB_FILES_ID, "uk-active", id == KT.APP_TAB_FILES_INDEX);
+    setUIClassActive(APP_TAB_EDITOR_ID, "uk-active", id == KT.APP_TAB_EDITOR_INDEX);
+    setUIClassActive(APP_TAB_RENDER_ID, "uk-active", id == KT.APP_TAB_RENDER_INDEX);
 }
 
 //<!-- Other functions -->
