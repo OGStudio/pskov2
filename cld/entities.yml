@@ -17,6 +17,7 @@ AppContext:
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputMDFiles: [Int: [String]]
+        installEditor: Bool
         listInputDirId: Int
         editorContents: String
         projectPath: String

@@ -8,6 +8,10 @@
   cursor: pointer;
 }
 
+#editorContents {
+  height: 4em; /* This value is actually controlled by code */
+}
+
 .highlight-article-digit {
   background-color: #666;
   color: white;

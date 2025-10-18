@@ -14,6 +14,40 @@ import kotlin.js.JsExport
 
 //<!-- Shoulds -->
 
+/* Hide splash after a delay
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun appShouldHideSplash(c: AppContext): AppContext {
+    if (c.recentField == "didLaunch") {
+        c.splashTimeout = APP_SPLASH_TIMEOUT
+        c.recentField = "splashTimeout"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Setup editor
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun appShouldInstallEditor(c: AppContext): AppContext {
+    if (c.recentField == "didLaunch") {
+        c.installEditor = true
+        c.recentField = "installEditor"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Make HTTP request
  *
  * Conditions:
@@ -66,23 +100,6 @@ fun appShouldLoad(c: AppContext): AppContext {
                 appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
-        return c
-    }
-
-    c.recentField = "none"
-    return c
-}
-
-/* Hide splash after a delay
- *
- * Conditions:
- * 1. Did launch
- */
-@JsExport
-fun appShouldHideSplash(c: AppContext): AppContext {
-    if (c.recentField == "didLaunch") {
-        c.splashTimeout = APP_SPLASH_TIMEOUT
-        c.recentField = "splashTimeout"
         return c
     }
 

@@ -42,6 +42,7 @@ let APP_TAB_RENDER_ID = "tabRender";
 function AppComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.AppContext());
+        this.editor = null;
         registerCtrlDbgOutput(this.ctrl, "App", KT);
 
         // Defaults
@@ -54,11 +55,11 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
-            "editorContents", (c) => { setUIText(APP_EDITOR_CONTENTS_ID, c.editorContents) },
+            "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
-            //"projectPath", (c) => { setUIText(APP_HEADER_PATH_ID, c.projectPath) },
+            "installEditor", (c) => { appInstallEditor(this) },
             "request", (c) => { appLoad(c.request) },
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
@@ -80,6 +81,7 @@ function AppComponent() {
     this.setupShoulds = function() {
         [
             KT.appShouldHideSplash,
+            KT.appShouldInstallEditor,
             KT.appShouldListInputDir,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
@@ -139,6 +141,19 @@ function appHideSplash(timeout) {
     );
 }
 
+function appInstallEditor(cmp) {
+    cmp.editor = ace.edit(APP_EDITOR_CONTENTS_ID);
+    /*
+    var contents = editedContents[file];
+    if (contents == null) {
+        contents = originalContents;
+    }
+    editor.session.on("change", (d) => {
+        this.ctrl.set("editedContents", editor.getValue());
+    });
+    */
+}
+
 function appLoad(req) {
     loadURL(
         req,
@@ -151,6 +166,11 @@ function appLoad(req) {
             appCtrl().set("responseError", r);
         }
     );
+}
+
+function appResetEditorContents(cmp, contents) {
+    cmp.editor.setValue(contents);
+    cmp.editor.getSelection().clearSelection();
 }
 
 function appResetHeader(texts) {

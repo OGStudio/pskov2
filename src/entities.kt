@@ -15,6 +15,7 @@ data class AppContext(
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
+    var installEditor: Boolean = false,
     var listInputDirId: Int = 0,
     var projectPath: String = "",
     var readFile: String = "",
@@ -50,6 +51,8 @@ data class AppContext(
             return inputDirs as T
         } else if (name == "inputMDFiles") {
             return inputMDFiles as T
+        } else if (name == "installEditor") {
+            return installEditor as T
         } else if (name == "listInputDirId") {
             return listInputDirId as T
         } else if (name == "projectPath") {
@@ -104,6 +107,8 @@ data class AppContext(
             inputDirs = value as Array<String>
         } else if (name == "inputMDFiles") {
             inputMDFiles = value as Map<Int, Array<String>>
+        } else if (name == "installEditor") {
+            installEditor = value as Boolean
         } else if (name == "listInputDirId") {
             listInputDirId = value as Int
         } else if (name == "projectPath") {
