@@ -10,6 +10,7 @@ data class AppContext(
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didLaunch: Boolean = false,
+    var didResize: Boolean = false,
     var editorContents: String = "",
     var header: Array<String> = arrayOf(),
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
@@ -26,6 +27,7 @@ data class AppContext(
     var selectedFileId: Array<Int> = arrayOf(),
     var selectedTabId: Int = 0,
     var splashTimeout: Int = 0,
+    var windowSize: Array<Int> = arrayOf(),
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
@@ -41,6 +43,8 @@ data class AppContext(
             return didClickRenderTab as T
         } else if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "didResize") {
+            return didResize as T
         } else if (name == "editorContents") {
             return editorContents as T
         } else if (name == "header") {
@@ -73,6 +77,8 @@ data class AppContext(
             return selectedTabId as T
         } else if (name == "splashTimeout") {
             return splashTimeout as T
+        } else if (name == "windowSize") {
+            return windowSize as T
         }
         return "unknown-field-name" as T
     }
@@ -97,6 +103,8 @@ data class AppContext(
             didClickRenderTab = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "didResize") {
+            didResize = value as Boolean
         } else if (name == "editorContents") {
             editorContents = value as String
         } else if (name == "header") {
@@ -129,6 +137,8 @@ data class AppContext(
             selectedTabId = value as Int
         } else if (name == "splashTimeout") {
             splashTimeout = value as Int
+        } else if (name == "windowSize") {
+            windowSize = value as Array<Int>
         }
     }
 }

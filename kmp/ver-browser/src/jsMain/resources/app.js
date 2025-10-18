@@ -55,6 +55,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "didResize", (c) => { appReportWindowSize() },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
@@ -75,6 +76,9 @@ function AppComponent() {
     this.setupEvents = function() {
         window.addEventListener("load", (e) => {
             this.ctrl.set("didLaunch", true);
+        });
+        window.addEventListener("resize", (e) => {
+            this.ctrl.set("didResize", true);
         });
     };
 
@@ -166,6 +170,12 @@ function appLoad(req) {
             appCtrl().set("responseError", r);
         }
     );
+}
+
+function appReportWindowSize(cmp, contents) {
+    let h = document.body.clientHeight;
+    let w = document.body.clientWidth;
+    appCtrl().set("windowSize", [w, h]);
 }
 
 function appResetEditorContents(cmp, contents) {

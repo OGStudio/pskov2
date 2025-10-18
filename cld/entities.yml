@@ -13,6 +13,7 @@ AppContext:
         didClickFilesTab: Bool
         didClickRenderTab: Bool
         didLaunch: Bool
+        didResize: Bool
         header: [String]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
@@ -29,6 +30,7 @@ AppContext:
         selectedFileId: [Int]
         selectedTabId: Int
         splashTimeout: Int
+        windowSize: [Int]
 
 FSFile:
     prefix-kotlin: @JsExport
