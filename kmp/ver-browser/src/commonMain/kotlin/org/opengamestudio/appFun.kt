@@ -180,6 +180,25 @@ fun appShouldReadFile(c: AppContext): AppContext {
     return c
 }
 
+/* Set temporary file contents
+ *
+ * Conditions:
+ * 1. User edited a file
+ */
+@JsExport
+fun appShouldResetEditedFileContents(c: AppContext): AppContext {
+    if (c.recentField == "editedContents") {
+        var fileContents = c.editedFileContents.toMutableMap()
+        fileContents[c.readFile] = c.editedContents
+        c.editedFileContents = fileContents
+        c.recentField = "editedFileContents"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set editor contents
  *
  * Conditions:

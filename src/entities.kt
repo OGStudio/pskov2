@@ -11,6 +11,8 @@ data class AppContext(
     var didClickRenderTab: Boolean = false,
     var didLaunch: Boolean = false,
     var didResize: Boolean = false,
+    var editedContents: String = "",
+    var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
     var header: Array<String> = arrayOf(),
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
@@ -45,6 +47,10 @@ data class AppContext(
             return didLaunch as T
         } else if (name == "didResize") {
             return didResize as T
+        } else if (name == "editedContents") {
+            return editedContents as T
+        } else if (name == "editedFileContents") {
+            return editedFileContents as T
         } else if (name == "editorContents") {
             return editorContents as T
         } else if (name == "header") {
@@ -105,6 +111,10 @@ data class AppContext(
             didLaunch = value as Boolean
         } else if (name == "didResize") {
             didResize = value as Boolean
+        } else if (name == "editedContents") {
+            editedContents = value as String
+        } else if (name == "editedFileContents") {
+            editedFileContents = value as Map<String, String>
         } else if (name == "editorContents") {
             editorContents = value as String
         } else if (name == "header") {

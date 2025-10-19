@@ -20,6 +20,8 @@ AppContext:
         inputMDFiles: [Int: [String]]
         installEditor: Bool
         listInputDirId: Int
+        editedContents: String
+        editedFileContents: [String: String]
         editorContents: String
         projectPath: String
         readFile: String

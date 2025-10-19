@@ -90,6 +90,7 @@ function AppComponent() {
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
+            KT.appShouldResetEditedFileContents,
             KT.appShouldResetEditorContents,
             KT.appShouldResetHeader,
             KT.appShouldResetInputDirFiles,
@@ -148,15 +149,9 @@ function appHideSplash(timeout) {
 
 function appInstallEditor(cmp) {
     cmp.editor = ace.edit(APP_EDITOR_CONTENTS_ID);
-    /*
-    var contents = editedContents[file];
-    if (contents == null) {
-        contents = originalContents;
-    }
-    editor.session.on("change", (d) => {
-        this.ctrl.set("editedContents", editor.getValue());
+    cmp.editor.session.on("change", (d) => {
+        appCtrl().set("editedContents", cmp.editor.getValue());
     });
-    */
 }
 
 function appLoad(req) {
@@ -176,6 +171,12 @@ function appLoad(req) {
 function appResetEditorContents(cmp, contents) {
     cmp.editor.setValue(contents);
     cmp.editor.getSelection().clearSelection();
+    /*
+    var contents = editedContents[file];
+    if (contents == null) {
+        contents = originalContents;
+    }
+    */
 }
 
 function appResetHeader(texts) {
