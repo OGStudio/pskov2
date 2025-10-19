@@ -25,12 +25,12 @@ AppContext:
         readFile: String
         readFileContents: String
         request: NetRequest
+        resizeEditor: Bool
         response: NetResponse
         responseError: NetResponse
         selectedFileId: [Int]
         selectedTabId: Int
         splashTimeout: Int
-        windowSize: [Int]
 
 FSFile:
     prefix-kotlin: @JsExport

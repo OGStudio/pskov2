@@ -22,12 +22,12 @@ data class AppContext(
     var readFile: String = "",
     var readFileContents: String = "",
     var request: NetRequest = NetRequest(),
+    var resizeEditor: Boolean = false,
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
     var selectedFileId: Array<Int> = arrayOf(),
     var selectedTabId: Int = 0,
     var splashTimeout: Int = 0,
-    var windowSize: Array<Int> = arrayOf(),
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
@@ -67,6 +67,8 @@ data class AppContext(
             return readFileContents as T
         } else if (name == "request") {
             return request as T
+        } else if (name == "resizeEditor") {
+            return resizeEditor as T
         } else if (name == "response") {
             return response as T
         } else if (name == "responseError") {
@@ -77,8 +79,6 @@ data class AppContext(
             return selectedTabId as T
         } else if (name == "splashTimeout") {
             return splashTimeout as T
-        } else if (name == "windowSize") {
-            return windowSize as T
         }
         return "unknown-field-name" as T
     }
@@ -127,6 +127,8 @@ data class AppContext(
             readFileContents = value as String
         } else if (name == "request") {
             request = value as NetRequest
+        } else if (name == "resizeEditor") {
+            resizeEditor = value as Boolean
         } else if (name == "response") {
             response = value as NetResponse
         } else if (name == "responseError") {
@@ -137,8 +139,6 @@ data class AppContext(
             selectedTabId = value as Int
         } else if (name == "splashTimeout") {
             splashTimeout = value as Int
-        } else if (name == "windowSize") {
-            windowSize = value as Array<Int>
         }
     }
 }

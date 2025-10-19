@@ -342,6 +342,36 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
     return c
 }
 
+/* Detect when editor needs to resize
+ *
+ * Conditions:
+ * 1. User did resize window
+ * 2. User selected `Editor` tab
+ */
+@JsExport
+fun appShouldResizeEditor(c: AppContext): AppContext {
+    if (
+        c.recentField == "didResize" &&
+        c.selectedTabId == APP_TAB_EDITOR_INDEX
+    ) {
+        c.resizeEditor = true
+        c.recentField = "resizeEditor"
+        return c
+    }
+
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId == APP_TAB_EDITOR_INDEX
+    ) {
+        c.resizeEditor = true
+        c.recentField = "resizeEditor"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Select tab
  *
  * Conditions:

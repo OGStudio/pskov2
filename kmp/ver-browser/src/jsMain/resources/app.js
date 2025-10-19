@@ -55,13 +55,13 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
-            "didResize", (c) => { appReportWindowSize() },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "installEditor", (c) => { appInstallEditor(this) },
             "request", (c) => { appLoad(c.request) },
+            "resizeEditor", (c) => { appResizeEditor() },
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
@@ -97,6 +97,7 @@ function AppComponent() {
             KT.appShouldResetInputMDFiles,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
+            KT.appShouldResizeEditor,
             KT.appShouldSelectTab,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
@@ -172,12 +173,6 @@ function appLoad(req) {
     );
 }
 
-function appReportWindowSize(cmp, contents) {
-    let h = document.body.clientHeight;
-    let w = document.body.clientWidth;
-    appCtrl().set("windowSize", [w, h]);
-}
-
 function appResetEditorContents(cmp, contents) {
     cmp.editor.setValue(contents);
     cmp.editor.getSelection().clearSelection();
@@ -186,6 +181,14 @@ function appResetEditorContents(cmp, contents) {
 function appResetHeader(texts) {
     setUIText(APP_HEADER_KEY_ID, texts[0]);
     setUIText(APP_HEADER_VALUE_ID, texts[1]);
+}
+
+function appResizeEditor() {
+    let height = window.innerHeight;
+    let ed = deId(APP_EDITOR_CONTENTS_ID);
+    let rect = ed.getBoundingClientRect();
+    let targetHeight = height - rect.y;
+    ed.style.height = `${targetHeight}px`;
 }
 
 function appSelectTab(id) {
