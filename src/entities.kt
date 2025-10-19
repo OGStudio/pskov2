@@ -28,6 +28,7 @@ data class AppContext(
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
     var selectedFileId: Array<Int> = arrayOf(),
+    var selectedFileName: String = "",
     var selectedTabId: Int = 0,
     var splashTimeout: Int = 0,
     override var recentField: String = "",
@@ -81,6 +82,8 @@ data class AppContext(
             return responseError as T
         } else if (name == "selectedFileId") {
             return selectedFileId as T
+        } else if (name == "selectedFileName") {
+            return selectedFileName as T
         } else if (name == "selectedTabId") {
             return selectedTabId as T
         } else if (name == "splashTimeout") {
@@ -145,6 +148,8 @@ data class AppContext(
             responseError = value as NetResponse
         } else if (name == "selectedFileId") {
             selectedFileId = value as Array<Int>
+        } else if (name == "selectedFileName") {
+            selectedFileName = value as String
         } else if (name == "selectedTabId") {
             selectedTabId = value as Int
         } else if (name == "splashTimeout") {

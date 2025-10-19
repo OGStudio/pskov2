@@ -166,12 +166,8 @@ fun appShouldParseCfg(c: AppContext): AppContext {
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
-    if (c.recentField == "selectedFileId") {
-        val inputDirId = c.selectedFileId[0]
-        val mdFileId = c.selectedFileId[1]
-        val dir = c.inputDirs[inputDirId]!!
-        val file = c.inputMDFiles[inputDirId]!![mdFileId]!!
-        c.readFile = "$dir/$file"
+    if (c.recentField == "selectedFileName") {
+        c.readFile = c.selectedFileName
         c.recentField = "readFile"
         return c
     }
@@ -248,7 +244,7 @@ fun appShouldResetHeader(c: AppContext): AppContext {
         c.selectedTabId == APP_TAB_EDITOR_INDEX &&
         !c.readFile.isEmpty()
     ) {
-        c.header = arrayOf(APP_HEADER_KEY_FILE, c.readFile)
+        c.header = arrayOf(APP_HEADER_KEY_FILE, c.selectedFileName)
         c.recentField = "header"
         return c
     }
@@ -391,6 +387,27 @@ fun appShouldResizeEditor(c: AppContext): AppContext {
     return c
 }
 
+/* Select file name
+ *
+ * Conditions:
+ * 1. File id has been selected
+ */
+@JsExport
+fun appShouldSelectFileName(c: AppContext): AppContext {
+    if (c.recentField == "selectedFileId") {
+        val inputDirId = c.selectedFileId[0]
+        val mdFileId = c.selectedFileId[1]
+        val dir = c.inputDirs[inputDirId]!!
+        val file = c.inputMDFiles[inputDirId]!![mdFileId]!!
+        c.selectedFileName = "$dir/$file"
+        c.recentField = "selectedFileName"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Select tab
  *
  * Conditions:
@@ -426,7 +443,7 @@ fun appShouldSelectTab(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "selectedFileId") {
+    if (c.recentField == "selectedFileName") {
         c.selectedTabId = APP_TAB_EDITOR_INDEX
         c.recentField = "selectedTabId"
         return c

@@ -99,6 +99,7 @@ function AppComponent() {
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
             KT.appShouldResizeEditor,
+            KT.appShouldSelectFileName,
             KT.appShouldSelectTab,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
