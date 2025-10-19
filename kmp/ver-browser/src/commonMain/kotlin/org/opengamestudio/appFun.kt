@@ -162,11 +162,14 @@ fun appShouldParseCfg(c: AppContext): AppContext {
 /* Read markdown file
  *
  * Conditions:
- * 1. User selected file card
+ * 1. User selected a file file
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
-    if (c.recentField == "selectedFileName") {
+    if (
+        c.recentField == "selectedFileName" &&
+        c.editedFileContents[c.selectedFileName] == null
+    ) {
         c.readFile = c.selectedFileName
         c.recentField = "readFile"
         return c
@@ -198,12 +201,22 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
 /* Set editor contents
  *
  * Conditions:
- * 1. User selected file card
+ * 1. File has been read
+ * 2. User selected a file that has already been edited/open
  */
 @JsExport
 fun appShouldResetEditorContents(c: AppContext): AppContext {
     if (c.recentField == "readFileContents") {
         c.editorContents = c.readFileContents
+        c.recentField = "editorContents"
+        return c
+    }
+
+    if (
+        c.recentField == "selectedFileName" &&
+        c.editedFileContents[c.selectedFileName] != null
+    ) {
+        c.editorContents = c.editedFileContents[c.selectedFileName]!!
         c.recentField = "editorContents"
         return c
     }
@@ -415,7 +428,7 @@ fun appShouldSelectFileName(c: AppContext): AppContext {
  * 2. User clicked `Files`
  * 3. User clicked `Editor`
  * 4. User clicked `Render`
- * 5. User selected file card
+ * 5. User selected a file
  */
 @JsExport
 fun appShouldSelectTab(c: AppContext): AppContext {
