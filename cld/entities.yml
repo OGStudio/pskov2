@@ -12,6 +12,7 @@ AppContext:
         didClickEditorTab: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool
+        didClickSaveBtn: Bool
         didLaunch: Bool
         didResize: Bool
         header: [String]
