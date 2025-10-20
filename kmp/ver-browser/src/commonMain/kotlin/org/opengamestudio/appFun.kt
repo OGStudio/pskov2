@@ -159,10 +159,10 @@ fun appShouldParseCfg(c: AppContext): AppContext {
     return c
 }
 
-/* Read markdown file
+/* Read a file from disk
  *
  * Conditions:
- * 1. User selected a file file
+ * 1. User selected a file
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
@@ -393,6 +393,23 @@ fun appShouldResizeEditor(c: AppContext): AppContext {
     ) {
         c.resizeEditor = true
         c.recentField = "resizeEditor"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Save files to disk
+ *
+ * Conditions:
+ * 1. User clicked save button
+ */
+@JsExport
+fun appShouldSaveFiles(c: AppContext): AppContext {
+    if (c.recentField == "didClickSaveBtn") {
+        c.saveFiles = c.editedFileContents.keys.toTypedArray()
+        c.recentField = "saveFiles"
         return c
     }
 

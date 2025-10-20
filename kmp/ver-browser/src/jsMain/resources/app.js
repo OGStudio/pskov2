@@ -99,6 +99,7 @@ function AppComponent() {
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
             KT.appShouldResizeEditor,
+            KT.appShouldSaveFiles,
             KT.appShouldSelectFileName,
             KT.appShouldSelectTab,
         ].forEach((f) => {
