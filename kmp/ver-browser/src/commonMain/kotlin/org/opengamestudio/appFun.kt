@@ -55,6 +55,7 @@ fun appShouldInstallEditor(c: AppContext): AppContext {
  * 2. Project path has been resolved: Read pskov.cfg contents
  * 3. List input directory files
  * 4. Read file
+ * 5. Save file
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -98,6 +99,21 @@ fun appShouldLoad(c: AppContext): AppContext {
                 c.readFile,
                 CONST_POST,
                 appURL(c.baseURL, CONST_API_READ),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    if (c.recentField == "saveFileId") {
+        val file = c.saveFiles[c.saveFileId]
+        val contents = c.editedFileContents[file]!!
+        val contentsB64 = stringToBase64(contents)
+        val body = "{\"path\":\"$file\",\"contents\":\"$contentsB64\"}"
+        c.request =
+            NetRequest(
+                body,
+                CONST_POST,
+                appURL(c.baseURL, CONST_API_WRITE),
             )
         c.recentField = "request"
         return c
@@ -400,7 +416,27 @@ fun appShouldResizeEditor(c: AppContext): AppContext {
     return c
 }
 
-/* Save files to disk
+/* Save single file
+ *
+ * Conditions:
+ * 1. Starting saving files
+ */
+@JsExport
+fun appShouldSaveFileId(c: AppContext): AppContext {
+    if (
+        c.recentField == "saveFiles" &&
+        !c.editedFileContents.isEmpty()
+    ) {
+        c.saveFileId = 0
+        c.recentField = "saveFileId"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Start saving files to disk
  *
  * Conditions:
  * 1. User clicked save button

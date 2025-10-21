@@ -31,6 +31,7 @@ AppContext:
         resizeEditor: Bool
         response: NetResponse
         responseError: NetResponse
+        saveFileId: Int
         saveFiles: [String]
         selectedFileId: [Int]
         selectedFileName: String

@@ -28,6 +28,7 @@ data class AppContext(
     var resizeEditor: Boolean = false,
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
+    var saveFileId: Int = 0,
     var saveFiles: Array<String> = arrayOf(),
     var selectedFileId: Array<Int> = arrayOf(),
     var selectedFileName: String = "",
@@ -84,6 +85,8 @@ data class AppContext(
             return response as T
         } else if (name == "responseError") {
             return responseError as T
+        } else if (name == "saveFileId") {
+            return saveFileId as T
         } else if (name == "saveFiles") {
             return saveFiles as T
         } else if (name == "selectedFileId") {
@@ -154,6 +157,8 @@ data class AppContext(
             response = value as NetResponse
         } else if (name == "responseError") {
             responseError = value as NetResponse
+        } else if (name == "saveFileId") {
+            saveFileId = value as Int
         } else if (name == "saveFiles") {
             saveFiles = value as Array<String>
         } else if (name == "selectedFileId") {

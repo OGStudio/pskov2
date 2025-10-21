@@ -1,5 +1,6 @@
 package org.opengamestudio
 import kotlin.js.JsExport
+import kotlin.io.encoding.*
 
 // Extract command line argument value
 @JsExport
@@ -104,4 +105,12 @@ fun shortFieldValue(v: String): String {
         return v.take(100) + "…";
     }
     return v
+}
+
+// Convert string to Base64 string
+@JsExport
+@OptIn(ExperimentalEncodingApi::class)
+fun stringToBase64(txt: String): String {
+    val arr = txt.encodeToByteArray()
+    return Base64.Default.encode(arr)
 }
