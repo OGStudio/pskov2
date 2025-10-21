@@ -107,8 +107,7 @@ fun appShouldLoad(c: AppContext): AppContext {
     if (c.recentField == "saveFileId") {
         val file = c.saveFiles[c.saveFileId]
         val contents = c.editedFileContents[file]!!
-        val contentsB64 = stringToBase64(contents)
-        val body = "{\"path\":\"$file\",\"contents\":\"$contentsB64\"}"
+        val body = fileContentsToJSON(file, contents)
         c.request =
             NetRequest(
                 body,

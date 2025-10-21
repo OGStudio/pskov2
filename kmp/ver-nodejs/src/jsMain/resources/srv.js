@@ -33,6 +33,7 @@ function SrvComponent() {
             "projectDir", (c) => { srvResolvePath(c.projectDir) },
             "readFile", (c) => { srvReadFile(c.readFile) },
             "url", (c) => { open(c.url) },
+            "writeFile", (c) => { srvWriteFile(c.writeFile[0], c.writeFile[1]) },
         ];
         let halfCount = oneliners.length / 2;
         for (let i = 0; i < halfCount; ++i) {
@@ -51,6 +52,7 @@ function SrvComponent() {
             KT.srvShouldResetHTTPPort,
             KT.srvShouldResetProjectDir,
             KT.srvShouldResetResponse,
+            KT.srvShouldWriteFile,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
         });
@@ -94,6 +96,17 @@ function srvReadFile(fileName) {
 function srvResolvePath(relative) {
     let p = path.resolve(relative);
     srvCtrl().set("projectAbsPath", p);
+}
+
+function srvWriteFile(fileName, contents) {
+    var isOk = true;
+    try {
+        fs.writeFileSync(fileName, contents);
+    } catch (e) {
+        console.error("ERR srvWF e:", e);
+        isOk = false;
+    }
+    srvCtrl().set("didWriteFile", isOk);
 }
 
 //<!-- Installation -->

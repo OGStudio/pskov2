@@ -68,6 +68,7 @@ SrvContext:
         browserDir: String
         defaultHTTPPort: Int
         didLaunch: Bool
+        didWriteFile: Bool
         dirFiles: [FSFile]
         httpPort: Int
         inputDir: String
@@ -80,3 +81,4 @@ SrvContext:
         request: NetRequest
         response: NetResponse
         url: String
+        writeFile: [String]

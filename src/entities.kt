@@ -202,6 +202,7 @@ data class SrvContext(
     var browserDir: String = "",
     var defaultHTTPPort: Int = 0,
     var didLaunch: Boolean = false,
+    var didWriteFile: Boolean = false,
     var dirFiles: Array<FSFile> = arrayOf(),
     var httpPort: Int = 0,
     var inputDir: String = "",
@@ -214,6 +215,7 @@ data class SrvContext(
     var request: NetRequest = NetRequest(),
     var response: NetResponse = NetResponse(),
     var url: String = "",
+    var writeFile: Array<String> = arrayOf(),
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
@@ -225,6 +227,8 @@ data class SrvContext(
             return defaultHTTPPort as T
         } else if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "didWriteFile") {
+            return didWriteFile as T
         } else if (name == "dirFiles") {
             return dirFiles as T
         } else if (name == "httpPort") {
@@ -249,6 +253,8 @@ data class SrvContext(
             return response as T
         } else if (name == "url") {
             return url as T
+        } else if (name == "writeFile") {
+            return writeFile as T
         }
         return "unknown-field-name" as T
     }
@@ -269,6 +275,8 @@ data class SrvContext(
             defaultHTTPPort = value as Int
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "didWriteFile") {
+            didWriteFile = value as Boolean
         } else if (name == "dirFiles") {
             dirFiles = value as Array<FSFile>
         } else if (name == "httpPort") {
@@ -293,6 +301,8 @@ data class SrvContext(
             response = value as NetResponse
         } else if (name == "url") {
             url = value as String
+        } else if (name == "writeFile") {
+            writeFile = value as Array<String>
         }
     }
 }

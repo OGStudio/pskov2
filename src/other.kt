@@ -18,6 +18,16 @@ fun cliArgumentValue(
     return ""
 }
 
+// Generate JSON for writing a file
+@JsExport
+fun fileContentsToJSON(
+    file: String,
+    contents: String
+): String {
+    val contentsB64 = stringToBase64(contents)
+    return "{\"path\":\"$file\",\"contents\":\"$contentsB64\"}"
+}
+
 // Convert list of files to JSON format
 @JsExport
 fun filesToJSON(files: Array<FSFile>): String {
@@ -41,6 +51,20 @@ fun forKIntVArrayString(
         val items = dict[key]!!
         cb(key, items)
     }
+}
+
+// Convert JSON description to file with contents
+@OptIn(ExperimentalEncodingApi::class)
+@JsExport
+fun jsonToFileContents(json: String): Map<String, String> {
+    var d = mutableMapOf<String, String>()
+    val parts = json.split("\"")
+    if (parts.size == 9) {
+        d["path"] = parts[3]
+        val contentsB64 = parts[7]
+        d["contents"] = Base64.Default.decode(contentsB64).decodeToString()
+    }
+    return d
 }
 
 // Convert a list of files in JSON format to a list of FSFiles
