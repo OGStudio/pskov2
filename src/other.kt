@@ -30,23 +30,36 @@ fun debugShort(str: String): String {
 // Debug representation of a value
 @JsExport
 fun debugString(v: Any): String {
-    val orig = v
+    // Prepend a string with its length
     if (v is String) {
-        // Prepend string values with their length
-        return "S(${v.length})$orig"
-    } else if (v is Array<*>) {
+        return "S(${v.length})$v"
+    }
+
+    // Prepend an array with its size
+    if (v is Array<*>) {
         var out = ""
         for (item in v) {
             if (!out.isEmpty()) {
                 out += ","
             }
-            out += "$item"
+            out += debugString(item!!)
         }
-        // Prepend array values with their size
         return "A(${v.size})$out"
     }
 
-    return "$orig"
+    // Prepend a dictionary with its size
+    if (v is Map<*, *>) {
+        var out = ""
+        for ((key, value) in v) {
+            if (!out.isEmpty()) {
+                out += ","
+            }
+            out += debugString(key!!) + ":" + debugString(value!!)
+        }
+        return "D(${v.size})$out"
+    }
+
+    return "$v"
 }
 
 // Generate JSON for writing a file
