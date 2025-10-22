@@ -124,11 +124,19 @@ fun parseCfg(raw: String): Map<String, String> {
 
 // Shorten field values that are too lengthy for debug output
 @JsExport
-fun shortFieldValue(v: String): String {
-    if (v.length > 200) {
-        return v.take(100) + "…";
+fun shortFieldValue(v: Any): String {
+    var str = ""
+
+    if (v is String) {
+        str = "S(${v.length})${v}"
+    } else {
+        str = "${v}"
     }
-    return v
+
+    if (str.length > 200) {
+        return str.take(100) + "…";
+    }
+    return str
 }
 
 // Convert string to Base64 string

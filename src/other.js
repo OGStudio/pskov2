@@ -41,9 +41,9 @@ function loadURL(p, onload, onerror) {
 function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     ctrl.registerCallback((c) => {
         let k = c.recentField;
-        var v = `${c.field(c.recentField)}`;
+        var v = c.field(c.recentField);
         v = KT.shortFieldValue(v);
-        console.log(`ИГР ${cmpName} ctrl key/value: '${k}'/'${v}'`);
+        console.log(`ИГР ${cmpName} ctrl k/v: '${k}'/'${v}'`);
     });
 }
 
