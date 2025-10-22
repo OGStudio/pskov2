@@ -18,6 +18,37 @@ fun cliArgumentValue(
     return ""
 }
 
+// Shorten string that is too lengthy for debug output
+@JsExport
+fun debugShort(str: String): String {
+    if (str.length > 200) {
+        return str.take(100) + "…";
+    }
+    return str
+}
+
+// Debug representation of a value
+@JsExport
+fun debugString(v: Any): String {
+    val orig = v
+    if (v is String) {
+        // Prepend string values with their length
+        return "S(${v.length})$orig"
+    } else if (v is Array<*>) {
+        var out = ""
+        for (item in v) {
+            if (!out.isEmpty()) {
+                out += ","
+            }
+            out += "$item"
+        }
+        // Prepend array values with their size
+        return "A(${v.size})$out"
+    }
+
+    return "$orig"
+}
+
 // Generate JSON for writing a file
 @JsExport
 fun fileContentsToJSON(
@@ -122,23 +153,6 @@ fun parseCfg(raw: String): Map<String, String> {
     return d
 }
 
-// Shorten field values that are too lengthy for debug output
-@JsExport
-fun shortFieldValue(v: Any): String {
-    var str = ""
-
-    if (v is String) {
-        str = "S(${v.length})${v}"
-    } else {
-        str = "${v}"
-    }
-
-    if (str.length > 200) {
-        return str.take(100) + "…";
-    }
-    return str
-}
-
 // Convert string to Base64 string
 @JsExport
 @OptIn(ExperimentalEncodingApi::class)
@@ -146,3 +160,4 @@ fun stringToBase64(txt: String): String {
     val arr = txt.encodeToByteArray()
     return Base64.Default.encode(arr)
 }
+

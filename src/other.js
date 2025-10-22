@@ -42,7 +42,8 @@ function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     ctrl.registerCallback((c) => {
         let k = c.recentField;
         var v = c.field(c.recentField);
-        v = KT.shortFieldValue(v);
+        v = KT.debugString(v);
+        v = KT.debugShort(v);
         console.log(`ИГР ${cmpName} ctrl k/v: '${k}'/'${v}'`);
     });
 }
