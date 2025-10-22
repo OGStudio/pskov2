@@ -203,7 +203,7 @@ fun appShouldReadFile(c: AppContext): AppContext {
 fun appShouldResetEditedFileContents(c: AppContext): AppContext {
     if (c.recentField == "editedContents") {
         var fileContents = c.editedFileContents.toMutableMap()
-        fileContents[c.readFile] = c.editedContents
+        fileContents[c.selectedFileName] = c.editedContents
         c.editedFileContents = fileContents
         c.recentField = "editedFileContents"
         return c
@@ -222,6 +222,7 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
 @JsExport
 fun appShouldResetEditorContents(c: AppContext): AppContext {
     if (c.recentField == "readFileContents") {
+        println("ИГР appF.appSREC-1")
         c.editorContents = c.readFileContents
         c.recentField = "editorContents"
         return c
@@ -231,6 +232,7 @@ fun appShouldResetEditorContents(c: AppContext): AppContext {
         c.recentField == "selectedFileName" &&
         c.editedFileContents[c.selectedFileName] != null
     ) {
+        println("ИГР appF.appSREC-2")
         c.editorContents = c.editedFileContents[c.selectedFileName]!!
         c.recentField = "editorContents"
         return c
