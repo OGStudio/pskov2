@@ -1,6 +1,6 @@
 package org.opengamestudio
-import kotlin.js.JsExport
 import kotlin.io.encoding.*
+import kotlin.js.JsExport
 
 // Extract command line argument value
 @JsExport
