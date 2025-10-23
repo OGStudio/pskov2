@@ -194,6 +194,26 @@ fun appShouldReadFile(c: AppContext): AppContext {
     return c
 }
 
+/* Mark the end of saving edited fiels
+ *
+ * Conditions:
+ * 1. Saved the last file
+ */
+@JsExport
+fun appShouldResetDidSaveEditedFiles(c: AppContext): AppContext {
+    if (
+        c.recentField == "didSaveFile" &&
+        c.saveFileId + 1 == c.saveFiles.size
+    ) {
+        c.didSaveEditedFiles = true
+        c.recentField = "didSaveEditedFiles"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Mark the end of file saving
  *
  * Conditions:
@@ -219,6 +239,7 @@ fun appShouldResetDidSaveFile(c: AppContext): AppContext {
  *
  * Conditions:
  * 1. User edited a file
+ * 2. User saved edited files
  */
 @JsExport
 fun appShouldResetEditedFileContents(c: AppContext): AppContext {
@@ -226,6 +247,12 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
         var fileContents = c.editedFileContents.toMutableMap()
         fileContents[c.selectedFileName] = c.editedContents
         c.editedFileContents = fileContents
+        c.recentField = "editedFileContents"
+        return c
+    }
+
+    if (c.recentField == "didSaveEditedFiles") {
+        c.editedFileContents = mapOf()
         c.recentField = "editedFileContents"
         return c
     }
