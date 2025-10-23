@@ -176,12 +176,6 @@ function appLoad(req) {
 function appResetEditorContents(cmp, contents) {
     cmp.editor.setValue(contents);
     cmp.editor.getSelection().clearSelection();
-    /*
-    var contents = editedContents[file];
-    if (contents == null) {
-        contents = originalContents;
-    }
-    */
 }
 
 function appResetHeader(texts) {
