@@ -12,6 +12,7 @@ data class AppContext(
     var didClickSaveBtn: Boolean = false,
     var didLaunch: Boolean = false,
     var didResize: Boolean = false,
+    var didSaveFile: Boolean = false,
     var editedContents: String = "",
     var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
@@ -53,6 +54,8 @@ data class AppContext(
             return didLaunch as T
         } else if (name == "didResize") {
             return didResize as T
+        } else if (name == "didSaveFile") {
+            return didSaveFile as T
         } else if (name == "editedContents") {
             return editedContents as T
         } else if (name == "editedFileContents") {
@@ -125,6 +128,8 @@ data class AppContext(
             didLaunch = value as Boolean
         } else if (name == "didResize") {
             didResize = value as Boolean
+        } else if (name == "didSaveFile") {
+            didSaveFile = value as Boolean
         } else if (name == "editedContents") {
             editedContents = value as String
         } else if (name == "editedFileContents") {

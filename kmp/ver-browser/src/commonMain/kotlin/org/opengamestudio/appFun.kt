@@ -194,6 +194,27 @@ fun appShouldReadFile(c: AppContext): AppContext {
     return c
 }
 
+/* Mark the end of file saving
+ *
+ * Conditions:
+ * 1. Received response for POST /write
+ */
+@JsExport
+fun appShouldResetDidSaveFile(c: AppContext): AppContext {
+    if (
+        c.recentField == "response" &&
+        c.response.req.method == CONST_POST &&
+        c.response.req.url == appURL(c.baseURL, CONST_API_WRITE)
+    ) {
+        c.didSaveFile = true
+        c.recentField = "didSaveFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set temporary file contents
  *
  * Conditions:
@@ -294,7 +315,8 @@ fun appShouldResetInputDirFiles(c: AppContext): AppContext {
         c.recentField == "response" &&
         c.listInputDirId < c.inputDirs.size &&
         c.inputDirs[c.listInputDirId] == c.request.body &&
-        c.request.url == appURL(c.baseURL, CONST_API_LIST)
+        //??c.request.url == appURL(c.baseURL, CONST_API_LIST)
+        c.response.req.url == appURL(c.baseURL, CONST_API_LIST)
     ) {
         var d = c.inputDirFiles.toMutableMap()
         d[c.listInputDirId] = jsonToFiles(c.response.contents)
@@ -420,7 +442,8 @@ fun appShouldResizeEditor(c: AppContext): AppContext {
 /* Save single file
  *
  * Conditions:
- * 1. Starting saving files
+ * 1. Starting to save files
+ * 2. Continuing to save files
  */
 @JsExport
 fun appShouldSaveFileId(c: AppContext): AppContext {
@@ -429,6 +452,15 @@ fun appShouldSaveFileId(c: AppContext): AppContext {
         !c.editedFileContents.isEmpty()
     ) {
         c.saveFileId = 0
+        c.recentField = "saveFileId"
+        return c
+    }
+
+    if (
+        c.recentField == "didSaveFile" &&
+        c.saveFileId + 1 < c.saveFiles.size
+    ) {
+        c.saveFileId += 1
         c.recentField = "saveFileId"
         return c
     }

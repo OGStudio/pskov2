@@ -90,6 +90,7 @@ function AppComponent() {
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
+            KT.appShouldResetDidSaveFile,
             KT.appShouldResetEditedFileContents,
             KT.appShouldResetEditorContents,
             KT.appShouldResetHeader,

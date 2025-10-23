@@ -15,6 +15,7 @@ AppContext:
         didClickSaveBtn: Bool
         didLaunch: Bool
         didResize: Bool
+        didSaveFile: Bool
         header: [String]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
