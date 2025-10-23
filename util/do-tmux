@@ -1,0 +1,15 @@
+#!/bin/bash -e
+SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
+
+cd $SCRIPT_DIR/../kmp/ver-browser/src/jsMain/resources
+tmux new-window -n b-js
+cd $SCRIPT_DIR/../kmp/ver-browser/src/commonMain/kotlin/org/opengamestudio
+tmux new-window -n b-kt
+
+cd $SCRIPT_DIR/../kmp/ver-nodejs/src/jsMain/resources
+tmux new-window -n n-js
+cd $SCRIPT_DIR/../kmp/ver-nodejs/src/commonMain/kotlin/org/opengamestudio
+tmux new-window -n n-kt
+
+cd $SCRIPT_DIR/../src
+tmux new-window -n src

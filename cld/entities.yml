@@ -9,15 +9,35 @@ AppContext:
     fields:
         baseURL: String
         cfg: [String: String]
+        didClickEditorTab: Bool
+        didClickFilesTab: Bool
+        didClickRenderTab: Bool
+        didClickSaveBtn: Bool
         didLaunch: Bool
+        didResize: Bool
+        didSaveEditedFiles: Bool
+        didSaveFile: Bool
+        header: [String]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputMDFiles: [Int: [String]]
+        installEditor: Bool
         listInputDirId: Int
+        editedContents: String
+        editedFileContents: [String: String]
+        editorContents: String
         projectPath: String
+        readFile: String
+        readFileContents: String
         request: NetRequest
+        resizeEditor: Bool
         response: NetResponse
         responseError: NetResponse
+        saveFileId: Int
+        saveFiles: [String]
+        selectedFileId: [Int]
+        selectedFileName: String
+        selectedTabId: Int
         splashTimeout: Int
 
 FSFile:
@@ -50,6 +70,7 @@ SrvContext:
         browserDir: String
         defaultHTTPPort: Int
         didLaunch: Bool
+        didWriteFile: Bool
         dirFiles: [FSFile]
         httpPort: Int
         inputDir: String
@@ -62,3 +83,4 @@ SrvContext:
         request: NetRequest
         response: NetResponse
         url: String
+        writeFile: [String]

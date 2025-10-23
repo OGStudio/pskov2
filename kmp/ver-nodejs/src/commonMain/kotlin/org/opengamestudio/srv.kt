@@ -52,7 +52,7 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
     return c
 }
 
-/* Read files
+/* Read a file
  *
  * Conditions:
  * 1. GET /
@@ -153,6 +153,7 @@ fun srvShouldResetProjectDir(c: SrvContext): SrvContext {
  * 1. Did receive contents of the requested file
  * 2. GET /path
  * 3. Did receive contents of the requested directory
+ * 4. Did finish writing a file
  */
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
@@ -179,6 +180,40 @@ fun srvShouldResetResponse(c: SrvContext): SrvContext {
         return c
     }
 
+    if (c.recentField == "didWriteFile") {
+        var reply = ""
+        if (!c.didWriteFile) {
+            reply = "ERR write"
+        }
+        c.response = NetResponse(reply, c.request)
+        c.recentField = "response"
+        return c
+    }
+
     c.recentField = "none"
     return c
 }
+
+/* Write a file
+ *
+ * Conditions:
+ * 1. POST /write
+ */
+@JsExport
+fun srvShouldWriteFile(c: SrvContext): SrvContext {
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_POST && 
+        c.request.url == CONST_API_WRITE
+    ) {
+        val d = jsonToFileContents(c.request.body)
+        val fullPath = "${c.projectAbsPath}/${d["path"]!!}"
+        c.writeFile = arrayOf(fullPath, d["contents"]!!)
+        c.recentField = "writeFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+

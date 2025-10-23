@@ -41,10 +41,22 @@ function loadURL(p, onload, onerror) {
 function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     ctrl.registerCallback((c) => {
         let k = c.recentField;
-        var v = `${c.field(c.recentField)}`;
-        v = KT.shortFieldValue(v);
-        console.log(`ИГР ${cmpName} ctrl key/value: '${k}'/'${v}'`);
+        var v = c.field(c.recentField);
+        v = KT.debugString(v);
+        v = KT.debugShort(v);
+        console.log(`ИГР ${cmpName} ctrl k/v: '${k}'/'${v}'`);
     });
+}
+
+// Toggle element class
+function setUIClassActive(id, className, isActive) {
+    let el = deId(id);
+    if (isActive) {
+        el.classList.add(className);
+    }
+    if (!isActive) {
+        el.classList.remove(className);
+    }
 }
 
 // Change element text

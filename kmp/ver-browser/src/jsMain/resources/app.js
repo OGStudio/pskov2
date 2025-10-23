@@ -6,11 +6,13 @@ function appCtrl() {
 
 //<!-- Constants -->
 
-let APP_HEADER_PATH_ID = "header-path";
+let APP_FILES_ID = "files";
+let APP_HEADER_KEY_ID = "headerKey";
+let APP_HEADER_VALUE_ID = "headerValue";
 
 let APP_INPUT_DIR_FILE_T = `
     <div>
-        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+        <div class='uk-card uk-card-default uk-card-hover uk-card-body cursor-pointer' onclick='appCtrl().set("selectedFileId", [%PAGE_ID%])'>
             <p><span uk-icon="file-text"></span>%NAME%</p>
             <p>TODO-Date</p>
             <h3 class="uk-card-title">TODO-Title</h3>
@@ -26,15 +28,21 @@ let APP_INPUT_DIR_SECTION_T = `
 <div id="%ID%" class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>
 </div>
 `;
-let APP_INPUT_DIRS_ID = "input-dirs";
 
+let APP_EDITOR_ID = "editor";
+let APP_EDITOR_CONTENTS_ID = "editorContents";
+let APP_RENDER_ID = "render";
 let APP_SPLASH_ID = "splash";
+let APP_TAB_FILES_ID = "tabFiles";
+let APP_TAB_EDITOR_ID = "tabEditor";
+let APP_TAB_RENDER_ID = "tabRender";
 
 //<!-- Component -->
 
 function AppComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.AppContext());
+        this.editor = null;
         registerCtrlDbgOutput(this.ctrl, "App", KT);
 
         // Defaults
@@ -47,10 +55,14 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
+            "header", (c) => { appResetHeader(c.header) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
-            "projectPath", (c) => { setUIText(APP_HEADER_PATH_ID, c.projectPath) },
+            "installEditor", (c) => { appInstallEditor(this) },
             "request", (c) => { appLoad(c.request) },
+            "resizeEditor", (c) => { appResizeEditor() },
+            "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
         let halfCount = oneliners.length / 2;
@@ -65,18 +77,34 @@ function AppComponent() {
         window.addEventListener("load", (e) => {
             this.ctrl.set("didLaunch", true);
         });
+        window.addEventListener("resize", (e) => {
+            this.ctrl.set("didResize", true);
+        });
     };
 
     this.setupShoulds = function() {
         [
             KT.appShouldHideSplash,
+            KT.appShouldInstallEditor,
             KT.appShouldListInputDir,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
+            KT.appShouldReadFile,
+            KT.appShouldResetDidSaveEditedFiles,
+            KT.appShouldResetDidSaveFile,
+            KT.appShouldResetEditedFileContents,
+            KT.appShouldResetEditorContents,
+            KT.appShouldResetHeader,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
             KT.appShouldResetInputMDFiles,
             KT.appShouldResetProjectPath,
+            KT.appShouldResetReadFileContents,
+            KT.appShouldResizeEditor,
+            KT.appShouldSaveFileId,
+            KT.appShouldSaveFiles,
+            KT.appShouldSelectFileName,
+            KT.appShouldSelectTab,
         ].forEach((f) => {
             this.ctrl.registerFunction(f);
         });
@@ -97,7 +125,7 @@ function appDisplayInputDirSections(items) {
             .replaceAll("%NAME%", item)
             .replaceAll("%NUM%", Number(i) + 1);
     }
-    setUIText(APP_INPUT_DIRS_ID, html);
+    setUIText(APP_FILES_ID, html);
 }
 
 function appDisplayInputMDFiles(d) {
@@ -107,8 +135,10 @@ function appDisplayInputMDFiles(d) {
         // For each file
         for (let i in files) {
             let name = files[i];
+            let pageId = [id, i];
             html += APP_INPUT_DIR_FILE_T
-                .replaceAll("%NAME%", name);
+                .replaceAll("%NAME%", name)
+                .replaceAll("%PAGE_ID%", pageId);
         }
         let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", id);
         setUIText(sectionId, html);
@@ -120,6 +150,13 @@ function appHideSplash(timeout) {
         () => { setUIVisibility(APP_SPLASH_ID, false) },
         timeout
     );
+}
+
+function appInstallEditor(cmp) {
+    cmp.editor = ace.edit(APP_EDITOR_CONTENTS_ID);
+    cmp.editor.session.on("change", (d) => {
+        appCtrl().set("editedContents", cmp.editor.getValue());
+    });
 }
 
 function appLoad(req) {
@@ -134,6 +171,34 @@ function appLoad(req) {
             appCtrl().set("responseError", r);
         }
     );
+}
+
+function appResetEditorContents(cmp, contents) {
+    cmp.editor.setValue(contents);
+    cmp.editor.getSelection().clearSelection();
+}
+
+function appResetHeader(texts) {
+    setUIText(APP_HEADER_KEY_ID, texts[0]);
+    setUIText(APP_HEADER_VALUE_ID, texts[1]);
+}
+
+function appResizeEditor() {
+    let height = window.innerHeight;
+    let ed = deId(APP_EDITOR_CONTENTS_ID);
+    let rect = ed.getBoundingClientRect();
+    let targetHeight = height - rect.y;
+    ed.style.height = `${targetHeight}px`;
+}
+
+function appSelectTab(id) {
+    setUIVisibility(APP_FILES_ID, id == KT.APP_TAB_FILES_INDEX);
+    setUIVisibility(APP_EDITOR_ID, id == KT.APP_TAB_EDITOR_INDEX);
+    setUIVisibility(APP_RENDER_ID, id == KT.APP_TAB_RENDER_INDEX);
+
+    setUIClassActive(APP_TAB_FILES_ID, "uk-active", id == KT.APP_TAB_FILES_INDEX);
+    setUIClassActive(APP_TAB_EDITOR_ID, "uk-active", id == KT.APP_TAB_EDITOR_INDEX);
+    setUIClassActive(APP_TAB_RENDER_ID, "uk-active", id == KT.APP_TAB_RENDER_INDEX);
 }
 
 //<!-- Other functions -->

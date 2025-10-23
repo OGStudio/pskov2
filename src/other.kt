@@ -1,4 +1,5 @@
 package org.opengamestudio
+import kotlin.io.encoding.*
 import kotlin.js.JsExport
 
 // Extract command line argument value
@@ -15,6 +16,60 @@ fun cliArgumentValue(
         }
     }
     return ""
+}
+
+// Shorten string that is too lengthy for debug output
+@JsExport
+fun debugShort(str: String): String {
+    if (str.length > 200) {
+        return str.take(100) + "…";
+    }
+    return str
+}
+
+// Debug representation of a value
+@JsExport
+fun debugString(v: Any): String {
+    // Prepend a string with its length
+    if (v is String) {
+        return "S(${v.length})$v"
+    }
+
+    // Prepend an array with its size
+    if (v is Array<*>) {
+        var out = ""
+        for (item in v) {
+            if (!out.isEmpty()) {
+                out += ","
+            }
+            out += debugString(item!!)
+        }
+        return "A(${v.size})$out"
+    }
+
+    // Prepend a dictionary with its size
+    if (v is Map<*, *>) {
+        var out = ""
+        for ((key, value) in v) {
+            if (!out.isEmpty()) {
+                out += ","
+            }
+            out += debugString(key!!) + ":" + debugString(value!!)
+        }
+        return "D(${v.size})$out"
+    }
+
+    return "$v"
+}
+
+// Generate JSON for writing a file
+@JsExport
+fun fileContentsToJSON(
+    file: String,
+    contents: String
+): String {
+    val contentsB64 = stringToBase64(contents)
+    return "{\"path\":\"$file\",\"contents\":\"$contentsB64\"}"
 }
 
 // Convert list of files to JSON format
@@ -42,7 +97,21 @@ fun forKIntVArrayString(
     }
 }
 
-// Convert list of files in JSON format to list of FSFiles
+// Convert JSON description to file with contents
+@OptIn(ExperimentalEncodingApi::class)
+@JsExport
+fun jsonToFileContents(json: String): Map<String, String> {
+    var d = mutableMapOf<String, String>()
+    val parts = json.split("\"")
+    if (parts.size == 9) {
+        d["path"] = parts[3]
+        val contentsB64 = parts[7]
+        d["contents"] = Base64.Default.decode(contentsB64).decodeToString()
+    }
+    return d
+}
+
+// Convert a list of files in JSON format to a list of FSFiles
 @JsExport
 fun jsonToFiles(raw: String): Array<FSFile> {
     var items = arrayOf<FSFile>()
@@ -97,11 +166,11 @@ fun parseCfg(raw: String): Map<String, String> {
     return d
 }
 
-// Shorten field values that are too lengthy for debug output
+// Convert string to Base64 string
 @JsExport
-fun shortFieldValue(v: String): String {
-    if (v.length > 200) {
-        return v.take(100) + "…";
-    }
-    return v
+@OptIn(ExperimentalEncodingApi::class)
+fun stringToBase64(txt: String): String {
+    val arr = txt.encodeToByteArray()
+    return Base64.Default.encode(arr)
 }
+
