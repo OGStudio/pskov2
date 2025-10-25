@@ -6,3 +6,6 @@ dist/*js
 dist/css
 dist/img
 dist/index.html
+dist/node_modules
+dist/package.json
+dist/package-lock.json

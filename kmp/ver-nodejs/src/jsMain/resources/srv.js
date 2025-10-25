@@ -4,7 +4,7 @@ let mime = require("mime-types");
 let open = require("open");
 let other = require("./other");
 let path = require("path");
-let KT = require("pskov-ver-nodejs").org.opengamestudio;
+let KT = require("./pskov-ver-nodejs").org.opengamestudio;
 
 //!<-- API -->
 

@@ -27,6 +27,7 @@ cd $wasDir
 # Make distribution
 rm -fR $DIST_DIR
 mkdir -p $DIST_DIR
+cp $SCRIPT_DIR/util/package.json $DIST_DIR
 cp -R $SERVER_DIR/* $DIST_DIR
 cp -R $BROWSER_DIR/* $DIST_DIR
 rm $DIST_DIR/*map
@@ -39,5 +40,7 @@ fi
 # Run server
 #node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
 cd $DIST_DIR
-node run start -- --browserDir=. --projectDir=$PROJECT_DIR
 #node $DIST/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
+npm install
+npm run start -- --browserDir=. --projectDir=$PROJECT_DIR
+#npx node srv.js --browserDir=. --projectDir=$PROJECT_DIR
