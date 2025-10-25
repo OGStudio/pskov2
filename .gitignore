@@ -2,3 +2,7 @@
 .gradle
 build
 yarn.lock
+dist/*js
+dist/css
+dist/img
+dist/index.html

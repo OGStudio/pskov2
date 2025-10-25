@@ -1,12 +1,10 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
 
+BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin
+DIST_DIR=$SCRIPT_DIR/dist
 PROJECT_DIR=$1
-
-if [ -z "$PROJECT_DIR" ]; then
-    echo "Usage: $0 PROJECT_DIR"
-    exit 1
-fi
+SERVER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin
 
 # Enter KMP dir to run Gradle
 wasDir=$(pwd)
@@ -26,7 +24,20 @@ fi
 # Exit KMP dir
 cd $wasDir
 
+# Make distribution
+rm -fR $DIST_DIR
+mkdir -p $DIST_DIR
+cp -R $SERVER_DIR/* $DIST_DIR
+cp -R $BROWSER_DIR/* $DIST_DIR
+rm $DIST_DIR/*map
+
+if [ -z "$PROJECT_DIR" ]; then
+    echo "Usage: $0 PROJECT_DIR"
+    exit 1
+fi
+
 # Run server
-BROWSER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-browser/kotlin
-SERVER_DIR=$SCRIPT_DIR/kmp/build/js/packages/pskov-ver-nodejs/kotlin
-node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
+#node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
+cd $DIST_DIR
+node run start -- --browserDir=. --projectDir=$PROJECT_DIR
+#node $DIST/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
