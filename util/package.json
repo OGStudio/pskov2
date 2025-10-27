@@ -1,5 +1,8 @@
 {
   "author": "Michael Kapelko <kornerr@gmail.com> (opengamestudio.org)",
+  "bin": {
+    "pskov": "ver-nodejs/srv.js"
+  },
   "bugs": {
     "url": "https://github.com/OGStudio/pskov2/issues"
   },
@@ -22,5 +25,5 @@
   "scripts": {
     "start": "node ver-nodejs/srv.js"
   },
-  "version": "0.0.1"
+  "version": "0.2.0"
 }
