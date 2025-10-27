@@ -25,12 +25,13 @@ fi
 cd $wasDir
 
 # Make distribution
-rm -fR $DIST_DIR
-mkdir -p $DIST_DIR
+rm -fR $DIST_DIR/*
+mkdir -p $DIST_DIR/{ver-browser,ver-nodejs}
 cp $SCRIPT_DIR/util/package.json $DIST_DIR
-cp -R $SERVER_DIR/* $DIST_DIR
-cp -R $BROWSER_DIR/* $DIST_DIR
-rm $DIST_DIR/*map
+cp -R $BROWSER_DIR/* $DIST_DIR/ver-browser
+cp -R $SERVER_DIR/* $DIST_DIR/ver-nodejs
+rm $DIST_DIR/ver-nodejs/*dom_api*
+rm $DIST_DIR/*/*map
 
 if [ -z "$PROJECT_DIR" ]; then
     echo "Usage: $0 PROJECT_DIR"
@@ -38,9 +39,6 @@ if [ -z "$PROJECT_DIR" ]; then
 fi
 
 # Run server
-#node $SERVER_DIR/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
 cd $DIST_DIR
-#node $DIST/srv.js --browserDir=$BROWSER_DIR --projectDir=$PROJECT_DIR
 npm install
-npm run start -- --browserDir=. --projectDir=$PROJECT_DIR
-#npx node srv.js --browserDir=. --projectDir=$PROJECT_DIR
+npm run start -- --browserDir=ver-browser --projectDir=../$PROJECT_DIR

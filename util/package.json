@@ -20,7 +20,7 @@
     "url": "git+https://github.com/OGStudio/pskov2.git"
   },
   "scripts": {
-    "start": "node srv.js"
+    "start": "node ver-nodejs/srv.js"
   },
   "version": "0.0.1"
 }
