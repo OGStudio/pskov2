@@ -68,6 +68,7 @@ SrvContext:
     fields:
         arguments: [String]
         browserDir: String
+        defaultBrowserDir: String
         defaultHTTPPort: Int
         didLaunch: Bool
         didWriteFile: Bool

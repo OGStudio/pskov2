@@ -99,12 +99,25 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
 /* Reset path to serve files requested by web browser
  *
  * Conditions:
- * 1. Did launch
+ * 1. Did launch with browserDir argument specified
+ * 2. Did launch without the specified argument
  */
 @JsExport
 fun srvShouldResetBrowserDir(c: SrvContext): SrvContext {
-    if (c.recentField == "didLaunch") {
+    if (
+        c.recentField == "didLaunch" &&
+        !cliArgumentValue(c.arguments, SRV_ARGUMENT_BROWSER_DIR).isEmpty()
+    ) {
         c.browserDir = cliArgumentValue(c.arguments, SRV_ARGUMENT_BROWSER_DIR)
+        c.recentField = "browserDir"
+        return c
+    }
+
+    if (
+        c.recentField == "didLaunch" &&
+        cliArgumentValue(c.arguments, SRV_ARGUMENT_BROWSER_DIR).isEmpty()
+    ) {
+        c.browserDir = c.defaultBrowserDir
         c.recentField = "browserDir"
         return c
     }

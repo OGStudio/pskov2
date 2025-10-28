@@ -1,10 +1,13 @@
+#!/usr/bin/env node
+
 let fs = require("fs");
 let http = require("http");
 let mime = require("mime-types");
 let open = require("open");
-let other = require("./other");
 let path = require("path");
-let KT = require("pskov-ver-nodejs").org.opengamestudio;
+
+let other = require("./other");
+let KT = require("./pskov-ver-nodejs").org.opengamestudio;
 
 //!<-- API -->
 
@@ -116,6 +119,7 @@ let cmp = new SrvComponent();
 //<!-- Defaults -->
 
 srvCtrl().set("arguments", process.argv);
+srvCtrl().set("defaultBrowserDir", __dirname + "/../ver-browser");
 srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 
 //<!-- Server -->
