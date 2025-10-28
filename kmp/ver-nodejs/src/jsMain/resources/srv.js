@@ -119,6 +119,7 @@ let cmp = new SrvComponent();
 //<!-- Defaults -->
 
 srvCtrl().set("arguments", process.argv);
+srvCtrl().set("defaultBrowserDir", __dirname + "/../ver-browser");
 srvCtrl().set("defaultHTTPPort", KT.SRV_DEFAULT_HTTP_PORT);
 
 //<!-- Server -->
