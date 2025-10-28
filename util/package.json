@@ -4,14 +4,14 @@
     "pskov": "ver-nodejs/srv.js"
   },
   "bugs": {
-    "url": "https://github.com/OGStudio/pskov2/issues"
+    "url": "https://github.com/OGStudio/pskov/issues"
   },
   "dependencies": {
     "mime-types": "3.0.1",
     "open": "8.4.2"
   },
   "description": "Cross-platform static site generator with Markdown and blogs in mind",
-  "homepage": "https://github.com/OGStudio/pskov2#readme",
+  "homepage": "https://github.com/OGStudio/pskov#readme",
   "keywords": [
     "site",
     "generator"
@@ -20,10 +20,10 @@
   "name": "pskov",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OGStudio/pskov2.git"
+    "url": "git+https://github.com/OGStudio/pskov.git"
   },
   "scripts": {
     "start": "node ver-nodejs/srv.js"
   },
-  "version": "0.4.0"
+  "version": "0.5.0"
 }
