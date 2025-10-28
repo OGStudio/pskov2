@@ -55,6 +55,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },

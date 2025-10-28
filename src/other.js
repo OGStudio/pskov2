@@ -48,6 +48,22 @@ function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     });
 }
 
+// Report success as UIkit notification
+//
+// A tiny delay is used to overcome the conflict of UIkit and CLDController
+function reportSuccess(text, timeout = 500) {
+    setTimeout(
+        () => {
+            UIkit.notification({
+                message: text,
+                status: "success",
+                timeout: timeout,
+            });
+        },
+        0
+    );
+}
+
 // Toggle element class
 function setUIClassActive(id, className, isActive) {
     let el = deId(id);
