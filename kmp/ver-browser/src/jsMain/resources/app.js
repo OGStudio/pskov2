@@ -155,6 +155,7 @@ function appHideSplash(timeout) {
 
 function appInstallEditor(cmp) {
     cmp.editor = ace.edit(APP_EDITOR_CONTENTS_ID);
+    cmp.editor.session.setUseWrapMode(true);
     cmp.editor.session.on("change", (d) => {
         appCtrl().set("editedContents", cmp.editor.getValue());
     });
