@@ -137,6 +137,9 @@ let srv = http.createServer((req, res) => {
         srvCtrl().set("request", netRequest);
         let response = srvCtrl().context.response;
  
+        // Allow CORS
+        res.setHeader("Access-Control-Allow-Origin", "*");
+
         // File does not exist
         if (response.contents == SRV_ERR_HTTP_404) {
             res.writeHead(404);
