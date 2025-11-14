@@ -24,13 +24,12 @@ FILES=(
 
 for file in ${FILES[@]}; do
     echo "> $file"
-    # Копируем оригинал из CLD
+    # Copy original files CLD
     cp $CLD_DIR/kotlin/$file $SRC_DIR
     cd $SRC_DIR
-    # Исправляем пакет и импорты
-#    replace $file "package org.opengamestudio" "package su.kot\nimport kotlin.js.JsExport"
-#    # Делаем сущности доступными в JS
-#    replace $file "interface CLD" "@JsExport\ninterface CLD"
-#    replace $file "class CLD" "@JsExport\nclass CLD"
-#    replace $file "fun registerOne" "@JsExport\nfun registerOne"
+    # Add JS export
+    replace $file "package org.opengamestudio" "package org.opengamestudio\nimport kotlin.js.JsExport"
+    replace $file "interface CLD" "@JsExport\ninterface CLD"
+    replace $file "class CLD" "@JsExport\nclass CLD"
+    replace $file "fun registerOne" "@JsExport\nfun registerOne"
 done
