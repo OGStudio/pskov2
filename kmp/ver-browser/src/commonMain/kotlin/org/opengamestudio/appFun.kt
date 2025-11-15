@@ -48,6 +48,23 @@ fun appShouldInstallEditor(c: AppContext): AppContext {
     return c
 }
 
+/* Setup Markdown converter
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun appShouldInstallMDConverter(c: AppContext): AppContext {
+    if (c.recentField == "didLaunch") {
+        c.installMDConverter = true
+        c.recentField = "installMDConverter"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Make HTTP request
  *
  * Conditions:

@@ -22,6 +22,7 @@ data class AppContext(
     var inputDirs: Array<String> = arrayOf(),
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
+    var installMDConverter: Boolean = false,
     var listInputDirId: Int = 0,
     var projectPath: String = "",
     var readFile: String = "",
@@ -75,6 +76,8 @@ data class AppContext(
             return inputMDFiles as T
         } else if (name == "installEditor") {
             return installEditor as T
+        } else if (name == "installMDConverter") {
+            return installMDConverter as T
         } else if (name == "listInputDirId") {
             return listInputDirId as T
         } else if (name == "projectPath") {
@@ -151,6 +154,8 @@ data class AppContext(
             inputMDFiles = value as Map<Int, Array<String>>
         } else if (name == "installEditor") {
             installEditor = value as Boolean
+        } else if (name == "installMDConverter") {
+            installMDConverter = value as Boolean
         } else if (name == "listInputDirId") {
             listInputDirId = value as Int
         } else if (name == "projectPath") {

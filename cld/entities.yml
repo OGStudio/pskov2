@@ -22,6 +22,7 @@ AppContext:
         inputDirs: [String]
         inputMDFiles: [Int: [String]]
         installEditor: Bool
+        installMDConverter: Bool
         listInputDirId: Int
         editedContents: String
         editedFileContents: [String: String]

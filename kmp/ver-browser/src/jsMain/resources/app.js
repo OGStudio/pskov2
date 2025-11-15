@@ -43,6 +43,7 @@ function AppComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.AppContext());
         this.editor = null;
+        this.mdConverter = null;
         registerCtrlDbgOutput(this.ctrl, "App", KT);
 
         // Defaults
@@ -61,6 +62,7 @@ function AppComponent() {
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "installEditor", (c) => { appInstallEditor(this) },
+            "installMDConverter", (c) => { appInstallMDConverter(this) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
@@ -82,6 +84,7 @@ function AppComponent() {
         [
             KT.appShouldHideSplash,
             KT.appShouldInstallEditor,
+            KT.appShouldInstallMDConverter,
             KT.appShouldListInputDir,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
@@ -154,6 +157,11 @@ function appInstallEditor(cmp) {
     cmp.editor.session.on("change", (d) => {
         appCtrl().set("editedContents", cmp.editor.getValue());
     });
+}
+
+function appInstallMDConverter(cmp) {
+    cmp.mdConverter = new showdown.Converter();
+    cmp.mdConverter.setOption("tables", true);
 }
 
 function appLoad(req) {
