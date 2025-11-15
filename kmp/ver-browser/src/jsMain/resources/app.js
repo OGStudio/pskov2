@@ -54,7 +54,7 @@ function AppComponent() {
     };
 
     this.setupEffects = function() {
-        let oneliners = [ 
+        let oneliners = [
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
@@ -66,12 +66,7 @@ function AppComponent() {
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
-        let halfCount = oneliners.length / 2;
-        for (let i = 0; i < halfCount; ++i) {
-            let field = oneliners[i * 2];
-            let cb = oneliners[i * 2 + 1];
-            this.ctrl.registerFieldCallback(field, cb);
-        }
+        KT.registerOneliners(this.ctrl, oneliners);
     };
 
     this.setupEvents = function() {
