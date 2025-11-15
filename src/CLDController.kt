@@ -1,8 +1,8 @@
 /**
- * This file is part of Cross-language dialect:
+ * This file is a part of Cross-language dialect:
  *     https://github.com/OGStudio/cross-language-dialect
  * License: CC0
- * Version: 1.1.0
+ * Version: 1.2.0
  */
 
 package org.opengamestudio
@@ -18,7 +18,7 @@ class CLDController(
     internal var queue = mutableListOf<CLDContext>()
  
     fun executeFunctions() {
-        val c = queue.removeFirst()
+        val c = queue.removeAt(0)
         context.recentField = c.recentField
         context.setField(c.recentField, c.fieldAny(c.recentField))
        
