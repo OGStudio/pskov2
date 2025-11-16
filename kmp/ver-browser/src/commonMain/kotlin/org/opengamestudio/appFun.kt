@@ -219,7 +219,7 @@ fun appShouldReadFile(c: AppContext): AppContext {
 @JsExport
 fun appShouldResetConverterInput(c: AppContext): AppContext {
     if (c.recentField == "didClickRenderTab") {
-        c.converterInput = c.editorContents
+        c.converterInput = c.editedContents
         c.recentField = "converterInput"
         return c
     }
