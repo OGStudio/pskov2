@@ -304,7 +304,6 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
 @JsExport
 fun appShouldResetEditorContents(c: AppContext): AppContext {
     if (c.recentField == "readFileContents") {
-        println("ИГР appF.appSREC-1")
         c.editorContents = c.readFileContents
         c.recentField = "editorContents"
         return c
@@ -314,7 +313,6 @@ fun appShouldResetEditorContents(c: AppContext): AppContext {
         c.recentField == "selectedFileName" &&
         c.editedFileContents[c.selectedFileName] != null
     ) {
-        println("ИГР appF.appSREC-2")
         c.editorContents = c.editedFileContents[c.selectedFileName]!!
         c.recentField = "editorContents"
         return c
@@ -463,6 +461,23 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
     ) {
         c.readFileContents = c.response.contents
         c.recentField = "readFileContents"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Set renderer contents
+ *
+ * Conditions:
+ * 1. Received HTML output from converter
+ */
+@JsExport
+fun appShouldResetRendererContents(c: AppContext): AppContext {
+    if (c.recentField == "converterOutput") {
+        c.rendererContents = c.converterOutput
+        c.recentField = "rendererContents"
         return c
     }
 

@@ -32,6 +32,7 @@ AppContext:
         projectPath: String
         readFile: String
         readFileContents: String
+        rendererContents: String
         request: NetRequest
         resizeEditor: Bool
         response: NetResponse

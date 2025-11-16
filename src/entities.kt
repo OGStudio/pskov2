@@ -29,6 +29,7 @@ data class AppContext(
     var projectPath: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
+    var rendererContents: String = "",
     var request: NetRequest = NetRequest(),
     var resizeEditor: Boolean = false,
     var response: NetResponse = NetResponse(),
@@ -92,6 +93,8 @@ data class AppContext(
             return readFile as T
         } else if (name == "readFileContents") {
             return readFileContents as T
+        } else if (name == "rendererContents") {
+            return rendererContents as T
         } else if (name == "request") {
             return request as T
         } else if (name == "resizeEditor") {
@@ -174,6 +177,8 @@ data class AppContext(
             readFile = value as String
         } else if (name == "readFileContents") {
             readFileContents = value as String
+        } else if (name == "rendererContents") {
+            rendererContents = value as String
         } else if (name == "request") {
             request = value as NetRequest
         } else if (name == "resizeEditor") {

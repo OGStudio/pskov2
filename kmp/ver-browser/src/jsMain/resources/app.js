@@ -64,6 +64,7 @@ function AppComponent() {
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "installEditor", (c) => { appInstallEditor(this) },
             "installMDConverter", (c) => { appInstallMDConverter(this) },
+            "rendererContents", (c) => { appResetRendererContents(c.rendererContents) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
@@ -101,6 +102,7 @@ function AppComponent() {
             KT.appShouldResetInputMDFiles,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
+            KT.appShouldResetRendererContents,
             KT.appShouldResizeEditor,
             KT.appShouldSaveFileId,
             KT.appShouldSaveFiles,
@@ -193,6 +195,10 @@ function appResetEditorContents(cmp, contents) {
 function appResetHeader(texts) {
     setUIText(APP_HEADER_KEY_ID, texts[0]);
     setUIText(APP_HEADER_VALUE_ID, texts[1]);
+}
+
+function appResetRendererContents(contents) {
+    setUIText(APP_RENDER_ID, contents);
 }
 
 function appResizeEditor() {
