@@ -56,6 +56,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [
+            "converterInput", (c) => { appResetConverterInput(this, c.converterInput) },
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
@@ -89,6 +90,7 @@ function AppComponent() {
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
+            KT.appShouldResetConverterInput,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,
             KT.appShouldResetEditedFileContents,
@@ -176,6 +178,11 @@ function appLoad(req) {
             appCtrl().set("responseError", r);
         }
     );
+}
+
+function appResetConverterInput(cmp, contents) {
+    let html = cmp.mdConverter.makeHtml(contents);
+    appCtrl().set("converterOutput", html);
 }
 
 function appResetEditorContents(cmp, contents) {

@@ -211,6 +211,23 @@ fun appShouldReadFile(c: AppContext): AppContext {
     return c
 }
 
+/* Convert MD to HTML
+ *
+ * Conditions:
+ * 1. User did select `Render` tab
+ */
+@JsExport
+fun appShouldResetConverterInput(c: AppContext): AppContext {
+    if (c.recentField == "didClickRenderTab") {
+        c.converterInput = c.editorContents
+        c.recentField = "converterInput"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Mark the end of saving edited fiels
  *
  * Conditions:

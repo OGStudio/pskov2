@@ -9,6 +9,8 @@ AppContext:
     fields:
         baseURL: String
         cfg: [String: String]
+        converterInput: String
+        converterOutput: String
         didClickEditorTab: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool

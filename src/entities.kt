@@ -6,6 +6,8 @@ import kotlin.js.JsExport
 data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
+    var converterInput: String = "",
+    var converterOutput: String = "",
     var didClickEditorTab: Boolean = false,
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
@@ -44,6 +46,10 @@ data class AppContext(
             return baseURL as T
         } else if (name == "cfg") {
             return cfg as T
+        } else if (name == "converterInput") {
+            return converterInput as T
+        } else if (name == "converterOutput") {
+            return converterOutput as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
         } else if (name == "didClickFilesTab") {
@@ -122,6 +128,10 @@ data class AppContext(
             baseURL = value as String
         } else if (name == "cfg") {
             cfg = value as Map<String, String>
+        } else if (name == "converterInput") {
+            converterInput = value as String
+        } else if (name == "converterOutput") {
+            converterOutput = value as String
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
         } else if (name == "didClickFilesTab") {
