@@ -485,11 +485,11 @@ fun appShouldResetRendererContents(c: AppContext): AppContext {
     return c
 }
 
-/* Detect when editor needs to resize
+/* Detect when editor needs to be resized
  *
  * Conditions:
- * 1. User did resize window
- * 2. User selected `Editor` tab
+ * 1. User did resize window while on `Edit` tab
+ * 2. User selected `Edit` tab
  */
 @JsExport
 fun appShouldResizeEditor(c: AppContext): AppContext {
@@ -508,6 +508,36 @@ fun appShouldResizeEditor(c: AppContext): AppContext {
     ) {
         c.resizeEditor = true
         c.recentField = "resizeEditor"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Detect when renderer needs to be resized
+ *
+ * Conditions:
+ * 1. User did resize window while on `Edit` tab
+ * 2. User selected `Edit` tab
+ */
+@JsExport
+fun appShouldResizeRenderer(c: AppContext): AppContext {
+    if (
+        c.recentField == "didResize" &&
+        c.selectedTabId == APP_TAB_RENDER_INDEX
+    ) {
+        c.resizeEditor = true
+        c.recentField = "resizeRenderer"
+        return c
+    }
+
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId == APP_TAB_RENDER_INDEX
+    ) {
+        c.resizeEditor = true
+        c.recentField = "resizeRenderer"
         return c
     }
 

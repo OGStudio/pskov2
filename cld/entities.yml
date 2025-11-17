@@ -35,6 +35,7 @@ AppContext:
         rendererContents: String
         request: NetRequest
         resizeEditor: Bool
+        resizeRenderer: Bool
         response: NetResponse
         responseError: NetResponse
         saveFileId: Int

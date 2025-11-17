@@ -68,6 +68,7 @@ function AppComponent() {
             "rendererContents", (c) => { appResetRendererContents(c.rendererContents) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
+            "resizeRenderer", (c) => { appResizeRenderer() },
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
@@ -105,6 +106,7 @@ function AppComponent() {
             KT.appShouldResetReadFileContents,
             KT.appShouldResetRendererContents,
             KT.appShouldResizeEditor,
+            KT.appShouldResizeRenderer,
             KT.appShouldSaveFileId,
             KT.appShouldSaveFiles,
             KT.appShouldSelectFileName,
@@ -209,6 +211,14 @@ function appResizeEditor() {
     let rect = ed.getBoundingClientRect();
     let targetHeight = height - rect.y;
     ed.style.height = `${targetHeight}px`;
+}
+
+function appResizeRenderer() {
+    let height = window.innerHeight;
+    let rn = deId(APP_RENDER_CONTENTS_ID);
+    let rect = rn.getBoundingClientRect();
+    let targetHeight = height - rect.y;
+    rn.style.height = `${targetHeight}px`;
 }
 
 function appSelectTab(id) {

@@ -32,6 +32,7 @@ data class AppContext(
     var rendererContents: String = "",
     var request: NetRequest = NetRequest(),
     var resizeEditor: Boolean = false,
+    var resizeRenderer: Boolean = false,
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
     var saveFileId: Int = 0,
@@ -99,6 +100,8 @@ data class AppContext(
             return request as T
         } else if (name == "resizeEditor") {
             return resizeEditor as T
+        } else if (name == "resizeRenderer") {
+            return resizeRenderer as T
         } else if (name == "response") {
             return response as T
         } else if (name == "responseError") {
@@ -183,6 +186,8 @@ data class AppContext(
             request = value as NetRequest
         } else if (name == "resizeEditor") {
             resizeEditor = value as Boolean
+        } else if (name == "resizeRenderer") {
+            resizeRenderer = value as Boolean
         } else if (name == "response") {
             response = value as NetResponse
         } else if (name == "responseError") {
