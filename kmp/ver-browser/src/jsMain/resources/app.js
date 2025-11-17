@@ -198,7 +198,8 @@ function appResetHeader(texts) {
 }
 
 function appResetRendererContents(contents) {
-    setUIText(APP_RENDER_ID, contents);
+    let iframe = deId(APP_RENDER_ID);
+    iframe.src = "data:text/html;charset=utf-8," + contents;
 }
 
 function appResizeEditor() {
