@@ -32,6 +32,7 @@ let APP_INPUT_DIR_SECTION_T = `
 let APP_EDITOR_ID = "editor";
 let APP_EDITOR_CONTENTS_ID = "editorContents";
 let APP_RENDER_ID = "render";
+let APP_RENDER_CONTENTS_ID = "renderContents";
 let APP_SPLASH_ID = "splash";
 let APP_TAB_FILES_ID = "tabFiles";
 let APP_TAB_EDITOR_ID = "tabEditor";
@@ -198,7 +199,7 @@ function appResetHeader(texts) {
 }
 
 function appResetRendererContents(contents) {
-    let iframe = deId(APP_RENDER_ID);
+    let iframe = deId(APP_RENDER_CONTENTS_ID);
     iframe.src = "data:text/html;charset=utf-8," + contents;
 }
 
