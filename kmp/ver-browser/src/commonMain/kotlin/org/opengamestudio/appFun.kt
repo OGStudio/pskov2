@@ -7,6 +7,8 @@ import kotlin.js.JsExport
 @JsExport val APP_CFG_KEY_INPUT = "input"
 @JsExport val APP_HEADER_KEY_FILE = "File"
 @JsExport val APP_HEADER_KEY_PROJECT = "Project"
+@JsExport val APP_ITEM_TEMPLATE_FILE = "item.template"
+@JsExport val APP_MD_EXT = "md"
 @JsExport val APP_TAB_EDITOR_INDEX = 1
 @JsExport val APP_TAB_FILES_INDEX = 0
 @JsExport val APP_TAB_RENDER_INDEX = 2
@@ -195,6 +197,7 @@ fun appShouldParseCfg(c: AppContext): AppContext {
  *
  * Conditions:
  * 1. User selected a file
+ * 2. Editor has contents of a selected file
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
@@ -203,6 +206,15 @@ fun appShouldReadFile(c: AppContext): AppContext {
         c.editedFileContents[c.selectedFileName] == null
     ) {
         c.readFile = c.selectedFileName
+        c.recentField = "readFile"
+        return c
+    }
+
+    if (
+        c.recentField == "editorContents" &&
+        c.itemTemplates[c.selectedFileId[0]] == null
+    ) {
+        c.readFile = c.inputDirs[c.selectedFileId[0]] + "/" + APP_ITEM_TEMPLATE_FILE
         c.recentField = "readFile"
         return c
     }
@@ -298,12 +310,15 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
 /* Set editor contents
  *
  * Conditions:
- * 1. File has been read
+ * 1. Markdown file has been read
  * 2. User selected a file that has already been edited/open
  */
 @JsExport
 fun appShouldResetEditorContents(c: AppContext): AppContext {
-    if (c.recentField == "readFileContents") {
+    if (
+        c.recentField == "readFileContents" &&
+        c.readFile.endsWith(APP_MD_EXT)
+    ) {
         c.editorContents = c.readFileContents
         c.recentField = "editorContents"
         return c
