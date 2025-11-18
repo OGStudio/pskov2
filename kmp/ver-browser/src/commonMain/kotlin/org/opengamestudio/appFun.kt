@@ -389,13 +389,34 @@ fun appShouldResetInputDirFiles(c: AppContext): AppContext {
         c.recentField == "response" &&
         c.listInputDirId < c.inputDirs.size &&
         c.inputDirs[c.listInputDirId] == c.request.body &&
-        //??c.request.url == appURL(c.baseURL, CONST_API_LIST)
         c.response.req.url == appURL(c.baseURL, CONST_API_LIST)
     ) {
         var d = c.inputDirFiles.toMutableMap()
         d[c.listInputDirId] = jsonToFiles(c.response.contents)
         c.inputDirFiles = d
         c.recentField = "inputDirFiles"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Collect item templates
+ *
+ * Conditions:
+ * 1. Received contents of an item template
+ */
+@JsExport
+fun appShouldResetItemTemplates(c: AppContext): AppContext {
+    if (
+        c.recentField == "readFileContents" &&
+        c.readFile.endsWith(APP_ITEM_TEMPLATE_FILE)
+    ) {
+        var d = c.itemTemplates.toMutableMap()
+        d[c.selectedFileId[0]] = c.readFileContents
+        c.itemTemplates = d
+        c.recentField = "itemTemplates"
         return c
     }
 
