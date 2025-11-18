@@ -7,6 +7,7 @@ import kotlin.js.JsExport
 @JsExport val APP_CFG_KEY_INPUT = "input"
 @JsExport val APP_HEADER_KEY_FILE = "File"
 @JsExport val APP_HEADER_KEY_PROJECT = "Project"
+@JsExport val APP_ITEM_TEMPLATE_CONTENTS = "PSKOV_ITEM_CONTENTS"
 @JsExport val APP_ITEM_TEMPLATE_FILE = "item.template"
 @JsExport val APP_MD_EXT = "md"
 @JsExport val APP_TAB_EDITOR_INDEX = 1
@@ -512,7 +513,9 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
 @JsExport
 fun appShouldResetRendererContents(c: AppContext): AppContext {
     if (c.recentField == "converterOutput") {
-        c.rendererContents = c.converterOutput
+        var o = c.itemTemplates[c.selectedFileId[0]]
+        o = o?.replace(APP_ITEM_TEMPLATE_CONTENTS, c.converterOutput)
+        c.rendererContents = o ?: "N/A"
         c.recentField = "rendererContents"
         return c
     }
