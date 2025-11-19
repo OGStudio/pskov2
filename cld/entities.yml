@@ -9,8 +9,6 @@ AppContext:
     fields:
         baseURL: String
         cfg: [String: String]
-        converterInput: String
-        converterOutput: String
         didClickEditorTab: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool
@@ -19,17 +17,22 @@ AppContext:
         didResize: Bool
         didSaveEditedFiles: Bool
         didSaveFile: Bool
+        editedContents: String
+        editedFileContents: [String: String]
+        editorContents: String
         header: [String]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputMDFiles: [Int: [String]]
         installEditor: Bool
         installMDConverter: Bool
+        itemContents: String
+        itemDate: String
+        itemSlug: String
         itemTemplates: [Int: String]
+        itemTitle: String
+        itemURL: String
         listInputDirId: Int
-        editedContents: String
-        editedFileContents: [String: String]
-        editorContents: String
         projectPath: String
         readFile: String
         readFileContents: String

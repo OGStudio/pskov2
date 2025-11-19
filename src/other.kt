@@ -166,6 +166,21 @@ fun parseCfg(raw: String): Map<String, String> {
     return d
 }
 
+// Parse item title
+@JsExport
+fun parseItemTitle(raw: String): String {
+    val lines = raw.split("\n")
+    for (ln in lines) {
+        if (ln.startsWith(CONST_ITEM_TITLE)) {
+            val prefix = CONST_ITEM_TITLE
+            val value = ln.substring(prefix.length)
+            return value
+        }
+    }
+
+    return "Title-N/A"
+}
+
 // Construct URL to a rendered file
 @JsExport
 fun renderURL(

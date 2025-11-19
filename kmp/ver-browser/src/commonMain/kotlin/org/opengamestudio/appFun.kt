@@ -83,7 +83,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 "",
-                CONST_GET,
+                CONST_HTTP_GET,
                 appURL(c.baseURL, CONST_API_PATH),
             )
         c.recentField = "request"
@@ -94,7 +94,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 APP_CFG_FILE,
-                CONST_POST,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
@@ -106,7 +106,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 dir,
-                CONST_POST,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_LIST),
             )
         c.recentField = "request"
@@ -117,7 +117,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 c.readFile,
-                CONST_POST,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
@@ -131,7 +131,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 body,
-                CONST_POST,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_WRITE),
             )
         c.recentField = "request"
@@ -181,7 +181,7 @@ fun appShouldListInputDir(c: AppContext): AppContext {
 fun appShouldParseCfg(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.req.method == CONST_POST &&
+        c.response.req.method == CONST_HTTP_POST &&
         c.response.req.url == appURL(c.baseURL, CONST_API_READ) &&
         c.response.req.body == APP_CFG_FILE
     ) {
@@ -229,6 +229,7 @@ fun appShouldReadFile(c: AppContext): AppContext {
  * Conditions:
  * 1. User did select `Render` tab
  */
+/*
 @JsExport
 fun appShouldResetConverterInput(c: AppContext): AppContext {
     if (c.recentField == "didClickRenderTab") {
@@ -240,6 +241,7 @@ fun appShouldResetConverterInput(c: AppContext): AppContext {
     c.recentField = "none"
     return c
 }
+*/
 
 /* Mark the end of saving edited fiels
  *
@@ -270,7 +272,7 @@ fun appShouldResetDidSaveEditedFiles(c: AppContext): AppContext {
 fun appShouldResetDidSaveFile(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.req.method == CONST_POST &&
+        c.response.req.method == CONST_HTTP_POST &&
         c.response.req.url == appURL(c.baseURL, CONST_API_WRITE)
     ) {
         c.didSaveFile = true
@@ -403,28 +405,6 @@ fun appShouldResetInputDirFiles(c: AppContext): AppContext {
     return c
 }
 
-/* Collect item templates
- *
- * Conditions:
- * 1. Received contents of an item template
- */
-@JsExport
-fun appShouldResetItemTemplates(c: AppContext): AppContext {
-    if (
-        c.recentField == "readFileContents" &&
-        c.readFile.endsWith(APP_ITEM_TEMPLATE_FILE)
-    ) {
-        var d = c.itemTemplates.toMutableMap()
-        d[c.selectedFileId[0]] = c.readFileContents
-        c.itemTemplates = d
-        c.recentField = "itemTemplates"
-        return c
-    }
-
-    c.recentField = "none"
-    return c
-}
-
 /* Construct an array of input directories based on config's `input`
  *
  * Conditions:
@@ -463,6 +443,45 @@ fun appShouldResetInputMDFiles(c: AppContext): AppContext {
     return c
 }
 
+/* Collect item templates
+ *
+ * Conditions:
+ * 1. Received contents of an item template
+ */
+@JsExport
+fun appShouldResetItemTemplates(c: AppContext): AppContext {
+    if (
+        c.recentField == "readFileContents" &&
+        c.readFile.endsWith(APP_ITEM_TEMPLATE_FILE)
+    ) {
+        var d = c.itemTemplates.toMutableMap()
+        d[c.selectedFileId[0]] = c.readFileContents
+        c.itemTemplates = d
+        c.recentField = "itemTemplates"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Extract item title
+ *
+ * Conditions:
+ * 1. User did click `Render` tab
+ */
+@JsExport
+fun appShouldResetItemTitle(c: AppContext): AppContext {
+    if (c.recentField == "didClickRenderTab") {
+        c.itemTitle = parseItemTitle(c.editedContents)
+        c.recentField = "itemTitle"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Resolve project path
  *
  * Conditions:
@@ -492,7 +511,7 @@ fun appShouldResetProjectPath(c: AppContext): AppContext {
 fun appShouldResetReadFileContents(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.req.method == CONST_POST &&
+        c.response.req.method == CONST_HTTP_POST &&
         c.response.req.url == appURL(c.baseURL, CONST_API_READ) &&
         c.response.req.body == c.readFile
     ) {
@@ -512,6 +531,7 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
  */
 @JsExport
 fun appShouldResetRendererContents(c: AppContext): AppContext {
+  /*
     if (c.recentField == "converterOutput") {
         var o = c.itemTemplates[c.selectedFileId[0]]
         o = o?.replace(APP_ITEM_TEMPLATE_CONTENTS, c.converterOutput)
@@ -519,6 +539,7 @@ fun appShouldResetRendererContents(c: AppContext): AppContext {
         c.recentField = "rendererContents"
         return c
     }
+    */
 
     c.recentField = "none"
     return c

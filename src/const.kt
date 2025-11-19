@@ -10,5 +10,7 @@ import kotlin.js.JsExport
 @JsExport val CONST_EXT_HTML = "html"
 @JsExport val CONST_EXT_MD = "md"
 
-@JsExport val CONST_GET = "GET"
-@JsExport val CONST_POST = "POST"
+@JsExport val CONST_HTTP_GET = "GET"
+@JsExport val CONST_HTTP_POST = "POST"
+
+@JsExport val CONST_ITEM_TITLE = "Title: "
