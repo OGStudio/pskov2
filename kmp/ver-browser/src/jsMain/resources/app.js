@@ -203,7 +203,9 @@ function appResetHeader(texts) {
 
 function appResetRendererContents(contents) {
     let iframe = deId(APP_RENDER_CONTENTS_ID);
-    iframe.src = "data:text/html;charset=utf-8," + contents;
+    //iframe.src = "data:text/html;charset=utf-8," + contents;
+    let url = KT.renderURL("ru/news", "2014-another-year-passed");
+    iframe.src = url;
 }
 
 function appResizeEditor() {

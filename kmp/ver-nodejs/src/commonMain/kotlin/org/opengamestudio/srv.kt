@@ -56,8 +56,9 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
  *
  * Conditions:
  * 1. GET /
- * 2. GET /<file> (excluding reserved API calls)
- * 3. POST /read
+ * 2. GET /render/<file>
+ * 3. GET /<file> (excluding reserved API calls)
+ * 4. POST /read
  */
 @JsExport
 fun srvShouldReadFile(c: SrvContext): SrvContext {
@@ -67,6 +68,17 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
         c.request.url == SRV_API_ROOT
     ) {
         c.readFile = "${c.browserDir}/${SRV_INDEX}"
+        c.recentField = "readFile"
+        return c
+    }
+
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_GET && 
+        c.request.url.startsWith(CONST_API_RENDER)
+    ) {
+        val path = c.request.url.replace(CONST_API_RENDER, "")
+        c.readFile = "${c.projectAbsPath}$path"
         c.recentField = "readFile"
         return c
     }
