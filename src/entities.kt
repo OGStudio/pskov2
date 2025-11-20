@@ -6,6 +6,8 @@ import kotlin.js.JsExport
 data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
+    var converterInput: String = "",
+    var converterOutput: String = "",
     var didClickEditorTab: Boolean = false,
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
@@ -30,7 +32,7 @@ data class AppContext(
     var projectPath: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
-    var rendererContents: String = "",
+    var renderPage: String = "",
     var request: NetRequest = NetRequest(),
     var resizeEditor: Boolean = false,
     var resizeRenderer: Boolean = false,
@@ -50,6 +52,10 @@ data class AppContext(
             return baseURL as T
         } else if (name == "cfg") {
             return cfg as T
+        } else if (name == "converterInput") {
+            return converterInput as T
+        } else if (name == "converterOutput") {
+            return converterOutput as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
         } else if (name == "didClickFilesTab") {
@@ -98,8 +104,8 @@ data class AppContext(
             return readFile as T
         } else if (name == "readFileContents") {
             return readFileContents as T
-        } else if (name == "rendererContents") {
-            return rendererContents as T
+        } else if (name == "renderPage") {
+            return renderPage as T
         } else if (name == "request") {
             return request as T
         } else if (name == "resizeEditor") {
@@ -140,6 +146,10 @@ data class AppContext(
             baseURL = value as String
         } else if (name == "cfg") {
             cfg = value as Map<String, String>
+        } else if (name == "converterInput") {
+            converterInput = value as String
+        } else if (name == "converterOutput") {
+            converterOutput = value as String
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
         } else if (name == "didClickFilesTab") {
@@ -188,8 +198,8 @@ data class AppContext(
             readFile = value as String
         } else if (name == "readFileContents") {
             readFileContents = value as String
-        } else if (name == "rendererContents") {
-            rendererContents = value as String
+        } else if (name == "renderPage") {
+            renderPage = value as String
         } else if (name == "request") {
             request = value as NetRequest
         } else if (name == "resizeEditor") {

@@ -57,7 +57,7 @@ function AppComponent() {
 
     this.setupEffects = function() {
         let oneliners = [
-            //"converterInput", (c) => { appResetConverterInput(this, c.converterInput) },
+            "converterInput", (c) => { appResetConverterInput(this, c.converterInput) },
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
@@ -65,7 +65,7 @@ function AppComponent() {
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "installEditor", (c) => { appInstallEditor(this) },
             "installMDConverter", (c) => { appInstallMDConverter(this) },
-            "rendererContents", (c) => { appResetRendererContents(c.rendererContents) },
+            "renderPage", (c) => { appRenderPage(c.renderPage) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
             "resizeRenderer", (c) => { appResizeRenderer() },
@@ -93,6 +93,8 @@ function AppComponent() {
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
+            KT.appShouldRenderPage,
+            KT.appShouldResetConverterInput,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,
             KT.appShouldResetDidSaveRenderedFile,
@@ -106,7 +108,6 @@ function AppComponent() {
             KT.appShouldResetPage,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
-            KT.appShouldResetRendererContents,
             KT.appShouldResizeEditor,
             KT.appShouldResizeRenderer,
             KT.appShouldSaveFileId,
@@ -188,12 +189,15 @@ function appLoad(req) {
     );
 }
 
-/*
+function appRenderPage(url) {
+    let iframe = deId(APP_RENDER_CONTENTS_ID);
+    iframe.src = url;
+}
+
 function appResetConverterInput(cmp, contents) {
     let html = cmp.mdConverter.makeHtml(contents);
     appCtrl().set("converterOutput", html);
 }
-*/
 
 function appResetEditorContents(cmp, contents) {
     cmp.editor.setValue(contents);
@@ -203,13 +207,6 @@ function appResetEditorContents(cmp, contents) {
 function appResetHeader(texts) {
     setUIText(APP_HEADER_KEY_ID, texts[0]);
     setUIText(APP_HEADER_VALUE_ID, texts[1]);
-}
-
-function appResetRendererContents(contents) {
-    let iframe = deId(APP_RENDER_CONTENTS_ID);
-    //iframe.src = "data:text/html;charset=utf-8," + contents;
-    let url = KT.renderURL("ru/news", "2014-another-year-passed");
-    iframe.src = url;
 }
 
 function appResizeEditor() {

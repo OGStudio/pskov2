@@ -9,6 +9,8 @@ AppContext:
     fields:
         baseURL: String
         cfg: [String: String]
+        converterInput: String
+        converterOutput: String
         didClickEditorTab: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool
@@ -33,7 +35,7 @@ AppContext:
         projectPath: String
         readFile: String
         readFileContents: String
-        rendererContents: String
+        renderPage: String
         request: NetRequest
         resizeEditor: Bool
         resizeRenderer: Bool

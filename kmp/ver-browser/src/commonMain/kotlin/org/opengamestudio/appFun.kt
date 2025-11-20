@@ -143,7 +143,7 @@ fun appShouldLoad(c: AppContext): AppContext {
 
     if (c.recentField == "saveRenderedFile") {
         val o = c.itemTemplates[c.selectedFileId[0]]
-            ?.replace(APP_PAGE_CONTENTS, c.page.contents)
+            ?.replace(APP_PAGE_CONTENTS, c.converterOutput)
             ?.replace(APP_PAGE_DATE, c.page.date)
             ?.replace(APP_PAGE_TITLE, c.page.title)
             ?.replace(APP_PAGE_URL, "TODO-URL")
@@ -245,16 +245,32 @@ fun appShouldReadFile(c: AppContext): AppContext {
     return c
 }
 
+/* Return URL of the page to render
+ *
+ * Conditions:
+ * 1. Did save rendered file
+ */
+@JsExport
+fun appShouldRenderPage(c: AppContext): AppContext {
+    if (c.recentField == "didSaveRenderedFile") {
+        c.renderPage = CONST_API_RENDER + "/" + c.saveRenderedFile
+        c.recentField = "renderPage"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Convert MD to HTML
  *
  * Conditions:
  * 1. User did select `Render` tab
  */
-/*
 @JsExport
 fun appShouldResetConverterInput(c: AppContext): AppContext {
-    if (c.recentField == "didClickRenderTab") {
-        c.converterInput = c.editedContents
+    if (c.recentField == "page") {
+        c.converterInput = c.page.contents
         c.recentField = "converterInput"
         return c
     }
@@ -262,7 +278,6 @@ fun appShouldResetConverterInput(c: AppContext): AppContext {
     c.recentField = "none"
     return c
 }
-*/
 
 /* Mark the end of saving edited fiels
  *
@@ -569,27 +584,6 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
     return c
 }
 
-/* Set renderer contents
- *
- * Conditions:
- * 1. Received HTML output from converter
- */
-@JsExport
-fun appShouldResetRendererContents(c: AppContext): AppContext {
-  /*
-    if (c.recentField == "converterOutput") {
-        var o = c.itemTemplates[c.selectedFileId[0]]
-        o = o?.replace(APP_ITEM_TEMPLATE_CONTENTS, c.converterOutput)
-        c.rendererContents = o ?: "N/A"
-        c.recentField = "rendererContents"
-        return c
-    }
-    */
-
-    c.recentField = "none"
-    return c
-}
-
 /* Detect when editor needs to be resized
  *
  * Conditions:
@@ -700,11 +694,11 @@ fun appShouldSaveFiles(c: AppContext): AppContext {
 /* Save rendered page
  *
  * Conditions:
- * 1. Page has been parsed
+ * 1. Page contents have been converted to HTML
  */
 @JsExport
 fun appShouldSaveRenderedFile(c: AppContext): AppContext {
-    if (c.recentField == "page") {
+    if (c.recentField == "converterOutput") {
         val dir = c.inputDirs[c.selectedFileId[0]]
         c.saveRenderedFile = "$dir/${c.page.slug}.$CONST_EXT_HTML"
         c.recentField = "saveRenderedFile"
