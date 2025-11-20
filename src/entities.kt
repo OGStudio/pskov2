@@ -14,6 +14,7 @@ data class AppContext(
     var didResize: Boolean = false,
     var didSaveEditedFiles: Boolean = false,
     var didSaveFile: Boolean = false,
+    var didSaveRenderedFile: Boolean = false,
     var editedContents: String = "",
     var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
@@ -37,6 +38,7 @@ data class AppContext(
     var responseError: NetResponse = NetResponse(),
     var saveFileId: Int = 0,
     var saveFiles: Array<String> = arrayOf(),
+    var saveRenderedFile: String = "",
     var selectedFileId: Array<Int> = arrayOf(),
     var selectedFileName: String = "",
     var selectedTabId: Int = 0,
@@ -64,6 +66,8 @@ data class AppContext(
             return didSaveEditedFiles as T
         } else if (name == "didSaveFile") {
             return didSaveFile as T
+        } else if (name == "didSaveRenderedFile") {
+            return didSaveRenderedFile as T
         } else if (name == "editedContents") {
             return editedContents as T
         } else if (name == "editedFileContents") {
@@ -110,6 +114,8 @@ data class AppContext(
             return saveFileId as T
         } else if (name == "saveFiles") {
             return saveFiles as T
+        } else if (name == "saveRenderedFile") {
+            return saveRenderedFile as T
         } else if (name == "selectedFileId") {
             return selectedFileId as T
         } else if (name == "selectedFileName") {
@@ -150,6 +156,8 @@ data class AppContext(
             didSaveEditedFiles = value as Boolean
         } else if (name == "didSaveFile") {
             didSaveFile = value as Boolean
+        } else if (name == "didSaveRenderedFile") {
+            didSaveRenderedFile = value as Boolean
         } else if (name == "editedContents") {
             editedContents = value as String
         } else if (name == "editedFileContents") {
@@ -196,6 +204,8 @@ data class AppContext(
             saveFileId = value as Int
         } else if (name == "saveFiles") {
             saveFiles = value as Array<String>
+        } else if (name == "saveRenderedFile") {
+            saveRenderedFile = value as String
         } else if (name == "selectedFileId") {
             selectedFileId = value as Array<Int>
         } else if (name == "selectedFileName") {

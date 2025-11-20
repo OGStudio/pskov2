@@ -7,9 +7,11 @@ import kotlin.js.JsExport
 @JsExport val APP_CFG_KEY_INPUT = "input"
 @JsExport val APP_HEADER_KEY_FILE = "File"
 @JsExport val APP_HEADER_KEY_PROJECT = "Project"
-@JsExport val APP_ITEM_TEMPLATE_CONTENTS = "PSKOV_ITEM_CONTENTS"
 @JsExport val APP_ITEM_TEMPLATE_FILE = "item.template"
-@JsExport val APP_MD_EXT = "md"
+@JsExport val APP_PAGE_CONTENTS = "PSKOV_ITEM_CONTENTS"
+@JsExport val APP_PAGE_DATE = "PSKOV_ITEM_DATE"
+@JsExport val APP_PAGE_TITLE = "PSKOV_ITEM_TITLE"
+@JsExport val APP_PAGE_URL = "PSKOV_ITEM_URL"
 @JsExport val APP_TAB_EDITOR_INDEX = 1
 @JsExport val APP_TAB_FILES_INDEX = 0
 @JsExport val APP_TAB_RENDER_INDEX = 2
@@ -75,7 +77,8 @@ fun appShouldInstallMDConverter(c: AppContext): AppContext {
  * 2. Project path has been resolved: Read pskov.cfg contents
  * 3. List input directory files
  * 4. Read file
- * 5. Save file
+ * 5. Save edited file
+ * 6. Save rendered file
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -128,6 +131,24 @@ fun appShouldLoad(c: AppContext): AppContext {
         val file = c.saveFiles[c.saveFileId]
         val contents = c.editedFileContents[file]!!
         val body = fileContentsToJSON(file, contents)
+        c.request =
+            NetRequest(
+                body,
+                CONST_HTTP_POST,
+                appURL(c.baseURL, CONST_API_WRITE),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    if (c.recentField == "saveRenderedFile") {
+        val o = c.itemTemplates[c.selectedFileId[0]]
+            ?.replace(APP_PAGE_CONTENTS, c.page.contents)
+            ?.replace(APP_PAGE_DATE, c.page.date)
+            ?.replace(APP_PAGE_TITLE, c.page.title)
+            ?.replace(APP_PAGE_URL, "TODO-URL")
+        val contents = o ?: "Contents-N/A"
+        val body = fileContentsToJSON(c.saveRenderedFile, contents)
         c.request =
             NetRequest(
                 body,
@@ -320,7 +341,7 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
 fun appShouldResetEditorContents(c: AppContext): AppContext {
     if (
         c.recentField == "readFileContents" &&
-        c.readFile.endsWith(APP_MD_EXT)
+        c.readFile.endsWith(CONST_EXT_MD)
     ) {
         c.editorContents = c.readFileContents
         c.recentField = "editorContents"
@@ -645,6 +666,24 @@ fun appShouldSaveFiles(c: AppContext): AppContext {
     if (c.recentField == "didClickSaveBtn") {
         c.saveFiles = c.editedFileContents.keys.toTypedArray()
         c.recentField = "saveFiles"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Save rendered page
+ *
+ * Conditions:
+ * 1. Page has been parsed
+ */
+@JsExport
+fun appShouldSaveRenderedFile(c: AppContext): AppContext {
+    if (c.recentField == "page") {
+        val dir = c.inputDirs[c.selectedFileId[0]]
+        c.saveRenderedFile = "$dir/${c.page.slug}.$CONST_EXT_HTML"
+        c.recentField = "saveRenderedFile"
         return c
     }
 

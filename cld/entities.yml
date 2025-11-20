@@ -17,6 +17,7 @@ AppContext:
         didResize: Bool
         didSaveEditedFiles: Bool
         didSaveFile: Bool
+        didSaveRenderedFile: Bool
         editedContents: String
         editedFileContents: [String: String]
         editorContents: String
@@ -40,6 +41,7 @@ AppContext:
         responseError: NetResponse
         saveFileId: Int
         saveFiles: [String]
+        saveRenderedFile: String
         selectedFileId: [Int]
         selectedFileName: String
         selectedTabId: Int

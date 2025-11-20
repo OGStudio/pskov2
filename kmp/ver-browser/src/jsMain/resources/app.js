@@ -93,7 +93,6 @@ function AppComponent() {
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
-            //KT.appShouldResetConverterInput,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,
             KT.appShouldResetEditedFileContents,
@@ -111,6 +110,7 @@ function AppComponent() {
             KT.appShouldResizeRenderer,
             KT.appShouldSaveFileId,
             KT.appShouldSaveFiles,
+            KT.appShouldSaveRenderedFile,
             KT.appShouldSelectFileName,
             KT.appShouldSelectTab,
         ].forEach((f) => {
