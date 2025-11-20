@@ -287,14 +287,15 @@ fun appShouldResetDidSaveEditedFiles(c: AppContext): AppContext {
 /* Mark the end of file saving
  *
  * Conditions:
- * 1. Received response for POST /write
+ * 1. Received response for POST /write of a Markdown file
  */
 @JsExport
 fun appShouldResetDidSaveFile(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
         c.response.req.method == CONST_HTTP_POST &&
-        c.response.req.url == appURL(c.baseURL, CONST_API_WRITE)
+        c.response.req.url == appURL(c.baseURL, CONST_API_WRITE) &&
+        c.response.req.body.contains(".$CONST_EXT_MD\"")
     ) {
         c.didSaveFile = true
         c.recentField = "didSaveFile"
@@ -304,6 +305,29 @@ fun appShouldResetDidSaveFile(c: AppContext): AppContext {
     c.recentField = "none"
     return c
 }
+
+/* Mark the end of saving a rendered file
+ *
+ * Conditions:
+ * 1. Received response for POST /write of an HTML file
+ */
+@JsExport
+fun appShouldResetDidSaveRenderedFile(c: AppContext): AppContext {
+    if (
+        c.recentField == "response" &&
+        c.response.req.method == CONST_HTTP_POST &&
+        c.response.req.url == appURL(c.baseURL, CONST_API_WRITE) &&
+        c.response.req.body.contains(".$CONST_EXT_HTML\"")
+    ) {
+        c.didSaveRenderedFile = true
+        c.recentField = "didSaveRenderedFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 
 /* Set temporary file contents
  *

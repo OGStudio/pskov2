@@ -95,6 +95,7 @@ function AppComponent() {
             KT.appShouldReadFile,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,
+            KT.appShouldResetDidSaveRenderedFile,
             KT.appShouldResetEditedFileContents,
             KT.appShouldResetEditorContents,
             KT.appShouldResetHeader,
