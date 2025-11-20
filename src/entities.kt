@@ -23,13 +23,9 @@ data class AppContext(
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
     var installMDConverter: Boolean = false,
-    var itemContents: String = "",
-    var itemDate: String = "",
-    var itemSlug: String = "",
     var itemTemplates: Map<Int, String> = mapOf(),
-    var itemTitle: String = "",
-    var itemURL: String = "",
     var listInputDirId: Int = 0,
+    var page: Page = Page(),
     var projectPath: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
@@ -86,20 +82,12 @@ data class AppContext(
             return installEditor as T
         } else if (name == "installMDConverter") {
             return installMDConverter as T
-        } else if (name == "itemContents") {
-            return itemContents as T
-        } else if (name == "itemDate") {
-            return itemDate as T
-        } else if (name == "itemSlug") {
-            return itemSlug as T
         } else if (name == "itemTemplates") {
             return itemTemplates as T
-        } else if (name == "itemTitle") {
-            return itemTitle as T
-        } else if (name == "itemURL") {
-            return itemURL as T
         } else if (name == "listInputDirId") {
             return listInputDirId as T
+        } else if (name == "page") {
+            return page as T
         } else if (name == "projectPath") {
             return projectPath as T
         } else if (name == "readFile") {
@@ -180,20 +168,12 @@ data class AppContext(
             installEditor = value as Boolean
         } else if (name == "installMDConverter") {
             installMDConverter = value as Boolean
-        } else if (name == "itemContents") {
-            itemContents = value as String
-        } else if (name == "itemDate") {
-            itemDate = value as String
-        } else if (name == "itemSlug") {
-            itemSlug = value as String
         } else if (name == "itemTemplates") {
             itemTemplates = value as Map<Int, String>
-        } else if (name == "itemTitle") {
-            itemTitle = value as String
-        } else if (name == "itemURL") {
-            itemURL = value as String
         } else if (name == "listInputDirId") {
             listInputDirId = value as Int
+        } else if (name == "page") {
+            page = value as Page
         } else if (name == "projectPath") {
             projectPath = value as String
         } else if (name == "readFile") {
@@ -248,6 +228,15 @@ data class NetRequest(
 data class NetResponse(
     var contents: String = "",
     var req: NetRequest = NetRequest(),
+) {}
+
+
+@JsExport
+data class Page(
+    var contents: String = "",
+    var date: String = "",
+    var slug: String = "",
+    var title: String = "",
 ) {}
 
 

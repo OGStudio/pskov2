@@ -103,7 +103,7 @@ function AppComponent() {
             KT.appShouldResetInputDirs,
             KT.appShouldResetInputMDFiles,
             KT.appShouldResetItemTemplates,
-            KT.appShouldResetItemTitle,
+            KT.appShouldResetPage,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
             KT.appShouldResetRendererContents,

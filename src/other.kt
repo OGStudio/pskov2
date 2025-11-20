@@ -166,19 +166,45 @@ fun parseCfg(raw: String): Map<String, String> {
     return d
 }
 
-// Parse item title
+// Parse MD with metadata
 @JsExport
-fun parseItemTitle(raw: String): String {
+fun parsePage(raw: String): Page {
+    var contentLines = arrayOf<String>()
+    var p = Page()
+    var isParsingContents = false
     val lines = raw.split("\n")
     for (ln in lines) {
-        if (ln.startsWith(CONST_ITEM_TITLE)) {
-            val prefix = CONST_ITEM_TITLE
-            val value = ln.substring(prefix.length)
-            return value
+        // Date
+        if (ln.startsWith(CONST_PAGE_DATE)) {
+            val prefix = CONST_PAGE_DATE
+            p.date = ln.substring(prefix.length)
+        }
+        // Slug
+        else if (ln.startsWith(CONST_PAGE_SLUG)) {
+            val prefix = CONST_PAGE_SLUG
+            p.slug = ln.substring(prefix.length)
+        }
+        // Title
+        else if (ln.startsWith(CONST_PAGE_TITLE)) {
+            val prefix = CONST_PAGE_TITLE
+            p.title = ln.substring(prefix.length)
+        }
+        // Detect end of meta data
+        else if (
+            !isParsingContents &&
+            ln == ""
+        ) {
+            isParsingContents = true
+        }
+        // Collect contents
+        else if (isParsingContents) {
+            contentLines += ln
         }
     }
 
-    return "Title-N/A"
+    p.contents = contentLines.joinToString("\n")
+
+    return p
 }
 
 // Construct URL to a rendered file

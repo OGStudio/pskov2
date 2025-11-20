@@ -13,4 +13,6 @@ import kotlin.js.JsExport
 @JsExport val CONST_HTTP_GET = "GET"
 @JsExport val CONST_HTTP_POST = "POST"
 
-@JsExport val CONST_ITEM_TITLE = "Title: "
+@JsExport val CONST_PAGE_DATE = "Date: "
+@JsExport val CONST_PAGE_SLUG = "Slug: "
+@JsExport val CONST_PAGE_TITLE = "Title: "

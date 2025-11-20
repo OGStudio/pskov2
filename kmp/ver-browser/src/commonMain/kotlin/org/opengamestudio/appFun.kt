@@ -465,16 +465,16 @@ fun appShouldResetItemTemplates(c: AppContext): AppContext {
     return c
 }
 
-/* Extract item title
+/* Extract metadata from page MD
  *
  * Conditions:
  * 1. User did click `Render` tab
  */
 @JsExport
-fun appShouldResetItemTitle(c: AppContext): AppContext {
+fun appShouldResetPage(c: AppContext): AppContext {
     if (c.recentField == "didClickRenderTab") {
-        c.itemTitle = parseItemTitle(c.editedContents)
-        c.recentField = "itemTitle"
+        c.page = parsePage(c.editedContents)
+        c.recentField = "page"
         return c
     }
 

@@ -26,13 +26,9 @@ AppContext:
         inputMDFiles: [Int: [String]]
         installEditor: Bool
         installMDConverter: Bool
-        itemContents: String
-        itemDate: String
-        itemSlug: String
         itemTemplates: [Int: String]
-        itemTitle: String
-        itemURL: String
         listInputDirId: Int
+        page: Page
         projectPath: String
         readFile: String
         readFileContents: String
@@ -70,6 +66,15 @@ NetResponse:
     fields:
         contents: String
         req: NetRequest
+
+Page:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        contents: String
+        date: String
+        slug: String
+        title: String
 
 SrvContext:
     prefix-kotlin: @JsExport
