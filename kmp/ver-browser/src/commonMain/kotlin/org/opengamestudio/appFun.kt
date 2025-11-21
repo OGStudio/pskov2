@@ -142,11 +142,13 @@ fun appShouldLoad(c: AppContext): AppContext {
     }
 
     if (c.recentField == "renderedFile") {
+        val dir = c.inputDirs[c.selectedFileId[0]]
+        val pageURL = appPageURL(dir, c.page.slug)
         val o = c.itemTemplates[c.selectedFileId[0]]
             ?.replace(APP_PAGE_CONTENTS, c.converterOutput)
             ?.replace(APP_PAGE_DATE, c.page.date)
             ?.replace(APP_PAGE_TITLE, c.page.title)
-            ?.replace(APP_PAGE_URL, "TODO-URL")
+            ?.replace(APP_PAGE_URL, pageURL)
         val contents = o ?: "Contents-N/A"
         val body = fileContentsToJSON(c.renderedFile, contents)
         c.request =
@@ -776,6 +778,20 @@ fun appShouldSelectTab(c: AppContext): AppContext {
 }
 
 //<!-- Other functions -->
+
+@JsExport
+fun appPageURL(
+    inputDir: String,
+    pageSlug: String
+): String {
+    val parts = inputDir.split("/")
+    var items = arrayOf<String>()
+    for (item in parts) {
+        items += ".."
+    }
+    val prefix = items.joinToString("/")
+    return "$prefix/$inputDir/$pageSlug.$CONST_EXT_HTML"
+}
 
 @JsExport
 fun appURL(

@@ -21,8 +21,8 @@ fun cliArgumentValue(
 // Shorten string that is too lengthy for debug output
 @JsExport
 fun debugShort(str: String): String {
-    if (str.length > 200) {
-        return str.take(100) + "…";
+    if (str.length > 100) {
+        return str.take(50) + "…";
     }
     return str
 }
