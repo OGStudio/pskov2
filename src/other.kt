@@ -207,17 +207,6 @@ fun parsePage(raw: String): Page {
     return p
 }
 
-// Construct URL to a rendered file
-/*
-@JsExport
-fun renderURL(
-    inputDir: String,
-    slug: String
-): String {
-    return "$CONST_API_RENDER/$inputDir/$slug.$CONST_EXT_HTML"
-}
-*/
-
 // Convert string to Base64 string
 @JsExport
 @OptIn(ExperimentalEncodingApi::class)
