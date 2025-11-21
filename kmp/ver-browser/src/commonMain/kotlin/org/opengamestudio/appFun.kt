@@ -141,14 +141,14 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "saveRenderedFile") {
+    if (c.recentField == "renderedFile") {
         val o = c.itemTemplates[c.selectedFileId[0]]
             ?.replace(APP_PAGE_CONTENTS, c.converterOutput)
             ?.replace(APP_PAGE_DATE, c.page.date)
             ?.replace(APP_PAGE_TITLE, c.page.title)
             ?.replace(APP_PAGE_URL, "TODO-URL")
         val contents = o ?: "Contents-N/A"
-        val body = fileContentsToJSON(c.saveRenderedFile, contents)
+        val body = fileContentsToJSON(c.renderedFile, contents)
         c.request =
             NetRequest(
                 body,
@@ -253,7 +253,7 @@ fun appShouldReadFile(c: AppContext): AppContext {
 @JsExport
 fun appShouldRenderPage(c: AppContext): AppContext {
     if (c.recentField == "didSaveRenderedFile") {
-        c.renderPage = CONST_API_RENDER + "/" + c.saveRenderedFile
+        c.renderPage = CONST_API_RENDER + "/" + c.renderedFile
         c.recentField = "renderPage"
         return c
     }
@@ -700,8 +700,8 @@ fun appShouldSaveFiles(c: AppContext): AppContext {
 fun appShouldSaveRenderedFile(c: AppContext): AppContext {
     if (c.recentField == "converterOutput") {
         val dir = c.inputDirs[c.selectedFileId[0]]
-        c.saveRenderedFile = "$dir/${c.page.slug}.$CONST_EXT_HTML"
-        c.recentField = "saveRenderedFile"
+        c.renderedFile = "$dir/${c.page.slug}.$CONST_EXT_HTML"
+        c.recentField = "renderedFile"
         return c
     }
 

@@ -35,6 +35,7 @@ AppContext:
         projectPath: String
         readFile: String
         readFileContents: String
+        renderedFile: String
         renderPage: String
         request: NetRequest
         resizeEditor: Bool
@@ -43,7 +44,6 @@ AppContext:
         responseError: NetResponse
         saveFileId: Int
         saveFiles: [String]
-        saveRenderedFile: String
         selectedFileId: [Int]
         selectedFileName: String
         selectedTabId: Int
