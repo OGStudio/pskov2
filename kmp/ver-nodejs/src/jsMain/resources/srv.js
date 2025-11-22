@@ -17,7 +17,8 @@ function srvCtrl() {
 
 //!<-- Constants -->
 
-let SRV_ERR_HTTP_404 = "404";
+let SRV_CONTENTS_404 = "404";
+let SRV_CONTENTS_BINARY = "BINARY";
 
 //!<-- Component -->
 
@@ -83,17 +84,22 @@ function srvListDir(path) {
 
 function srvReadFile(fileName) {
     var contents = "";
-    try {
-        let type = mime.lookup(fileName);
-        let isText = srvIsTextFile(type, fileName);
-        /**/console.log("ИГР srvRF isT/type/fileN:", isText, type, fileName);
+    let type = mime.lookup(fileName);
+    let isText = srvIsTextFile(type, fileName);
+    /**/console.log("ИГР srvRF isT/type/fileN:", isText, type, fileName);
 
-        // Do not read binary files
-        if (isText) {
+    // Binary
+    if (!isText) {
+        contents = SRV_CONTENTS_BINARY;
+    }
+
+    // Text
+    if (isText) {
+        try {
             contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+        } catch (e) {
+            contents = SRV_CONTENTS_404;
         }
-    } catch (e) {
-        contents = SRV_ERR_HTTP_404;
     }
     srvCtrl().set("readFileContents", contents);
 }
@@ -165,23 +171,35 @@ let srv = http.createServer((req, res) => {
         // Allow CORS
         res.setHeader("Access-Control-Allow-Origin", "*");
 
-        let type = mime.lookup(req.url);
-        let isText = srvIsTextFile(type, req.url);
-        /*TODO condition for binary here */
-        //let buf = fs.readFileSync(fileName, { flag: "r" });
-
         // File does not exist
-        if (response.contents == SRV_ERR_HTTP_404) {
+        if (response.contents == SRV_CONTENTS_404) {
             res.writeHead(404);
             res.end();
+            return;
         }
-        // File exists
-        if (response.contents != SRV_ERR_HTTP_404) {
-            let type = mime.lookup(response.req.url);
+
+        let type = mime.lookup(req.url);
+        let isText = srvIsTextFile(type, req.url);
+
+        // Binary file
+        if (response.contents == SRV_CONTENTS_BINARY) {
             res.setHeader("Content-Type", type);
-            res.writeHead(200);
-            res.end(response.contents);
+            try {
+                let fileName = srvCtrl().context.readFile;
+                let buf = fs.readFileSync(fileName, { flag: "r" });
+                res.writeHead(200);
+                res.end(buf, "binary");
+            } catch (e) {
+                res.writeHead(404);
+                res.end();
+            }
+            return;
         }
+
+        // Text file
+        res.setHeader("Content-Type", type);
+        res.writeHead(200);
+        res.end(response.contents);
     });
 });
 
