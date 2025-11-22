@@ -84,7 +84,14 @@ function srvListDir(path) {
 function srvReadFile(fileName) {
     var contents = "";
     try {
-        contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+        let type = mime.lookup(fileName);
+        let isText = srvIsTextFile(type, fileName);
+        /**/console.log("ИГР srvRF isT/type/fileN:", isText, type, fileName);
+
+        // Do not read binary files
+        if (isText) {
+            contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+        }
     } catch (e) {
         contents = SRV_ERR_HTTP_404;
     }
@@ -105,6 +112,29 @@ function srvWriteFile(fileName, contents) {
         isOk = false;
     }
     srvCtrl().set("didWriteFile", isOk);
+}
+
+//<!-- Functions -->
+
+// Detect if served fiel is text
+//
+// Conditions:
+// 1. MIME type was not detected -> Text
+// 2. Specified MIME type -> Text
+// 3. Unspecified MIME type -> Binary
+function srvIsTextFile(mimeType, fileName) {
+    /* 1 */ if (!mimeType) {
+        return true;
+    }
+
+    /* 2 */ if (
+        mimeType.startsWith("text") ||
+        mimeType.includes("svg")
+    ) {
+        return true;
+    }
+
+    /* 3 */ return false;
 }
 
 //<!-- Installation -->
@@ -134,6 +164,11 @@ let srv = http.createServer((req, res) => {
  
         // Allow CORS
         res.setHeader("Access-Control-Allow-Origin", "*");
+
+        let type = mime.lookup(req.url);
+        let isText = srvIsTextFile(type, req.url);
+        /*TODO condition for binary here */
+        //let buf = fs.readFileSync(fileName, { flag: "r" });
 
         // File does not exist
         if (response.contents == SRV_ERR_HTTP_404) {
