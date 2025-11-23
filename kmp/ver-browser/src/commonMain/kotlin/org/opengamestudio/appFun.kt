@@ -142,7 +142,6 @@ fun appShouldLoad(c: AppContext): AppContext {
     }
 
     if (c.recentField == "renderedFile") {
-        val dir = c.inputDirs[c.selectedFileId[0]]
         val pageURL = "${c.page.slug}.$CONST_EXT_HTML"
         val o = c.itemTemplates[c.selectedFileId[0]]
             ?.replace(APP_PAGE_CONTENTS, c.converterOutput)
