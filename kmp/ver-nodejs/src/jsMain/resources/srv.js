@@ -86,7 +86,6 @@ function srvReadFile(fileName) {
     var contents = "";
     let type = mime.lookup(fileName);
     let isText = srvIsTextFile(type, fileName);
-    /**/console.log("ИГР srvRF isT/type/fileN:", isText, type, fileName);
 
     // Binary
     if (!isText) {
