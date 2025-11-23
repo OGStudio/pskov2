@@ -121,7 +121,7 @@ function srvWriteFile(fileName, contents) {
 
 //<!-- Functions -->
 
-// Detect if served fiel is text
+// Detect if served file is text
 //
 // Conditions:
 // 1. MIME type was not detected -> Text
