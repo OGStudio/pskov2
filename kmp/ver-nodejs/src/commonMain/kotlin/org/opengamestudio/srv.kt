@@ -22,7 +22,7 @@ import kotlin.js.JsExport
 fun srvShouldListDir(c: SrvContext): SrvContext {
     if (
         c.recentField == "request" &&
-        c.request.method == CONST_POST && 
+        c.request.method == CONST_HTTP_POST && 
         c.request.url == CONST_API_LIST
     ) {
         c.listDir = "${c.projectAbsPath}/${c.request.body}"
@@ -56,14 +56,15 @@ fun srvShouldOpenURL(c: SrvContext): SrvContext {
  *
  * Conditions:
  * 1. GET /
- * 2. GET /<file> (excluding reserved API calls)
- * 3. POST /read
+ * 2. GET /render/<file>
+ * 3. GET /<file> (excluding reserved API calls)
+ * 4. POST /read
  */
 @JsExport
 fun srvShouldReadFile(c: SrvContext): SrvContext {
     if (
         c.recentField == "request" &&
-        c.request.method == CONST_GET && 
+        c.request.method == CONST_HTTP_GET && 
         c.request.url == SRV_API_ROOT
     ) {
         c.readFile = "${c.browserDir}/${SRV_INDEX}"
@@ -73,7 +74,18 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
 
     if (
         c.recentField == "request" &&
-        c.request.method == CONST_GET && 
+        c.request.method == CONST_HTTP_GET && 
+        c.request.url.startsWith(CONST_API_RENDER)
+    ) {
+        val path = c.request.url.replace(CONST_API_RENDER, "")
+        c.readFile = "${c.projectAbsPath}$path"
+        c.recentField = "readFile"
+        return c
+    }
+
+    if (
+        c.recentField == "request" &&
+        c.request.method == CONST_HTTP_GET && 
         c.request.url != CONST_API_PATH
     ) {
         c.readFile = "${c.browserDir}${c.request.url}"
@@ -83,7 +95,7 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
 
     if (
         c.recentField == "request" &&
-        c.request.method == CONST_POST && 
+        c.request.method == CONST_HTTP_POST && 
         c.request.url == CONST_API_READ
     ) {
         c.readFile = "${c.projectAbsPath}/${c.request.body}"
@@ -178,7 +190,7 @@ fun srvShouldResetResponse(c: SrvContext): SrvContext {
 
     if (
         c.recentField == "request" &&
-        c.request.method == CONST_GET &&
+        c.request.method == CONST_HTTP_GET &&
         c.request.url == CONST_API_PATH
     ) {
         c.response = NetResponse(c.projectAbsPath, c.request)
@@ -216,7 +228,7 @@ fun srvShouldResetResponse(c: SrvContext): SrvContext {
 fun srvShouldWriteFile(c: SrvContext): SrvContext {
     if (
         c.recentField == "request" &&
-        c.request.method == CONST_POST && 
+        c.request.method == CONST_HTTP_POST && 
         c.request.url == CONST_API_WRITE
     ) {
         val d = jsonToFileContents(c.request.body)

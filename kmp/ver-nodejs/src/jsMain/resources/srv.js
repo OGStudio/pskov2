@@ -17,7 +17,8 @@ function srvCtrl() {
 
 //!<-- Constants -->
 
-let SRV_ERR_HTTP_404 = "404";
+let SRV_CONTENTS_404 = "404";
+let SRV_CONTENTS_BINARY = "BINARY";
 
 //!<-- Component -->
 
@@ -38,12 +39,7 @@ function SrvComponent() {
             "url", (c) => { open(c.url) },
             "writeFile", (c) => { srvWriteFile(c.writeFile[0], c.writeFile[1]) },
         ];
-        let halfCount = oneliners.length / 2;
-        for (let i = 0; i < halfCount; ++i) {
-            let field = oneliners[i * 2];
-            let cb = oneliners[i * 2 + 1];
-            this.ctrl.registerFieldCallback(field, cb);
-        }
+        KT.registerOneliners(this.ctrl, oneliners);
     };
 
     this.setupShoulds = function() {
@@ -88,10 +84,21 @@ function srvListDir(path) {
 
 function srvReadFile(fileName) {
     var contents = "";
-    try {
-        contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
-    } catch (e) {
-        contents = SRV_ERR_HTTP_404;
+    let type = mime.lookup(fileName);
+    let isText = srvIsTextFile(type, fileName);
+
+    // Binary
+    if (!isText) {
+        contents = SRV_CONTENTS_BINARY;
+    }
+
+    // Text
+    if (isText) {
+        try {
+            contents = fs.readFileSync(fileName, { encoding: "utf8", flag: "r" });
+        } catch (e) {
+            contents = SRV_CONTENTS_404;
+        }
     }
     srvCtrl().set("readFileContents", contents);
 }
@@ -110,6 +117,29 @@ function srvWriteFile(fileName, contents) {
         isOk = false;
     }
     srvCtrl().set("didWriteFile", isOk);
+}
+
+//<!-- Functions -->
+
+// Detect if served file is text
+//
+// Conditions:
+// 1. MIME type was not detected -> Text
+// 2. Specified MIME type -> Text
+// 3. Unspecified MIME type -> Binary
+function srvIsTextFile(mimeType, fileName) {
+    /* 1 */ if (!mimeType) {
+        return true;
+    }
+
+    /* 2 */ if (
+        mimeType.startsWith("text") ||
+        mimeType.includes("svg")
+    ) {
+        return true;
+    }
+
+    /* 3 */ return false;
 }
 
 //<!-- Installation -->
@@ -141,17 +171,34 @@ let srv = http.createServer((req, res) => {
         res.setHeader("Access-Control-Allow-Origin", "*");
 
         // File does not exist
-        if (response.contents == SRV_ERR_HTTP_404) {
+        if (response.contents == SRV_CONTENTS_404) {
             res.writeHead(404);
             res.end();
+            return;
         }
-        // File exists
-        if (response.contents != SRV_ERR_HTTP_404) {
-            let type = mime.lookup(response.req.url);
+
+        let type = mime.lookup(req.url);
+        let isText = srvIsTextFile(type, req.url);
+
+        // Binary file
+        if (response.contents == SRV_CONTENTS_BINARY) {
             res.setHeader("Content-Type", type);
-            res.writeHead(200);
-            res.end(response.contents);
+            try {
+                let fileName = srvCtrl().context.readFile;
+                let buf = fs.readFileSync(fileName, { flag: "r" });
+                res.writeHead(200);
+                res.end(buf, "binary");
+            } catch (e) {
+                res.writeHead(404);
+                res.end();
+            }
+            return;
         }
+
+        // Text file
+        res.setHeader("Content-Type", type);
+        res.writeHead(200);
+        res.end(response.contents);
     });
 });
 

@@ -32,6 +32,7 @@ let APP_INPUT_DIR_SECTION_T = `
 let APP_EDITOR_ID = "editor";
 let APP_EDITOR_CONTENTS_ID = "editorContents";
 let APP_RENDER_ID = "render";
+let APP_RENDER_CONTENTS_ID = "renderContents";
 let APP_SPLASH_ID = "splash";
 let APP_TAB_FILES_ID = "tabFiles";
 let APP_TAB_EDITOR_ID = "tabEditor";
@@ -43,6 +44,7 @@ function AppComponent() {
     this._construct = function() {
         this.ctrl = new KT.CLDController(new KT.AppContext());
         this.editor = null;
+        this.mdConverter = null;
         registerCtrlDbgOutput(this.ctrl, "App", KT);
 
         // Defaults
@@ -54,24 +56,23 @@ function AppComponent() {
     };
 
     this.setupEffects = function() {
-        let oneliners = [ 
+        let oneliners = [
+            "converterInput", (c) => { appResetConverterInput(this, c.converterInput) },
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "installEditor", (c) => { appInstallEditor(this) },
+            "installMDConverter", (c) => { appInstallMDConverter(this) },
+            "renderPage", (c) => { appRenderPage(c.renderPage) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
+            "resizeRenderer", (c) => { appResizeRenderer() },
             "selectedTabId", (c) => { appSelectTab(c.selectedTabId) },
             "splashTimeout", (c) => { appHideSplash(c.splashTimeout) },
         ];
-        let halfCount = oneliners.length / 2;
-        for (let i = 0; i < halfCount; ++i) {
-            let field = oneliners[i * 2];
-            let cb = oneliners[i * 2 + 1];
-            this.ctrl.registerFieldCallback(field, cb);
-        }
+        KT.registerOneliners(this.ctrl, oneliners);
     };
 
     this.setupEvents = function() {
@@ -87,23 +88,31 @@ function AppComponent() {
         [
             KT.appShouldHideSplash,
             KT.appShouldInstallEditor,
+            KT.appShouldInstallMDConverter,
             KT.appShouldListInputDir,
             KT.appShouldLoad,
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
+            KT.appShouldRenderPage,
+            KT.appShouldResetConverterInput,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,
+            KT.appShouldResetDidSaveRenderedFile,
             KT.appShouldResetEditedFileContents,
             KT.appShouldResetEditorContents,
             KT.appShouldResetHeader,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
             KT.appShouldResetInputMDFiles,
+            KT.appShouldResetItemTemplates,
+            KT.appShouldResetPage,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
             KT.appShouldResizeEditor,
+            KT.appShouldResizeRenderer,
             KT.appShouldSaveFileId,
             KT.appShouldSaveFiles,
+            KT.appShouldSaveRenderedFile,
             KT.appShouldSelectFileName,
             KT.appShouldSelectTab,
         ].forEach((f) => {
@@ -161,6 +170,11 @@ function appInstallEditor(cmp) {
     });
 }
 
+function appInstallMDConverter(cmp) {
+    cmp.mdConverter = new showdown.Converter();
+    cmp.mdConverter.setOption("tables", true);
+}
+
 function appLoad(req) {
     loadURL(
         req,
@@ -173,6 +187,16 @@ function appLoad(req) {
             appCtrl().set("responseError", r);
         }
     );
+}
+
+function appRenderPage(url) {
+    let iframe = deId(APP_RENDER_CONTENTS_ID);
+    iframe.src = url;
+}
+
+function appResetConverterInput(cmp, contents) {
+    let html = cmp.mdConverter.makeHtml(contents);
+    appCtrl().set("converterOutput", html);
 }
 
 function appResetEditorContents(cmp, contents) {
@@ -191,6 +215,14 @@ function appResizeEditor() {
     let rect = ed.getBoundingClientRect();
     let targetHeight = height - rect.y;
     ed.style.height = `${targetHeight}px`;
+}
+
+function appResizeRenderer() {
+    let height = window.innerHeight;
+    let rn = deId(APP_RENDER_CONTENTS_ID);
+    let rect = rn.getBoundingClientRect();
+    let targetHeight = height - rect.y;
+    rn.style.height = `${targetHeight}px`;
 }
 
 function appSelectTab(id) {

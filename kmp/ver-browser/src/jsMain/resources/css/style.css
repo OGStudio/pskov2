@@ -18,3 +18,9 @@
   color: white;
   padding-right: 1em;
 }
+
+#renderContents {
+  border: 1px solid #e5e5e5;
+  height: 4em; /* This value is actually controlled by code */
+  width: 100%;
+}

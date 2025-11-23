@@ -7,6 +7,11 @@ import kotlin.js.JsExport
 @JsExport val APP_CFG_KEY_INPUT = "input"
 @JsExport val APP_HEADER_KEY_FILE = "File"
 @JsExport val APP_HEADER_KEY_PROJECT = "Project"
+@JsExport val APP_ITEM_TEMPLATE_FILE = "item.template"
+@JsExport val APP_PAGE_CONTENTS = "PSKOV_ITEM_CONTENTS"
+@JsExport val APP_PAGE_DATE = "PSKOV_ITEM_DATE"
+@JsExport val APP_PAGE_TITLE = "PSKOV_ITEM_TITLE"
+@JsExport val APP_PAGE_URL = "PSKOV_ITEM_URL"
 @JsExport val APP_TAB_EDITOR_INDEX = 1
 @JsExport val APP_TAB_FILES_INDEX = 0
 @JsExport val APP_TAB_RENDER_INDEX = 2
@@ -48,6 +53,23 @@ fun appShouldInstallEditor(c: AppContext): AppContext {
     return c
 }
 
+/* Setup Markdown converter
+ *
+ * Conditions:
+ * 1. Did launch
+ */
+@JsExport
+fun appShouldInstallMDConverter(c: AppContext): AppContext {
+    if (c.recentField == "didLaunch") {
+        c.installMDConverter = true
+        c.recentField = "installMDConverter"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Make HTTP request
  *
  * Conditions:
@@ -55,7 +77,8 @@ fun appShouldInstallEditor(c: AppContext): AppContext {
  * 2. Project path has been resolved: Read pskov.cfg contents
  * 3. List input directory files
  * 4. Read file
- * 5. Save file
+ * 5. Save edited file
+ * 6. Save rendered file
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -63,7 +86,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 "",
-                CONST_GET,
+                CONST_HTTP_GET,
                 appURL(c.baseURL, CONST_API_PATH),
             )
         c.recentField = "request"
@@ -74,7 +97,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 APP_CFG_FILE,
-                CONST_POST,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
@@ -86,7 +109,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 dir,
-                CONST_POST,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_LIST),
             )
         c.recentField = "request"
@@ -97,7 +120,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 c.readFile,
-                CONST_POST,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_READ),
             )
         c.recentField = "request"
@@ -111,7 +134,26 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.request =
             NetRequest(
                 body,
-                CONST_POST,
+                CONST_HTTP_POST,
+                appURL(c.baseURL, CONST_API_WRITE),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    if (c.recentField == "renderedFile") {
+        val pageURL = "${c.page.slug}.$CONST_EXT_HTML"
+        val o = c.itemTemplates[c.selectedFileId[0]]
+            ?.replace(APP_PAGE_CONTENTS, c.converterOutput)
+            ?.replace(APP_PAGE_DATE, c.page.date)
+            ?.replace(APP_PAGE_TITLE, c.page.title)
+            ?.replace(APP_PAGE_URL, pageURL)
+        val contents = o ?: "Contents-N/A"
+        val body = fileContentsToJSON(c.renderedFile, contents)
+        c.request =
+            NetRequest(
+                body,
+                CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_WRITE),
             )
         c.recentField = "request"
@@ -161,7 +203,7 @@ fun appShouldListInputDir(c: AppContext): AppContext {
 fun appShouldParseCfg(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.req.method == CONST_POST &&
+        c.response.req.method == CONST_HTTP_POST &&
         c.response.req.url == appURL(c.baseURL, CONST_API_READ) &&
         c.response.req.body == APP_CFG_FILE
     ) {
@@ -178,6 +220,7 @@ fun appShouldParseCfg(c: AppContext): AppContext {
  *
  * Conditions:
  * 1. User selected a file
+ * 2. Editor has contents of a selected file
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
@@ -187,6 +230,49 @@ fun appShouldReadFile(c: AppContext): AppContext {
     ) {
         c.readFile = c.selectedFileName
         c.recentField = "readFile"
+        return c
+    }
+
+    if (
+        c.recentField == "editorContents" &&
+        c.itemTemplates[c.selectedFileId[0]] == null
+    ) {
+        c.readFile = c.inputDirs[c.selectedFileId[0]] + "/" + APP_ITEM_TEMPLATE_FILE
+        c.recentField = "readFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Return URL of the page to render
+ *
+ * Conditions:
+ * 1. Did save rendered file
+ */
+@JsExport
+fun appShouldRenderPage(c: AppContext): AppContext {
+    if (c.recentField == "didSaveRenderedFile") {
+        c.renderPage = CONST_API_RENDER + "/" + c.renderedFile
+        c.recentField = "renderPage"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Convert MD to HTML
+ *
+ * Conditions:
+ * 1. User did select `Render` tab
+ */
+@JsExport
+fun appShouldResetConverterInput(c: AppContext): AppContext {
+    if (c.recentField == "page") {
+        c.converterInput = c.page.contents
+        c.recentField = "converterInput"
         return c
     }
 
@@ -217,14 +303,15 @@ fun appShouldResetDidSaveEditedFiles(c: AppContext): AppContext {
 /* Mark the end of file saving
  *
  * Conditions:
- * 1. Received response for POST /write
+ * 1. Received response for POST /write of a Markdown file
  */
 @JsExport
 fun appShouldResetDidSaveFile(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.req.method == CONST_POST &&
-        c.response.req.url == appURL(c.baseURL, CONST_API_WRITE)
+        c.response.req.method == CONST_HTTP_POST &&
+        c.response.req.url == appURL(c.baseURL, CONST_API_WRITE) &&
+        c.response.req.body.contains(".$CONST_EXT_MD\"")
     ) {
         c.didSaveFile = true
         c.recentField = "didSaveFile"
@@ -234,6 +321,29 @@ fun appShouldResetDidSaveFile(c: AppContext): AppContext {
     c.recentField = "none"
     return c
 }
+
+/* Mark the end of saving a rendered file
+ *
+ * Conditions:
+ * 1. Received response for POST /write of an HTML file
+ */
+@JsExport
+fun appShouldResetDidSaveRenderedFile(c: AppContext): AppContext {
+    if (
+        c.recentField == "response" &&
+        c.response.req.method == CONST_HTTP_POST &&
+        c.response.req.url == appURL(c.baseURL, CONST_API_WRITE) &&
+        c.response.req.body.contains(".$CONST_EXT_HTML\"")
+    ) {
+        c.didSaveRenderedFile = true
+        c.recentField = "didSaveRenderedFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 
 /* Set temporary file contents
  *
@@ -264,13 +374,15 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
 /* Set editor contents
  *
  * Conditions:
- * 1. File has been read
+ * 1. Markdown file has been read
  * 2. User selected a file that has already been edited/open
  */
 @JsExport
 fun appShouldResetEditorContents(c: AppContext): AppContext {
-    if (c.recentField == "readFileContents") {
-        println("ИГР appF.appSREC-1")
+    if (
+        c.recentField == "readFileContents" &&
+        c.readFile.endsWith(CONST_EXT_MD)
+    ) {
         c.editorContents = c.readFileContents
         c.recentField = "editorContents"
         return c
@@ -280,7 +392,6 @@ fun appShouldResetEditorContents(c: AppContext): AppContext {
         c.recentField == "selectedFileName" &&
         c.editedFileContents[c.selectedFileName] != null
     ) {
-        println("ИГР appF.appSREC-2")
         c.editorContents = c.editedFileContents[c.selectedFileName]!!
         c.recentField = "editorContents"
         return c
@@ -342,7 +453,6 @@ fun appShouldResetInputDirFiles(c: AppContext): AppContext {
         c.recentField == "response" &&
         c.listInputDirId < c.inputDirs.size &&
         c.inputDirs[c.listInputDirId] == c.request.body &&
-        //??c.request.url == appURL(c.baseURL, CONST_API_LIST)
         c.response.req.url == appURL(c.baseURL, CONST_API_LIST)
     ) {
         var d = c.inputDirFiles.toMutableMap()
@@ -394,6 +504,45 @@ fun appShouldResetInputMDFiles(c: AppContext): AppContext {
     return c
 }
 
+/* Collect item templates
+ *
+ * Conditions:
+ * 1. Received contents of an item template
+ */
+@JsExport
+fun appShouldResetItemTemplates(c: AppContext): AppContext {
+    if (
+        c.recentField == "readFileContents" &&
+        c.readFile.endsWith(APP_ITEM_TEMPLATE_FILE)
+    ) {
+        var d = c.itemTemplates.toMutableMap()
+        d[c.selectedFileId[0]] = c.readFileContents
+        c.itemTemplates = d
+        c.recentField = "itemTemplates"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Extract metadata from page MD
+ *
+ * Conditions:
+ * 1. User did click `Render` tab
+ */
+@JsExport
+fun appShouldResetPage(c: AppContext): AppContext {
+    if (c.recentField == "didClickRenderTab") {
+        c.page = parsePage(c.editedContents)
+        c.recentField = "page"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Resolve project path
  *
  * Conditions:
@@ -423,7 +572,7 @@ fun appShouldResetProjectPath(c: AppContext): AppContext {
 fun appShouldResetReadFileContents(c: AppContext): AppContext {
     if (
         c.recentField == "response" &&
-        c.response.req.method == CONST_POST &&
+        c.response.req.method == CONST_HTTP_POST &&
         c.response.req.url == appURL(c.baseURL, CONST_API_READ) &&
         c.response.req.body == c.readFile
     ) {
@@ -436,11 +585,11 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
     return c
 }
 
-/* Detect when editor needs to resize
+/* Detect when editor needs to be resized
  *
  * Conditions:
- * 1. User did resize window
- * 2. User selected `Editor` tab
+ * 1. User did resize window while on `Edit` tab
+ * 2. User selected `Edit` tab
  */
 @JsExport
 fun appShouldResizeEditor(c: AppContext): AppContext {
@@ -459,6 +608,36 @@ fun appShouldResizeEditor(c: AppContext): AppContext {
     ) {
         c.resizeEditor = true
         c.recentField = "resizeEditor"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Detect when renderer needs to be resized
+ *
+ * Conditions:
+ * 1. User did resize window while on `Edit` tab
+ * 2. User selected `Edit` tab
+ */
+@JsExport
+fun appShouldResizeRenderer(c: AppContext): AppContext {
+    if (
+        c.recentField == "didResize" &&
+        c.selectedTabId == APP_TAB_RENDER_INDEX
+    ) {
+        c.resizeEditor = true
+        c.recentField = "resizeRenderer"
+        return c
+    }
+
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId == APP_TAB_RENDER_INDEX
+    ) {
+        c.resizeEditor = true
+        c.recentField = "resizeRenderer"
         return c
     }
 
@@ -506,6 +685,24 @@ fun appShouldSaveFiles(c: AppContext): AppContext {
     if (c.recentField == "didClickSaveBtn") {
         c.saveFiles = c.editedFileContents.keys.toTypedArray()
         c.recentField = "saveFiles"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Save rendered page
+ *
+ * Conditions:
+ * 1. Page contents have been converted to HTML
+ */
+@JsExport
+fun appShouldSaveRenderedFile(c: AppContext): AppContext {
+    if (c.recentField == "converterOutput") {
+        val dir = c.inputDirs[c.selectedFileId[0]]
+        c.renderedFile = "$dir/${c.page.slug}.$CONST_EXT_HTML"
+        c.recentField = "renderedFile"
         return c
     }
 

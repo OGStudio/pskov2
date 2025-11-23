@@ -6,6 +6,8 @@ import kotlin.js.JsExport
 data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
+    var converterInput: String = "",
+    var converterOutput: String = "",
     var didClickEditorTab: Boolean = false,
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
@@ -14,6 +16,7 @@ data class AppContext(
     var didResize: Boolean = false,
     var didSaveEditedFiles: Boolean = false,
     var didSaveFile: Boolean = false,
+    var didSaveRenderedFile: Boolean = false,
     var editedContents: String = "",
     var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
@@ -22,12 +25,18 @@ data class AppContext(
     var inputDirs: Array<String> = arrayOf(),
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
+    var installMDConverter: Boolean = false,
+    var itemTemplates: Map<Int, String> = mapOf(),
     var listInputDirId: Int = 0,
+    var page: Page = Page(),
     var projectPath: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
+    var renderPage: String = "",
+    var renderedFile: String = "",
     var request: NetRequest = NetRequest(),
     var resizeEditor: Boolean = false,
+    var resizeRenderer: Boolean = false,
     var response: NetResponse = NetResponse(),
     var responseError: NetResponse = NetResponse(),
     var saveFileId: Int = 0,
@@ -43,6 +52,10 @@ data class AppContext(
             return baseURL as T
         } else if (name == "cfg") {
             return cfg as T
+        } else if (name == "converterInput") {
+            return converterInput as T
+        } else if (name == "converterOutput") {
+            return converterOutput as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
         } else if (name == "didClickFilesTab") {
@@ -59,6 +72,8 @@ data class AppContext(
             return didSaveEditedFiles as T
         } else if (name == "didSaveFile") {
             return didSaveFile as T
+        } else if (name == "didSaveRenderedFile") {
+            return didSaveRenderedFile as T
         } else if (name == "editedContents") {
             return editedContents as T
         } else if (name == "editedFileContents") {
@@ -75,18 +90,30 @@ data class AppContext(
             return inputMDFiles as T
         } else if (name == "installEditor") {
             return installEditor as T
+        } else if (name == "installMDConverter") {
+            return installMDConverter as T
+        } else if (name == "itemTemplates") {
+            return itemTemplates as T
         } else if (name == "listInputDirId") {
             return listInputDirId as T
+        } else if (name == "page") {
+            return page as T
         } else if (name == "projectPath") {
             return projectPath as T
         } else if (name == "readFile") {
             return readFile as T
         } else if (name == "readFileContents") {
             return readFileContents as T
+        } else if (name == "renderPage") {
+            return renderPage as T
+        } else if (name == "renderedFile") {
+            return renderedFile as T
         } else if (name == "request") {
             return request as T
         } else if (name == "resizeEditor") {
             return resizeEditor as T
+        } else if (name == "resizeRenderer") {
+            return resizeRenderer as T
         } else if (name == "response") {
             return response as T
         } else if (name == "responseError") {
@@ -119,6 +146,10 @@ data class AppContext(
             baseURL = value as String
         } else if (name == "cfg") {
             cfg = value as Map<String, String>
+        } else if (name == "converterInput") {
+            converterInput = value as String
+        } else if (name == "converterOutput") {
+            converterOutput = value as String
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
         } else if (name == "didClickFilesTab") {
@@ -135,6 +166,8 @@ data class AppContext(
             didSaveEditedFiles = value as Boolean
         } else if (name == "didSaveFile") {
             didSaveFile = value as Boolean
+        } else if (name == "didSaveRenderedFile") {
+            didSaveRenderedFile = value as Boolean
         } else if (name == "editedContents") {
             editedContents = value as String
         } else if (name == "editedFileContents") {
@@ -151,18 +184,30 @@ data class AppContext(
             inputMDFiles = value as Map<Int, Array<String>>
         } else if (name == "installEditor") {
             installEditor = value as Boolean
+        } else if (name == "installMDConverter") {
+            installMDConverter = value as Boolean
+        } else if (name == "itemTemplates") {
+            itemTemplates = value as Map<Int, String>
         } else if (name == "listInputDirId") {
             listInputDirId = value as Int
+        } else if (name == "page") {
+            page = value as Page
         } else if (name == "projectPath") {
             projectPath = value as String
         } else if (name == "readFile") {
             readFile = value as String
         } else if (name == "readFileContents") {
             readFileContents = value as String
+        } else if (name == "renderPage") {
+            renderPage = value as String
+        } else if (name == "renderedFile") {
+            renderedFile = value as String
         } else if (name == "request") {
             request = value as NetRequest
         } else if (name == "resizeEditor") {
             resizeEditor = value as Boolean
+        } else if (name == "resizeRenderer") {
+            resizeRenderer = value as Boolean
         } else if (name == "response") {
             response = value as NetResponse
         } else if (name == "responseError") {
@@ -203,6 +248,15 @@ data class NetRequest(
 data class NetResponse(
     var contents: String = "",
     var req: NetRequest = NetRequest(),
+) {}
+
+
+@JsExport
+data class Page(
+    var contents: String = "",
+    var date: String = "",
+    var slug: String = "",
+    var title: String = "",
 ) {}
 
 

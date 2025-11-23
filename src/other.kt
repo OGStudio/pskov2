@@ -21,8 +21,8 @@ fun cliArgumentValue(
 // Shorten string that is too lengthy for debug output
 @JsExport
 fun debugShort(str: String): String {
-    if (str.length > 200) {
-        return str.take(100) + "…";
+    if (str.length > 100) {
+        return str.take(50) + "…";
     }
     return str
 }
@@ -164,6 +164,47 @@ fun parseCfg(raw: String): Map<String, String> {
         }
     }
     return d
+}
+
+// Parse MD with metadata
+@JsExport
+fun parsePage(raw: String): Page {
+    var contentLines = arrayOf<String>()
+    var p = Page()
+    var isParsingContents = false
+    val lines = raw.split("\n")
+    for (ln in lines) {
+        // Date
+        if (ln.startsWith(CONST_PAGE_DATE)) {
+            val prefix = CONST_PAGE_DATE
+            p.date = ln.substring(prefix.length)
+        }
+        // Slug
+        else if (ln.startsWith(CONST_PAGE_SLUG)) {
+            val prefix = CONST_PAGE_SLUG
+            p.slug = ln.substring(prefix.length)
+        }
+        // Title
+        else if (ln.startsWith(CONST_PAGE_TITLE)) {
+            val prefix = CONST_PAGE_TITLE
+            p.title = ln.substring(prefix.length)
+        }
+        // Detect end of meta data
+        else if (
+            !isParsingContents &&
+            ln == ""
+        ) {
+            isParsingContents = true
+        }
+        // Collect contents
+        else if (isParsingContents) {
+            contentLines += ln
+        }
+    }
+
+    p.contents = contentLines.joinToString("\n")
+
+    return p
 }
 
 // Convert string to Base64 string

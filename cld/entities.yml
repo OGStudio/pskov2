@@ -9,6 +9,8 @@ AppContext:
     fields:
         baseURL: String
         cfg: [String: String]
+        converterInput: String
+        converterOutput: String
         didClickEditorTab: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool
@@ -17,20 +19,27 @@ AppContext:
         didResize: Bool
         didSaveEditedFiles: Bool
         didSaveFile: Bool
+        didSaveRenderedFile: Bool
+        editedContents: String
+        editedFileContents: [String: String]
+        editorContents: String
         header: [String]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputMDFiles: [Int: [String]]
         installEditor: Bool
+        installMDConverter: Bool
+        itemTemplates: [Int: String]
         listInputDirId: Int
-        editedContents: String
-        editedFileContents: [String: String]
-        editorContents: String
+        page: Page
         projectPath: String
         readFile: String
         readFileContents: String
+        renderedFile: String
+        renderPage: String
         request: NetRequest
         resizeEditor: Bool
+        resizeRenderer: Bool
         response: NetResponse
         responseError: NetResponse
         saveFileId: Int
@@ -61,6 +70,15 @@ NetResponse:
     fields:
         contents: String
         req: NetRequest
+
+Page:
+    prefix-kotlin: @JsExport
+    type: struct
+    fields:
+        contents: String
+        date: String
+        slug: String
+        title: String
 
 SrvContext:
     prefix-kotlin: @JsExport
