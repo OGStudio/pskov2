@@ -2,5 +2,6 @@ build
 dist
 .DS_Store
 .gradle
+.idea
 local.properties
 yarn.lock
