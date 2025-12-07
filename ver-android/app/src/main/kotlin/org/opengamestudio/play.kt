@@ -21,7 +21,7 @@ object PlayComponent {
         ctrl = CLDController(PlayContext())
         // Debug
         ctrl.registerCallback { c ->
-            val value = debugString(c.field(c.recentField))
+            var value = "${c.field(c.recentField)}"
             println("ИГР PlayC.init ctrl key/value: '${c.recentField}'/'$value'")
         }
 
