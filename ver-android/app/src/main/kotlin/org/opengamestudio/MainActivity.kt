@@ -1,6 +1,8 @@
 package org.opengamestudio
 
 import android.os.Bundle
+import android.view.ViewGroup
+import android.webkit.*
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import org.opengamestudio.ui.theme.MyApplicationTheme
 
 class MainActivity: ComponentActivity() {
@@ -42,6 +45,25 @@ class MainActivity: ComponentActivity() {
                     Playground(
                         vm = VM,
                         modifier = Modifier.padding(innerPadding),
+                    )
+                    AndroidView(
+                        factory = { context ->
+                            WebView(context).apply {
+                              /*
+                                layoutParams = ViewGroup.layoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                                )
+                                */
+                                webViewClient = WebViewClient()
+                                loadUrl("https://kornerr.ru")
+                                settings.javaScriptEnabled = true
+                            }
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                        update = {
+                            it.loadUrl("https://kornerr.ru")
+                        }
                     )
                 }
             }
