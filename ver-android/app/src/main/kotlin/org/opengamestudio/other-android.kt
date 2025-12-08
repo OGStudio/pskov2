@@ -19,7 +19,7 @@ fun loadURL(
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
         var err = NetResponse()
-        err.url = p.url
+        err.req = p
         // https://stackoverflow.com/a/65437800/3404710
         GlobalScope.launch(Dispatchers.Main) {
             /**/println("ИГР loadU-1 exc onerror")
@@ -41,7 +41,7 @@ fun loadURL(
         }
 
         var resp = NetResponse()
-        resp.url = p.url
+        resp.req = p
         if (cn.responseCode == HttpURLConnection.HTTP_OK) {
             resp.contents = cn.inputStream.bufferedReader().use { it.readText() }
             withContext(Dispatchers.Main) {

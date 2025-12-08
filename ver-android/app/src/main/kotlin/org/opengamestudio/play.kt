@@ -21,7 +21,7 @@ object PlayComponent {
         ctrl = CLDController(PlayContext())
         // Debug
         ctrl.registerCallback { c ->
-            var value = "${c.field(c.recentField)}"
+            var value = "${c.field(c.recentField) as Any}"
             println("ИГР PlayC.init ctrl key/value: '${c.recentField}'/'$value'")
         }
 
@@ -35,14 +35,14 @@ object PlayComponent {
     fun setupEffects() {
         val vm = VM
         val oneliners = arrayOf(
-            "isPlaygroundVisible", { c: AC -> vm.playgroundIsVisible.value = c.isPlaygroundVisible },
+            "isPlaygroundVisible", { c: PC -> vm.playgroundIsVisible.value = c.isPlaygroundVisible },
         )
         registerOneliners(ctrl, oneliners)
     }
 
     fun setupShoulds() {
         arrayOf(
-          ::authShouldResetPlaygroundVisibility,
+          ::playShouldResetPlaygroundVisibility,
         ).forEach { f ->
           ctrl.registerFunction { c -> f(c as PlayContext) }
         }

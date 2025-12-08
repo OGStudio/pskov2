@@ -41,14 +41,8 @@ fun playShouldLoad(c: PlayContext): PlayContext {
 
 fun playShouldResetPlaygroundVisibility(c: PlayContext): PlayContext {
     if (c.recentField == "didLaunch") {
-        c.isPlagroundVisible = true
+        c.isPlaygroundVisible = true
         c.recentField = "isPlaygroundVisible"
-        return c
-    }
-
-    if (c.recentField == "host") {
-        c.isHostsVisible = false
-        c.recentField = "isHostsVisible"
         return c
     }
 
