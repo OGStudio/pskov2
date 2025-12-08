@@ -1,0 +1,15 @@
+#!/bin/bash
+
+STEP=$((STEP+1))
+echo -e "\n> > > > Step №$STEP. Copy CLD files for Android version"
+
+CLD_FILES=(
+  CLDContext.kt
+  CLDController.kt
+  registerOneliners.kt
+)
+
+for file in ${CLD_FILES[@]}; do
+    echo "> $file"
+    cp $CLD_DIR/kotlin/$file $AND_DIR
+done

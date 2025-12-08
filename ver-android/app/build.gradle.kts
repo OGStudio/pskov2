@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "org.opengamestudio.pskov"
+    namespace = "org.opengamestudio"
     compileSdk = 35
 
     defaultConfig {
@@ -39,7 +39,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.okhttp)
 }
 
 kotlin {

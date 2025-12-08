@@ -80,6 +80,12 @@ Page:
         slug: String
         title: String
 
+PlayContext:
+    type: context
+    fields:
+        didLaunch: Bool
+        isPlaygroundVisible: Bool
+
 SrvContext:
     prefix-kotlin: @JsExport
     type: context

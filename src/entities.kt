@@ -260,6 +260,38 @@ data class Page(
 ) {}
 
 
+
+data class PlayContext(
+    var didLaunch: Boolean = false,
+    var isPlaygroundVisible: Boolean = false,
+    override var recentField: String = "",
+): CLDContext {
+    override fun <T> field(name: String): T {
+        if (name == "didLaunch") {
+            return didLaunch as T
+        } else if (name == "isPlaygroundVisible") {
+            return isPlaygroundVisible as T
+        }
+        return "unknown-field-name" as T
+    }
+
+    override fun selfCopy(): CLDContext {
+        return this.copy()
+    }
+
+    override fun setField(
+        name: String,
+        value: Any?
+    ) {
+        if (name == "didLaunch") {
+            didLaunch = value as Boolean
+        } else if (name == "isPlaygroundVisible") {
+            isPlaygroundVisible = value as Boolean
+        }
+    }
+}
+
+
 @JsExport
 data class SrvContext(
     var arguments: Array<String> = arrayOf(),

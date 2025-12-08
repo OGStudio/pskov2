@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Replace a string in a file
+function replace {
+    file=$1
+    was=$2
+    now=$3
+    cmd="sed -i '' 's|$was|$now|g' $file"
+    eval "$cmd"
+}
