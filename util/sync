@@ -5,6 +5,7 @@ source $SDIR/other
 
 AND_DIR=$SDIR/../ver-android/app/src/main/kotlin/org/opengamestudio
 CLD_DIR=$SDIR/../../cross-language-dialect
+NODE_DIR=$SDIR/../kmp/ver-nodejs/src/commonMain/kotlin/org/opengamestudio
 SRC_DIR=$SDIR/../src
 
 STEP=0
@@ -33,3 +34,4 @@ for file in ${FILES[@]}; do
 done
 
 source $T/copyCLDForAndroid
+source $T/copySrcForAndroid

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+STEP=$((STEP+1))
+echo -e "\n> > > > Step №$STEP. Copy src files to Android version"
+
+SRC_FILES=(
+  entities.kt
+)
+
+for file in ${SRC_FILES[@]}; do
+    echo "> $file"
+    cp $SRC_DIR/$file $AND_DIR
+    # Fix imports
+    replace $AND_DIR/$file "import kotlin.js.JsExport" ""
+    # Remove JS export
+    replace $AND_DIR/$file "@JsExport" ""
+done
