@@ -10,8 +10,9 @@ SRC_FILES=(
 for file in ${SRC_FILES[@]}; do
     echo "> $file"
     cp $SRC_DIR/$file $AND_DIR
+    path="$AND_DIR/$file"
     # Fix imports
-    replace $AND_DIR/$file "import kotlin.js.JsExport" ""
+    replace $path "import kotlin.js.JsExport" ""
     # Remove JS export
-    replace $AND_DIR/$file "@JsExport" ""
+    replace $path "@JsExport" ""
 done
