@@ -46,25 +46,6 @@ class MainActivity: ComponentActivity() {
                         vm = VM,
                         modifier = Modifier.padding(innerPadding),
                     )
-                    AndroidView(
-                        factory = { context ->
-                            WebView(context).apply {
-                              /*
-                                layoutParams = ViewGroup.layoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT
-                                )
-                                */
-                                webViewClient = WebViewClient()
-                                loadUrl("https://kornerr.ru")
-                                settings.javaScriptEnabled = true
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                        update = {
-                            it.loadUrl("https://kornerr.ru")
-                        }
-                    )
                 }
             }
         }
@@ -99,6 +80,18 @@ fun Playground(
                     style = MaterialTheme.typography.headlineMedium
                 )
             }
+            AndroidView(
+                factory = { context ->
+                    WebView(context).apply {
+                        webViewClient = WebViewClient()
+                        loadUrl("https://kornerr.ru")
+                        settings.javaScriptEnabled = true
+                    }
+                },
+                update = {
+                    it.loadUrl("https://kornerr.ru")
+                }
+            )
         }
     }
 }
