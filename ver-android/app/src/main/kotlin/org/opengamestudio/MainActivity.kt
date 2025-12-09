@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,6 +40,7 @@ class MainActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         VM.androidContext = this
+        VM.setupWebView()
         setContent {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -81,17 +83,21 @@ fun Playground(
                 )
             }
             AndroidView(
-                factory = { context ->
-                    WebView(context).apply {
-                        webViewClient = WebViewClient()
-                        loadUrl("https://kornerr.ru")
-                        settings.javaScriptEnabled = true
-                    }
-                },
-                update = {
-                    it.loadUrl("https://kornerr.ru")
-                }
+                factory = { vm.webView!! },
+                modifier = Modifier.weight(1f).fillMaxWidth(),
+                update = { playCtrl().set("didUpdateWebView", true) }
             )
+            Card(
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                modifier = Modifier.padding(24.dp)
+            ) {
+                Text(
+                    modifier = Modifier.padding(24.dp),
+                    text = vm.playgroundTitle.value,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+            }
+
         }
     }
 }
