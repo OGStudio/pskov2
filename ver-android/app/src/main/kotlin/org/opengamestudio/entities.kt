@@ -263,14 +263,20 @@ data class Page(
 
 data class PlayContext(
     var didLaunch: Boolean = false,
+    var didResetWebView: Boolean = false,
     var isPlaygroundVisible: Boolean = false,
+    var url: String = "",
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
         if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "didResetWebView") {
+            return didResetWebView as T
         } else if (name == "isPlaygroundVisible") {
             return isPlaygroundVisible as T
+        } else if (name == "url") {
+            return url as T
         }
         return "unknown-field-name" as T
     }
@@ -285,8 +291,12 @@ data class PlayContext(
     ) {
         if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "didResetWebView") {
+            didResetWebView = value as Boolean
         } else if (name == "isPlaygroundVisible") {
             isPlaygroundVisible = value as Boolean
+        } else if (name == "url") {
+            url = value as String
         }
     }
 }

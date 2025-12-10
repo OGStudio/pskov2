@@ -84,7 +84,9 @@ PlayContext:
     type: context
     fields:
         didLaunch: Bool
+        didResetWebView: Bool
         isPlaygroundVisible: Bool
+        url: String
 
 SrvContext:
     prefix-kotlin: @JsExport

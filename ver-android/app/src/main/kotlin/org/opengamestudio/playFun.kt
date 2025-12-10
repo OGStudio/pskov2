@@ -33,12 +33,30 @@ fun playShouldLoad(c: PlayContext): PlayContext {
     return c
 }
 
+/* Set URL for WebView
+ *
+ * Conditions:
+ * 1. Did reset web view for the first time
+ */
+fun playShouldResetPlaygroundURL(c: PlayContext): PlayContext {
+    if (
+        c.recentField == "didResetWebView" &&
+        c.url.isEmpty()
+    ) {
+        c.url = "https://kornerr.ru/quiz.html"
+        c.recentField = "url"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set playground screen visibility
  *
  * Conditions:
  * 1. Did launch
  */
-
 fun playShouldResetPlaygroundVisibility(c: PlayContext): PlayContext {
     if (c.recentField == "didLaunch") {
         c.isPlaygroundVisible = true

@@ -1,8 +1,8 @@
 package org.opengamestudio
+import kotlin.js.JsExport
 
 
-
-
+@JsExport
 data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
@@ -229,14 +229,14 @@ data class AppContext(
 }
 
 
-
+@JsExport
 data class FSFile(
     var isFile: Boolean = false,
     var path: String = "",
 ) {}
 
 
-
+@JsExport
 data class NetRequest(
     var body: String = "",
     var method: String = "",
@@ -244,14 +244,14 @@ data class NetRequest(
 ) {}
 
 
-
+@JsExport
 data class NetResponse(
     var contents: String = "",
     var req: NetRequest = NetRequest(),
 ) {}
 
 
-
+@JsExport
 data class Page(
     var contents: String = "",
     var date: String = "",
@@ -263,14 +263,20 @@ data class Page(
 
 data class PlayContext(
     var didLaunch: Boolean = false,
+    var didResetWebView: Boolean = false,
     var isPlaygroundVisible: Boolean = false,
+    var url: String = "",
     override var recentField: String = "",
 ): CLDContext {
     override fun <T> field(name: String): T {
         if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "didResetWebView") {
+            return didResetWebView as T
         } else if (name == "isPlaygroundVisible") {
             return isPlaygroundVisible as T
+        } else if (name == "url") {
+            return url as T
         }
         return "unknown-field-name" as T
     }
@@ -285,14 +291,18 @@ data class PlayContext(
     ) {
         if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "didResetWebView") {
+            didResetWebView = value as Boolean
         } else if (name == "isPlaygroundVisible") {
             isPlaygroundVisible = value as Boolean
+        } else if (name == "url") {
+            url = value as String
         }
     }
 }
 
 
-
+@JsExport
 data class SrvContext(
     var arguments: Array<String> = arrayOf(),
     var browserDir: String = "",

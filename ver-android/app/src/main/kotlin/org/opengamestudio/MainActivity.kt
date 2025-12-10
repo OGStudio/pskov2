@@ -85,7 +85,7 @@ fun Playground(
             AndroidView(
                 factory = { vm.webView!! },
                 modifier = Modifier.weight(1f).fillMaxWidth(),
-                update = { playCtrl().set("didUpdateWebView", true) }
+                update = { playCtrl().set("didResetWebView", true) }
             )
             Card(
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),

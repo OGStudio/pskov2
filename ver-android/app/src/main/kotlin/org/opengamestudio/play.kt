@@ -36,6 +36,7 @@ object PlayComponent {
         val vm = VM
         val oneliners = arrayOf(
             "isPlaygroundVisible", { c: PC -> vm.playgroundIsVisible.value = c.isPlaygroundVisible },
+            "url", { c: PC -> vm.webView?.loadUrl(c.url) },
         )
         registerOneliners(ctrl, oneliners)
     }
@@ -43,6 +44,7 @@ object PlayComponent {
     fun setupShoulds() {
         arrayOf(
           ::playShouldResetPlaygroundVisibility,
+          ::playShouldResetPlaygroundURL,
         ).forEach { f ->
           ctrl.registerFunction { c -> f(c as PlayContext) }
         }

@@ -33,6 +33,5 @@ object VM {
         webView = WebView(androidContext!!)
         webView?.webViewClient = WebViewClient()
         webView?.settings?.javaScriptEnabled = true
-        /**/webView?.loadUrl("https://kornerr.ru")
     }
 }
