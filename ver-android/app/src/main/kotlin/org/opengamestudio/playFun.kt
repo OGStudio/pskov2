@@ -43,7 +43,7 @@ fun playShouldResetPlaygroundURL(c: PlayContext): PlayContext {
         c.recentField == "didResetWebView" &&
         c.url.isEmpty()
     ) {
-        c.url = "https://kornerr.ru/quiz.html"
+        c.url = "https://kornerr.ru/dbg/budget.html"
         c.recentField = "url"
         return c
     }

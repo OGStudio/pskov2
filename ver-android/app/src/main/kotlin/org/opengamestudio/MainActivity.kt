@@ -72,16 +72,6 @@ fun Playground(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Card(
-                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                modifier = Modifier.padding(24.dp)
-            ) {
-                Text(
-                    modifier = Modifier.padding(24.dp),
-                    text = vm.playgroundTitle.value,
-                    style = MaterialTheme.typography.headlineMedium
-                )
-            }
             AndroidView(
                 factory = { vm.webView!! },
                 modifier = Modifier.weight(1f).fillMaxWidth(),
