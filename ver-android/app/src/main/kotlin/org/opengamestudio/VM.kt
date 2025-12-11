@@ -32,6 +32,7 @@ object VM {
         println("ИГР VM.setupWV-2")
         webView = WebView(androidContext!!)
         webView?.webViewClient = WebViewClient()
+        webView?.settings?.cacheMode = WebSettings.LOAD_NO_CACHE
         webView?.settings?.javaScriptEnabled = true
     }
 }
