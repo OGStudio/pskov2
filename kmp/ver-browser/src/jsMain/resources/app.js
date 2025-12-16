@@ -12,13 +12,18 @@ let APP_HEADER_KEY_ID = "headerKey";
 let APP_HEADER_VALUE_ID = "headerValue";
 
 let APP_INPUT_DIR_FILE_T = `
-    <div>
-        <div class='uk-card uk-card-default uk-card-hover uk-card-body cursor-pointer' onclick='appCtrl().set("selectedFileId", [%PAGE_ID%])'>
-            <p><span uk-icon="file-text"></span>%NAME%</p>
-            <p>TODO-Date</p>
-            <h3 class="uk-card-title">TODO-Title</h3>
-        </div>
-    </div>
+<tr>
+    <td>TODO-Year</td>
+    <td>
+        <a onclick='appCtrl().set("selectedFileId", [%PAGE_ID%])'>
+            <span uk-icon="file-text"></span>
+            %NAME%
+        </a>
+    </td>
+    <td>
+        <span uk-icon="more-vertical"></span>
+    </td>
+</tr>
 `;
 let APP_INPUT_DIR_SECTION_ID_T = "input-dir-%I%";
 let APP_INPUT_DIR_SECTION_T = `
@@ -28,8 +33,17 @@ let APP_INPUT_DIR_SECTION_T = `
         %NAME%
         <span uk-accordion-icon></span>
     </a>
-    <div id="%ID%" class="uk-accordion-content uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>
-    </div>
+    <table class="uk-accordion-content uk-table uk-table-divider uk-table-middle">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>File</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody id="%ID%">
+        </tbody>
+    </table>
 </li>
 `;
 
