@@ -7,6 +7,7 @@ function appCtrl() {
 //<!-- Constants -->
 
 let APP_FILES_ID = "files";
+let APP_FILES_CONTENTS_ID = "filesContents";
 let APP_HEADER_KEY_ID = "headerKey";
 let APP_HEADER_VALUE_ID = "headerValue";
 
@@ -21,12 +22,15 @@ let APP_INPUT_DIR_FILE_T = `
 `;
 let APP_INPUT_DIR_SECTION_ID_T = "input-dir-%I%";
 let APP_INPUT_DIR_SECTION_T = `
-<div class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom">
-    <span class="uk-article-title highlight-article-digit">%NUM%</span>
-    <span class="uk-article-title">%NAME%</span>
-</div>
-<div id="%ID%" class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>
-</div>
+<li>
+    <a class="uk-accordion-title" href>
+        <span uk-icon="folder"></span>
+        %NAME%
+        <span uk-accordion-icon></span>
+    </a>
+    <div id="%ID%" class="uk-accordion-content uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>
+    </div>
+</li>
 `;
 
 let APP_EDITOR_ID = "editor";
@@ -135,7 +139,7 @@ function appDisplayInputDirSections(items) {
             .replaceAll("%NAME%", item)
             .replaceAll("%NUM%", Number(i) + 1);
     }
-    setUIText(APP_FILES_ID, html);
+    setUIText(APP_FILES_CONTENTS_ID, html);
 }
 
 function appDisplayInputMDFiles(d) {
