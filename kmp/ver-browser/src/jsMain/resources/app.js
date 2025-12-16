@@ -13,7 +13,7 @@ let APP_HEADER_VALUE_ID = "headerValue";
 
 let APP_INPUT_DIR_FILE_T = `
 <tr>
-    <td>TODO-Year</td>
+    <td>%YEAR%</td>
     <td>
         <a onclick='appCtrl().set("selectedFileId", [%PAGE_ID%])'>
             <span uk-icon="file-text"></span>
@@ -160,13 +160,30 @@ function appDisplayInputMDFiles(d) {
     // For each section
     KT.forKIntVArrayString(d, (id, files) => {
         var html = "";
+
+        // Find out if this is a list of year sorted files
+        let isYearSorted = (KT.appYear(files[0]) != 0);
+        // Reverse year sorted files
+        if (isYearSorted) {
+            files.reverse()
+        }
+        var lastYear = "";
         // For each file
         for (let i in files) {
             let name = files[i];
             let pageId = [id, i];
+            // Leave only differing years
+            let year = KT.appYear(name);
+            if (year != lastYear) {
+                lastYear = year;
+            } else {
+                year = "";
+            }
+
             html += APP_INPUT_DIR_FILE_T
                 .replaceAll("%NAME%", name)
-                .replaceAll("%PAGE_ID%", pageId);
+                .replaceAll("%PAGE_ID%", pageId)
+                .replaceAll("%YEAR%", year);
         }
         let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", id);
         setUIText(sectionId, html);

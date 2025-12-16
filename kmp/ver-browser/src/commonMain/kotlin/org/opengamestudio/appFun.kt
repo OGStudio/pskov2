@@ -16,6 +16,7 @@ import kotlin.js.JsExport
 @JsExport val APP_TAB_FILES_INDEX = 0
 @JsExport val APP_TAB_RENDER_INDEX = 2
 @JsExport val APP_SPLASH_TIMEOUT = 800
+@JsExport val APP_YEAR_MAX = 2100
 
 //<!-- Shoulds -->
 
@@ -785,3 +786,32 @@ fun appURL(
 ): String {
     return "$baseURL$api"
 }
+
+@JsExport
+fun appYear(value: String): String {
+    val parts = value.split("-")
+
+    // 1. Make sure there was a split
+    if (parts.size < 2) {
+        return ""
+    }
+
+    // 2. Make sure the first part is a digit
+    var year: Int = 0
+    try {
+        year = parts[0]?.toInt() ?: 0
+    } catch (e: Exception) {
+        return ""
+    }
+
+    // 3. Make sure digit makes sense as a year
+    if (
+        year < 1970 ||
+        year > APP_YEAR_MAX
+    ) {
+        return ""
+    }
+
+    return "$year"
+}
+
