@@ -11,6 +11,8 @@ AppContext:
         cfg: [String: String]
         converterInput: String
         converterOutput: String
+        copyFileId: [Int]
+        deleteFileId: [Int]
         didClickEditorTab: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool
@@ -35,6 +37,7 @@ AppContext:
         projectPath: String
         readFile: String
         readFileContents: String
+        renameFileId: [Int]
         renderedFile: String
         renderPage: String
         request: NetRequest

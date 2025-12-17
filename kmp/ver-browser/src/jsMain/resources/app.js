@@ -7,15 +7,15 @@ function appCtrl() {
 //<!-- Constants -->
 
 let APP_FILE_OPTIONS = `
-<table class="uk-table uk-table-divider uk-table-middle">
+<table class="uk-table uk-table-divider uk-table-hover uk-table-middle">
     <tbody>
-        <tr><td>
-            <span uk-icon="copy"></span> Copy
+        <tr class="cursor-pointer" onclick='appCtrl().set("copyFileId", [%PAGE_ID%])'><td>
+            <span uk-icon="copy"></span> Make a copy
         </td></tr>
-        <tr><td>
+        <tr class="cursor-pointer" onclick='appCtrl().set("renameFileId", [%PAGE_ID%])'><td>
             <span uk-icon="pencil"></span> Rename
         </td></tr>
-        <tr><td>
+        <tr class="cursor-pointer" onclick='appCtrl().set("deleteFileId", [%PAGE_ID%])'><td>
             <span uk-icon="trash"></span> Delete
         </td></tr>
     </tbody>
@@ -39,7 +39,7 @@ let APP_INPUT_DIR_FILE_T = `
         <button class="uk-button uk-button-default">
             <span uk-icon="more-vertical"></span>
         </button>
-        <div uk-dropdown="mode: click">
+        <div id="dropdown-%PAGE_ID%" uk-dropdown="mode: click">
             %OPTIONS%
         </div>
     </td>

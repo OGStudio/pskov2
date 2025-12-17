@@ -8,6 +8,8 @@ data class AppContext(
     var cfg: Map<String, String> = mapOf(),
     var converterInput: String = "",
     var converterOutput: String = "",
+    var copyFileId: Array<Int> = arrayOf(),
+    var deleteFileId: Array<Int> = arrayOf(),
     var didClickEditorTab: Boolean = false,
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
@@ -32,6 +34,7 @@ data class AppContext(
     var projectPath: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
+    var renameFileId: Array<Int> = arrayOf(),
     var renderPage: String = "",
     var renderedFile: String = "",
     var request: NetRequest = NetRequest(),
@@ -56,6 +59,10 @@ data class AppContext(
             return converterInput as T
         } else if (name == "converterOutput") {
             return converterOutput as T
+        } else if (name == "copyFileId") {
+            return copyFileId as T
+        } else if (name == "deleteFileId") {
+            return deleteFileId as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
         } else if (name == "didClickFilesTab") {
@@ -104,6 +111,8 @@ data class AppContext(
             return readFile as T
         } else if (name == "readFileContents") {
             return readFileContents as T
+        } else if (name == "renameFileId") {
+            return renameFileId as T
         } else if (name == "renderPage") {
             return renderPage as T
         } else if (name == "renderedFile") {
@@ -150,6 +159,10 @@ data class AppContext(
             converterInput = value as String
         } else if (name == "converterOutput") {
             converterOutput = value as String
+        } else if (name == "copyFileId") {
+            copyFileId = value as Array<Int>
+        } else if (name == "deleteFileId") {
+            deleteFileId = value as Array<Int>
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
         } else if (name == "didClickFilesTab") {
@@ -198,6 +211,8 @@ data class AppContext(
             readFile = value as String
         } else if (name == "readFileContents") {
             readFileContents = value as String
+        } else if (name == "renameFileId") {
+            renameFileId = value as Array<Int>
         } else if (name == "renderPage") {
             renderPage = value as String
         } else if (name == "renderedFile") {

@@ -719,11 +719,7 @@ fun appShouldSaveRenderedFile(c: AppContext): AppContext {
 @JsExport
 fun appShouldSelectFileName(c: AppContext): AppContext {
     if (c.recentField == "selectedFileId") {
-        val inputDirId = c.selectedFileId[0]
-        val mdFileId = c.selectedFileId[1]
-        val dir = c.inputDirs[inputDirId]!!
-        val file = c.inputMDFiles[inputDirId]!![mdFileId]!!
-        c.selectedFileName = "$dir/$file"
+        c.selectedFileName = appFileIdToName(c.selectedFileId, c.inputDirs, c.inputMDFiles)
         c.recentField = "selectedFileName"
         return c
     }
@@ -778,6 +774,19 @@ fun appShouldSelectTab(c: AppContext): AppContext {
 }
 
 //<!-- Other functions -->
+
+@JsExport
+fun appFileIdToName(
+    fileId: Array<Int>,
+    inputDirs: Array<String>,
+    inputMDFiles: Map<Int, Array<String>>
+): String {
+    val inputDirId = fileId[0]
+    val mdFileId = fileId[1]
+    val dir = inputDirs[inputDirId]!!
+    val file = inputMDFiles[inputDirId]!![mdFileId]!!
+    return "$dir/$file"
+}
 
 @JsExport
 fun appURL(
