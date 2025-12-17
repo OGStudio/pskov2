@@ -6,6 +6,21 @@ function appCtrl() {
 
 //<!-- Constants -->
 
+let APP_FILE_OPTIONS = `
+<table class="uk-table uk-table-divider uk-table-middle">
+    <tbody>
+        <tr><td>
+            <span uk-icon="copy"></span> Copy
+        </td></tr>
+        <tr><td>
+            <span uk-icon="pencil"></span> Rename
+        </td></tr>
+        <tr><td>
+            <span uk-icon="trash"></span> Delete
+        </td></tr>
+    </tbody>
+</table>
+`;
 let APP_FILES_ID = "files";
 let APP_FILES_CONTENTS_ID = "filesContents";
 let APP_HEADER_KEY_ID = "headerKey";
@@ -20,8 +35,13 @@ let APP_INPUT_DIR_FILE_T = `
             %NAME%
         </a>
     </td>
-    <td>
-        <span uk-icon="more-vertical"></span>
+    <td class="uk-inline">
+        <button class="uk-button uk-button-default">
+            <span uk-icon="more-vertical"></span>
+        </button>
+        <div uk-dropdown="mode: click">
+            %OPTIONS%
+        </div>
     </td>
 </tr>
 `;
@@ -182,6 +202,7 @@ function appDisplayInputMDFiles(d) {
 
             html += APP_INPUT_DIR_FILE_T
                 .replaceAll("%NAME%", name)
+                .replaceAll("%OPTIONS%", APP_FILE_OPTIONS)
                 .replaceAll("%PAGE_ID%", pageId)
                 .replaceAll("%YEAR%", year);
         }
