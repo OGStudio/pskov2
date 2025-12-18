@@ -52,6 +52,26 @@
       </ul>
     </div>
 
+
+
+    <a class="uk-button uk-button-default" href="#filesCopy" uk-toggle>tmp open</a>
+
+    <!-- FILES' MODALS -->
+    <div id="filesCopy" uk-modal>
+      <div class="uk-modal-dialog">
+        <div class="uk-modal-header">
+          <h2 class="uk-modal-title">Make a copy</h2>
+        </div>
+        <div class="uk-modal-body">
+          <input id="filesCopyInput" class="uk-input" type="text" oninput='appCtrl().set("inputFilesCopy", this.value);'>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+          <button class="uk-button uk-button-primary" type="button">OK</button>
+        </div>
+      </div>
+    </div>
+
     <!-- TAB: EDITOR -->
     <div id="editor" class="uk-container" hidden>
       <div id="editorContents">TODO-Editor</div>
