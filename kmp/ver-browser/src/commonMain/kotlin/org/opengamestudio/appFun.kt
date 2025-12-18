@@ -20,6 +20,37 @@ import kotlin.js.JsExport
 
 //<!-- Shoulds -->
 
+/* Hide file options' menu
+ *
+ * Conditions:
+ * 1. Did select `Copy` menu item
+ * 3. Did select `Delete` menu item
+ * 2. Did select `Rename` menu item
+ */
+@JsExport
+fun appShouldHideFileOptions(c: AppContext): AppContext {
+    if (c.recentField == "copyFileId") {
+        c.hideFileOptions = c.copyFileId
+        c.recentField = "hideFileOptions"
+        return c
+    }
+
+    if (c.recentField == "deleteFileId") {
+        c.hideFileOptions = c.deleteFileId
+        c.recentField = "hideFileOptions"
+        return c
+    }
+
+    if (c.recentField == "renameFileId") {
+        c.hideFileOptions = c.renameFileId
+        c.recentField = "hideFileOptions"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Hide splash after a delay
  *
  * Conditions:

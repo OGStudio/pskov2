@@ -21,6 +21,7 @@ let APP_FILE_OPTIONS = `
     </tbody>
 </table>
 `;
+let APP_FILE_OPTIONS_ID_T = "fileOptions-%ID%";
 let APP_FILES_ID = "files";
 let APP_FILES_CONTENTS_ID = "filesContents";
 let APP_HEADER_KEY_ID = "headerKey";
@@ -39,7 +40,7 @@ let APP_INPUT_DIR_FILE_T = `
         <button class="uk-button uk-button-default">
             <span uk-icon="more-vertical"></span>
         </button>
-        <div id="dropdown-%PAGE_ID%" uk-dropdown="mode: click">
+        <div id="%OPTIONS_ID%" uk-dropdown="mode: click">
             %OPTIONS%
         </div>
     </td>
@@ -99,6 +100,7 @@ function AppComponent() {
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "header", (c) => { appResetHeader(c.header) },
+            "hideFileOptions", (c) => { appHideFileOptions(c.hideFileOptions) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "installEditor", (c) => { appInstallEditor(this) },
@@ -124,6 +126,7 @@ function AppComponent() {
 
     this.setupShoulds = function() {
         [
+            KT.appShouldHideFileOptions,
             KT.appShouldHideSplash,
             KT.appShouldInstallEditor,
             KT.appShouldInstallMDConverter,
@@ -163,6 +166,12 @@ function AppComponent() {
 
 //<!-- Effects -->
 
+function appHideFileOptions(id) {
+    let menuId = APP_FILE_OPTIONS_ID_T.replaceAll("%ID%", id);
+    let el = deId(menuId);
+    UIkit.dropdown(el).hide(false);
+}
+
 function appDisplayInputDirSections(items) {
     var html = "";
     for (let i in items) {
@@ -199,10 +208,12 @@ function appDisplayInputMDFiles(d) {
             } else {
                 year = "";
             }
+            let optionsId = APP_FILE_OPTIONS_ID_T.replaceAll("%ID%", pageId)
 
             html += APP_INPUT_DIR_FILE_T
                 .replaceAll("%NAME%", name)
                 .replaceAll("%OPTIONS%", APP_FILE_OPTIONS)
+                .replaceAll("%OPTIONS_ID%", optionsId)
                 .replaceAll("%PAGE_ID%", pageId)
                 .replaceAll("%YEAR%", year);
         }

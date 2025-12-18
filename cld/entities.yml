@@ -26,6 +26,7 @@ AppContext:
         editedFileContents: [String: String]
         editorContents: String
         header: [String]
+        hideFileOptions: [Int]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputMDFiles: [Int: [String]]

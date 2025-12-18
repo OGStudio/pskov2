@@ -23,6 +23,7 @@ data class AppContext(
     var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
     var header: Array<String> = arrayOf(),
+    var hideFileOptions: Array<Int> = arrayOf(),
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
@@ -89,6 +90,8 @@ data class AppContext(
             return editorContents as T
         } else if (name == "header") {
             return header as T
+        } else if (name == "hideFileOptions") {
+            return hideFileOptions as T
         } else if (name == "inputDirFiles") {
             return inputDirFiles as T
         } else if (name == "inputDirs") {
@@ -189,6 +192,8 @@ data class AppContext(
             editorContents = value as String
         } else if (name == "header") {
             header = value as Array<String>
+        } else if (name == "hideFileOptions") {
+            hideFileOptions = value as Array<Int>
         } else if (name == "inputDirFiles") {
             inputDirFiles = value as Map<Int, Array<FSFile>>
         } else if (name == "inputDirs") {
