@@ -433,6 +433,23 @@ fun appShouldResetEditorContents(c: AppContext): AppContext {
     return c
 }
 
+/* Show / hide files' copy dialog
+ *
+ * Conditions:
+ * 1. Did select `Copy` in files options menu
+ */
+@JsExport
+fun appShouldResetFilesCopyDialogVisibility(c: AppContext): AppContext {
+    if (c.recentField == "copyFileId") {
+        c.isFilesCopyDialogVisible = true
+        c.recentField = "isFilesCopyDialogVisible"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set header contents
  *
  * Conditions:

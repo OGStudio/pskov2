@@ -29,6 +29,7 @@ data class AppContext(
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
     var installMDConverter: Boolean = false,
+    var isFilesCopyDialogVisible: Boolean = false,
     var itemTemplates: Map<Int, String> = mapOf(),
     var listInputDirId: Int = 0,
     var page: Page = Page(),
@@ -102,6 +103,8 @@ data class AppContext(
             return installEditor as T
         } else if (name == "installMDConverter") {
             return installMDConverter as T
+        } else if (name == "isFilesCopyDialogVisible") {
+            return isFilesCopyDialogVisible as T
         } else if (name == "itemTemplates") {
             return itemTemplates as T
         } else if (name == "listInputDirId") {
@@ -204,6 +207,8 @@ data class AppContext(
             installEditor = value as Boolean
         } else if (name == "installMDConverter") {
             installMDConverter = value as Boolean
+        } else if (name == "isFilesCopyDialogVisible") {
+            isFilesCopyDialogVisible = value as Boolean
         } else if (name == "itemTemplates") {
             itemTemplates = value as Map<Int, String>
         } else if (name == "listInputDirId") {

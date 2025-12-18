@@ -32,6 +32,7 @@ AppContext:
         inputMDFiles: [Int: [String]]
         installEditor: Bool
         installMDConverter: Bool
+        isFilesCopyDialogVisible: Bool
         itemTemplates: [Int: String]
         listInputDirId: Int
         page: Page

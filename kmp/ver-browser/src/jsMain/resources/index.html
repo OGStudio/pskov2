@@ -52,17 +52,14 @@
       </ul>
     </div>
 
-
-
-    <a class="uk-button uk-button-default" href="#filesCopy" uk-toggle>tmp open</a>
-
     <!-- FILES' MODALS -->
-    <div id="filesCopy" uk-modal>
+    <div id="filesCopyDialog" uk-modal>
       <div class="uk-modal-dialog">
         <div class="uk-modal-header">
           <h2 class="uk-modal-title">Make a copy</h2>
         </div>
         <div class="uk-modal-body">
+          New file name:
           <input id="filesCopyInput" class="uk-input" type="text" oninput='appCtrl().set("inputFilesCopy", this.value);'>
         </div>
         <div class="uk-modal-footer uk-text-right">
