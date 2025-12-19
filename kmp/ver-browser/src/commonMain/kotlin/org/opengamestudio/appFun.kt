@@ -239,10 +239,7 @@ fun appShouldListInputDir(c: AppContext): AppContext {
         return c
     }
 
-    /* 3 */ if (
-        c.recentField == "didSaveFile" &&
-        c.readFileOrigin == "didClickFilesCopyOK"
-    ) {
+    /* 3 */ if (c.recentField == "didCopyFile") {
         c.listInputDirId = 0
         c.recentField = "listInputDirId"
         return c
@@ -341,6 +338,26 @@ fun appShouldResetConverterInput(c: AppContext): AppContext {
     if (c.recentField == "page") {
         c.converterInput = c.page.contents
         c.recentField = "converterInput"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Mark the end of copying a file
+ *
+ * Conditions:
+ * 1. File has been copied
+ */
+@JsExport
+fun appShouldResetDidCopyFile(c: AppContext): AppContext {
+    /* 1 */ if (
+        c.recentField == "didSaveFile" &&
+        c.readFileOrigin == "didClickFilesCopyOK"
+    ) {
+        c.didCopyFile = true
+        c.recentField = "didCopyFile"
         return c
     }
 
@@ -504,10 +521,7 @@ fun appShouldResetFilesCopyDialogVisibility(c: AppContext): AppContext {
         return c
     }
 
-    if (
-        c.recentField == "didSaveFile" &&
-        c.readFileOrigin == "didClickFilesCopyOK"
-    ) {
+    if (c.recentField == "didCopyFile") {
         c.isFilesCopyDialogVisible = false
         c.recentField = "isFilesCopyDialogVisible"
         return c

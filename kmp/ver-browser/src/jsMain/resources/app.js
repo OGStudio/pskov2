@@ -99,6 +99,7 @@ function AppComponent() {
     this.setupEffects = function() {
         let oneliners = [
             "converterInput", (c) => { appResetConverterInput(this, c.converterInput) },
+            "didCopyFile", (c) => { reportSuccess("⿻ 👌") },
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
             "filesCopyDefaultName", (c) => { setUIInputValue(APP_FILES_COPY_INPUT_ID, c.filesCopyDefaultName) },
@@ -140,6 +141,7 @@ function AppComponent() {
             KT.appShouldReadFile,
             KT.appShouldRenderPage,
             KT.appShouldResetConverterInput,
+            KT.appShouldResetDidCopyFile,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,
             KT.appShouldResetDidSaveRenderedFile,

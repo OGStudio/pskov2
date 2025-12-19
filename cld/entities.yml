@@ -18,6 +18,7 @@ AppContext:
         didClickFilesTab: Bool
         didClickRenderTab: Bool
         didClickSaveBtn: Bool
+        didCopyFile: Bool
         didLaunch: Bool
         didResize: Bool
         didSaveEditedFiles: Bool

@@ -15,6 +15,7 @@ data class AppContext(
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didClickSaveBtn: Boolean = false,
+    var didCopyFile: Boolean = false,
     var didLaunch: Boolean = false,
     var didResize: Boolean = false,
     var didSaveEditedFiles: Boolean = false,
@@ -79,6 +80,8 @@ data class AppContext(
             return didClickRenderTab as T
         } else if (name == "didClickSaveBtn") {
             return didClickSaveBtn as T
+        } else if (name == "didCopyFile") {
+            return didCopyFile as T
         } else if (name == "didLaunch") {
             return didLaunch as T
         } else if (name == "didResize") {
@@ -191,6 +194,8 @@ data class AppContext(
             didClickRenderTab = value as Boolean
         } else if (name == "didClickSaveBtn") {
             didClickSaveBtn = value as Boolean
+        } else if (name == "didCopyFile") {
+            didCopyFile = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
         } else if (name == "didResize") {
