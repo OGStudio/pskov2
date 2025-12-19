@@ -197,7 +197,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         c.recentField == "readFileContents" &&
         c.readFileOrigin == "didClickFilesCopyOK"
     ) {
-        val body = fileContentsToJSON(c.inputFileCopy, c.readFileContents)
+        val body = fileContentsToJSON(c.inputFilesCopy, c.readFileContents)
         c.request =
             NetRequest(
                 body,
@@ -217,10 +217,11 @@ fun appShouldLoad(c: AppContext): AppContext {
  * Conditions:
  * 1. Input dirs are available and not empty
  * 2. Input dir files received a new entry
+ * 3. File has been copied
  */
 @JsExport
 fun appShouldListInputDir(c: AppContext): AppContext {
-    if (
+    /* 1 */ if (
         c.recentField == "inputDirs" &&
         c.inputDirs.size > 0
     ) {
@@ -229,11 +230,20 @@ fun appShouldListInputDir(c: AppContext): AppContext {
         return c
     }
 
-    if (
+    /* 2 */ if (
         c.recentField == "inputDirFiles" &&
         c.listInputDirId + 1 < c.inputDirs.size
     ) {
         c.listInputDirId += 1
+        c.recentField = "listInputDirId"
+        return c
+    }
+
+    /* 3 */ if (
+        c.recentField == "didSaveFile" &&
+        c.readFileOrigin == "didClickFilesCopyOK"
+    ) {
+        c.listInputDirId = 0
         c.recentField = "listInputDirId"
         return c
     }
@@ -484,11 +494,21 @@ fun appShouldResetFilesCopyDefaultName(c: AppContext): AppContext {
  *
  * Conditions:
  * 1. Did select `Copy` in files options menu
+ * 2. Did save file after copying
  */
 @JsExport
 fun appShouldResetFilesCopyDialogVisibility(c: AppContext): AppContext {
     if (c.recentField == "copyFileId") {
         c.isFilesCopyDialogVisible = true
+        c.recentField = "isFilesCopyDialogVisible"
+        return c
+    }
+
+    if (
+        c.recentField == "didSaveFile" &&
+        c.readFileOrigin == "didClickFilesCopyOK"
+    ) {
+        c.isFilesCopyDialogVisible = false
         c.recentField = "isFilesCopyDialogVisible"
         return c
     }
