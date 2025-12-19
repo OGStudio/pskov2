@@ -80,6 +80,8 @@ function setUIInputValue(id, value) {
     let el = deId(id);
     if (el != null) {
         el.value = value;
+        // Make sure everyone sees the change
+        el.dispatchEvent(new Event("input"));
     }
 }
 

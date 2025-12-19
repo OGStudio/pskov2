@@ -11,6 +11,7 @@ data class AppContext(
     var copyFileId: Array<Int> = arrayOf(),
     var deleteFileId: Array<Int> = arrayOf(),
     var didClickEditorTab: Boolean = false,
+    var didClickFilesCopyOK: Boolean = false,
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didClickSaveBtn: Boolean = false,
@@ -27,6 +28,7 @@ data class AppContext(
     var hideFileOptions: Array<Int> = arrayOf(),
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
+    var inputFilesCopy: String = "",
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
     var installMDConverter: Boolean = false,
@@ -68,6 +70,8 @@ data class AppContext(
             return deleteFileId as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
+        } else if (name == "didClickFilesCopyOK") {
+            return didClickFilesCopyOK as T
         } else if (name == "didClickFilesTab") {
             return didClickFilesTab as T
         } else if (name == "didClickRenderTab") {
@@ -100,6 +104,8 @@ data class AppContext(
             return inputDirFiles as T
         } else if (name == "inputDirs") {
             return inputDirs as T
+        } else if (name == "inputFilesCopy") {
+            return inputFilesCopy as T
         } else if (name == "inputMDFiles") {
             return inputMDFiles as T
         } else if (name == "installEditor") {
@@ -174,6 +180,8 @@ data class AppContext(
             deleteFileId = value as Array<Int>
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
+        } else if (name == "didClickFilesCopyOK") {
+            didClickFilesCopyOK = value as Boolean
         } else if (name == "didClickFilesTab") {
             didClickFilesTab = value as Boolean
         } else if (name == "didClickRenderTab") {
@@ -206,6 +214,8 @@ data class AppContext(
             inputDirFiles = value as Map<Int, Array<FSFile>>
         } else if (name == "inputDirs") {
             inputDirs = value as Array<String>
+        } else if (name == "inputFilesCopy") {
+            inputFilesCopy = value as String
         } else if (name == "inputMDFiles") {
             inputMDFiles = value as Map<Int, Array<String>>
         } else if (name == "installEditor") {
