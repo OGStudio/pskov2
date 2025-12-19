@@ -253,12 +253,13 @@ fun appShouldParseCfg(c: AppContext): AppContext {
  * Conditions:
  * 1. User selected a file
  * 2. Editor has contents of a selected file
+ * 3. User selected `OK` to make a copy
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
     if (
-        c.recentField == "selectedFileName" &&
-        c.editedFileContents[c.selectedFileName] == null
+        c.recentField == "readFileOrigin" &&
+        c.readFileOrigin == "selectedFileName"
     ) {
         c.readFile = c.selectedFileName
         c.recentField = "readFile"
@@ -266,10 +267,19 @@ fun appShouldReadFile(c: AppContext): AppContext {
     }
 
     if (
-        c.recentField == "editorContents" &&
-        c.itemTemplates[c.selectedFileId[0]] == null
+        c.recentField == "readFileOrigin" &&
+        c.readFileOrigin == "editorContents"
     ) {
         c.readFile = c.inputDirs[c.selectedFileId[0]] + "/" + APP_ITEM_TEMPLATE_FILE
+        c.recentField = "readFile"
+        return c
+    }
+
+    if (
+        c.recentField == "readFileOrigin" &&
+        c.readFileOrigin == "didClickFilesCopyOK"
+    ) {
+        c.readFile = appFileIdToName(c.copyFileId, c.inputDirs, c.inputMDFiles)
         c.recentField = "readFile"
         return c
     }
@@ -413,7 +423,8 @@ fun appShouldResetEditedFileContents(c: AppContext): AppContext {
 fun appShouldResetEditorContents(c: AppContext): AppContext {
     if (
         c.recentField == "readFileContents" &&
-        c.readFile.endsWith(CONST_EXT_MD)
+        c.readFile.endsWith(CONST_EXT_MD) &&
+        c.readFileOrigin == "selectedFileName"
     ) {
         c.editorContents = c.readFileContents
         c.recentField = "editorContents"
@@ -647,6 +658,43 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
     ) {
         c.readFileContents = c.response.contents
         c.recentField = "readFileContents"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Who wants to read a file
+ *
+ * Conditions:
+ * 1. User selected a file
+ * 2. Editor has contents of a selected file
+ * 3. User selected `OK` to make a copy
+ */
+@JsExport
+fun appShouldResetReadFileOrigin(c: AppContext): AppContext {
+    if (
+        c.recentField == "selectedFileName" &&
+        c.editedFileContents[c.selectedFileName] == null
+    ) {
+        c.readFileOrigin = "selectedFileName"
+        c.recentField = "readFileOrigin"
+        return c
+    }
+
+    if (
+        c.recentField == "editorContents" &&
+        c.itemTemplates[c.selectedFileId[0]] == null
+    ) {
+        c.readFileOrigin = "editorContents"
+        c.recentField = "readFileOrigin"
+        return c
+    }
+
+    if (c.recentField == "didClickFilesCopyOK") {
+        c.readFileOrigin = "didClickFilesCopyOK"
+        c.recentField = "readFileOrigin"
         return c
     }
 

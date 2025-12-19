@@ -39,6 +39,7 @@ data class AppContext(
     var projectPath: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
+    var readFileOrigin: String = "",
     var renameFileId: Array<Int> = arrayOf(),
     var renderPage: String = "",
     var renderedFile: String = "",
@@ -126,6 +127,8 @@ data class AppContext(
             return readFile as T
         } else if (name == "readFileContents") {
             return readFileContents as T
+        } else if (name == "readFileOrigin") {
+            return readFileOrigin as T
         } else if (name == "renameFileId") {
             return renameFileId as T
         } else if (name == "renderPage") {
@@ -236,6 +239,8 @@ data class AppContext(
             readFile = value as String
         } else if (name == "readFileContents") {
             readFileContents = value as String
+        } else if (name == "readFileOrigin") {
+            readFileOrigin = value as String
         } else if (name == "renameFileId") {
             renameFileId = value as Array<Int>
         } else if (name == "renderPage") {

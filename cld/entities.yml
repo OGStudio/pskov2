@@ -42,6 +42,7 @@ AppContext:
         projectPath: String
         readFile: String
         readFileContents: String
+        readFileOrigin: String
         renameFileId: [Int]
         renderedFile: String
         renderPage: String

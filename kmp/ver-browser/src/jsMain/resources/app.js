@@ -155,6 +155,7 @@ function AppComponent() {
             KT.appShouldResetPage,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
+            KT.appShouldResetReadFileOrigin,
             KT.appShouldResizeEditor,
             KT.appShouldResizeRenderer,
             KT.appShouldSaveFileId,
