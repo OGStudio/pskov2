@@ -25,6 +25,7 @@ AppContext:
         editedContents: String
         editedFileContents: [String: String]
         editorContents: String
+        filesCopyDefaultName: String
         header: [String]
         hideFileOptions: [Int]
         inputDirFiles: [Int: [FSFile]]

@@ -25,6 +25,7 @@ let APP_FILE_OPTIONS_ID_T = "fileOptions-%ID%";
 let APP_FILES_ID = "files";
 let APP_FILES_CONTENTS_ID = "filesContents";
 let APP_FILES_COPY_DIALOG_ID = "filesCopyDialog";
+let APP_FILES_COPY_INPUT_ID = "filesCopyInput";
 let APP_HEADER_KEY_ID = "headerKey";
 let APP_HEADER_VALUE_ID = "headerValue";
 
@@ -100,6 +101,7 @@ function AppComponent() {
             "converterInput", (c) => { appResetConverterInput(this, c.converterInput) },
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
+            "filesCopyDefaultName", (c) => { setUIInputValue(APP_FILES_COPY_INPUT_ID, c.filesCopyDefaultName) },
             "header", (c) => { appResetHeader(c.header) },
             "hideFileOptions", (c) => { appHideFileOptions(c.hideFileOptions) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
@@ -143,6 +145,7 @@ function AppComponent() {
             KT.appShouldResetDidSaveRenderedFile,
             KT.appShouldResetEditedFileContents,
             KT.appShouldResetEditorContents,
+            KT.appShouldResetFilesCopyDefaultName,
             KT.appShouldResetFilesCopyDialogVisibility,
             KT.appShouldResetHeader,
             KT.appShouldResetInputDirFiles,

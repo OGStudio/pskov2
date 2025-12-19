@@ -75,6 +75,14 @@ function setUIClassActive(id, className, isActive) {
     }
 }
 
+// Set input value
+function setUIInputValue(id, value) {
+    let el = deId(id);
+    if (el != null) {
+        el.value = value;
+    }
+}
+
 // Change element text
 function setUIText(id, text) {
     let el = deId(id);

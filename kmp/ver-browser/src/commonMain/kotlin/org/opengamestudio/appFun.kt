@@ -433,6 +433,26 @@ fun appShouldResetEditorContents(c: AppContext): AppContext {
     return c
 }
 
+/* Set default name of a copy
+ *
+ * Conditions:
+ * 1. Did select `Copy` in files options menu
+ */
+@JsExport
+fun appShouldResetFilesCopyDefaultName(c: AppContext): AppContext {
+    if (c.recentField == "copyFileId") {
+        val name = appFileIdToName(c.copyFileId, c.inputDirs, c.inputMDFiles)
+        val delim = "." + CONST_EXT_MD
+        val parts = name.split(delim)
+        c.filesCopyDefaultName = parts[0]!! + "_COPY" + delim
+        c.recentField = "filesCopyDefaultName"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Show / hide files' copy dialog
  *
  * Conditions:
