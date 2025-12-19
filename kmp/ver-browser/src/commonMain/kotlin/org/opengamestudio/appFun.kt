@@ -111,6 +111,7 @@ fun appShouldInstallMDConverter(c: AppContext): AppContext {
  * 4. Read file
  * 5. Save edited file
  * 6. Save rendered file
+ * 7. Save copied file
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -182,6 +183,21 @@ fun appShouldLoad(c: AppContext): AppContext {
             ?.replace(APP_PAGE_URL, pageURL)
         val contents = o ?: "Contents-N/A"
         val body = fileContentsToJSON(c.renderedFile, contents)
+        c.request =
+            NetRequest(
+                body,
+                CONST_HTTP_POST,
+                appURL(c.baseURL, CONST_API_WRITE),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    if (
+        c.recentField == "readFileContents" &&
+        c.readFileOrigin == "didClickFilesCopyOK"
+    ) {
+        val body = fileContentsToJSON(c.inputFileCopy, c.readFileContents)
         c.request =
             NetRequest(
                 body,
