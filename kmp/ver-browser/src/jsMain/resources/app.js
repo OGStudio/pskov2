@@ -26,6 +26,8 @@ let APP_FILES_ID = "files";
 let APP_FILES_CONTENTS_ID = "filesContents";
 let APP_FILES_COPY_DIALOG_ID = "filesCopyDialog";
 let APP_FILES_COPY_INPUT_ID = "filesCopyInput";
+let APP_FILES_RENAME_DIALOG_ID = "filesRenameDialog";
+let APP_FILES_RENAME_INPUT_ID = "filesRenameInput";
 let APP_HEADER_KEY_ID = "headerKey";
 let APP_HEADER_VALUE_ID = "headerValue";
 
@@ -110,6 +112,7 @@ function AppComponent() {
             "installEditor", (c) => { appInstallEditor(this) },
             "installMDConverter", (c) => { appInstallMDConverter(this) },
             "isFilesCopyDialogVisible", (c) => { appResetFilesCopyDialogVisibility(c.isFilesCopyDialogVisible) },
+            "isFilesRenameDialogVisible", (c) => { appResetFilesRenameDialogVisibility(c.isFilesRenameDialogVisible) },
             "renderPage", (c) => { appRenderPage(c.renderPage) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
@@ -149,6 +152,7 @@ function AppComponent() {
             KT.appShouldResetEditorContents,
             KT.appShouldResetFilesCopyDefaultName,
             KT.appShouldResetFilesCopyDialogVisibility,
+            KT.appShouldResetFilesRenameDialogVisibility,
             KT.appShouldResetHeader,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
@@ -282,6 +286,15 @@ function appResetEditorContents(cmp, contents) {
 
 function appResetFilesCopyDialogVisibility(isVisible) {
     let el = deId(APP_FILES_COPY_DIALOG_ID);
+    if (isVisible) {
+        UIkit.modal(el).show();
+    } else {
+        UIkit.modal(el).hide();
+    }
+}
+
+function appResetFilesRenameDialogVisibility(isVisible) {
+    let el = deId(APP_FILES_RENAME_DIALOG_ID);
     if (isVisible) {
         UIkit.modal(el).show();
     } else {

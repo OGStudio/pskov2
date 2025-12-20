@@ -531,6 +531,30 @@ fun appShouldResetFilesCopyDialogVisibility(c: AppContext): AppContext {
     return c
 }
 
+/* Show / hide files' rename dialog
+ *
+ * Conditions:
+ * 1. Did select `Rename` in files options menu
+ * 2. Did save file after renaming
+ */
+@JsExport
+fun appShouldResetFilesRenameDialogVisibility(c: AppContext): AppContext {
+    if (c.recentField == "renameFileId") {
+        c.isFilesRenameDialogVisible = true
+        c.recentField = "isFilesRenameDialogVisible"
+        return c
+    }
+
+    if (c.recentField == "didRenameFile") {
+        c.isFilesRenameDialogVisible = false
+        c.recentField = "isFilesRenameDialogVisible"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set header contents
  *
  * Conditions:

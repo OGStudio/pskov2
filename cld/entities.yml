@@ -15,11 +15,13 @@ AppContext:
         deleteFileId: [Int]
         didClickEditorTab: Bool
         didClickFilesCopyOK: Bool
+        didClickFilesRenameOK: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool
         didClickSaveBtn: Bool
         didCopyFile: Bool
         didLaunch: Bool
+        didRenameFile: Bool
         didResize: Bool
         didSaveEditedFiles: Bool
         didSaveFile: Bool
@@ -33,10 +35,12 @@ AppContext:
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
         inputFilesCopy: String
+        inputFilesRename: String
         inputMDFiles: [Int: [String]]
         installEditor: Bool
         installMDConverter: Bool
         isFilesCopyDialogVisible: Bool
+        isFilesRenameDialogVisible: Bool
         itemTemplates: [Int: String]
         listInputDirId: Int
         page: Page

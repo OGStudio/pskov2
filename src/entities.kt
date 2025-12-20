@@ -12,11 +12,13 @@ data class AppContext(
     var deleteFileId: Array<Int> = arrayOf(),
     var didClickEditorTab: Boolean = false,
     var didClickFilesCopyOK: Boolean = false,
+    var didClickFilesRenameOK: Boolean = false,
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didClickSaveBtn: Boolean = false,
     var didCopyFile: Boolean = false,
     var didLaunch: Boolean = false,
+    var didRenameFile: Boolean = false,
     var didResize: Boolean = false,
     var didSaveEditedFiles: Boolean = false,
     var didSaveFile: Boolean = false,
@@ -30,10 +32,12 @@ data class AppContext(
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
     var inputFilesCopy: String = "",
+    var inputFilesRename: String = "",
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
     var installMDConverter: Boolean = false,
     var isFilesCopyDialogVisible: Boolean = false,
+    var isFilesRenameDialogVisible: Boolean = false,
     var itemTemplates: Map<Int, String> = mapOf(),
     var listInputDirId: Int = 0,
     var page: Page = Page(),
@@ -74,6 +78,8 @@ data class AppContext(
             return didClickEditorTab as T
         } else if (name == "didClickFilesCopyOK") {
             return didClickFilesCopyOK as T
+        } else if (name == "didClickFilesRenameOK") {
+            return didClickFilesRenameOK as T
         } else if (name == "didClickFilesTab") {
             return didClickFilesTab as T
         } else if (name == "didClickRenderTab") {
@@ -84,6 +90,8 @@ data class AppContext(
             return didCopyFile as T
         } else if (name == "didLaunch") {
             return didLaunch as T
+        } else if (name == "didRenameFile") {
+            return didRenameFile as T
         } else if (name == "didResize") {
             return didResize as T
         } else if (name == "didSaveEditedFiles") {
@@ -110,6 +118,8 @@ data class AppContext(
             return inputDirs as T
         } else if (name == "inputFilesCopy") {
             return inputFilesCopy as T
+        } else if (name == "inputFilesRename") {
+            return inputFilesRename as T
         } else if (name == "inputMDFiles") {
             return inputMDFiles as T
         } else if (name == "installEditor") {
@@ -118,6 +128,8 @@ data class AppContext(
             return installMDConverter as T
         } else if (name == "isFilesCopyDialogVisible") {
             return isFilesCopyDialogVisible as T
+        } else if (name == "isFilesRenameDialogVisible") {
+            return isFilesRenameDialogVisible as T
         } else if (name == "itemTemplates") {
             return itemTemplates as T
         } else if (name == "listInputDirId") {
@@ -188,6 +200,8 @@ data class AppContext(
             didClickEditorTab = value as Boolean
         } else if (name == "didClickFilesCopyOK") {
             didClickFilesCopyOK = value as Boolean
+        } else if (name == "didClickFilesRenameOK") {
+            didClickFilesRenameOK = value as Boolean
         } else if (name == "didClickFilesTab") {
             didClickFilesTab = value as Boolean
         } else if (name == "didClickRenderTab") {
@@ -198,6 +212,8 @@ data class AppContext(
             didCopyFile = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
+        } else if (name == "didRenameFile") {
+            didRenameFile = value as Boolean
         } else if (name == "didResize") {
             didResize = value as Boolean
         } else if (name == "didSaveEditedFiles") {
@@ -224,6 +240,8 @@ data class AppContext(
             inputDirs = value as Array<String>
         } else if (name == "inputFilesCopy") {
             inputFilesCopy = value as String
+        } else if (name == "inputFilesRename") {
+            inputFilesRename = value as String
         } else if (name == "inputMDFiles") {
             inputMDFiles = value as Map<Int, Array<String>>
         } else if (name == "installEditor") {
@@ -232,6 +250,8 @@ data class AppContext(
             installMDConverter = value as Boolean
         } else if (name == "isFilesCopyDialogVisible") {
             isFilesCopyDialogVisible = value as Boolean
+        } else if (name == "isFilesRenameDialogVisible") {
+            isFilesRenameDialogVisible = value as Boolean
         } else if (name == "itemTemplates") {
             itemTemplates = value as Map<Int, String>
         } else if (name == "listInputDirId") {
