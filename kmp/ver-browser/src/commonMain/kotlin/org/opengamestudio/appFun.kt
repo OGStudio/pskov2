@@ -555,6 +555,24 @@ fun appShouldResetFilesRenameDialogVisibility(c: AppContext): AppContext {
     return c
 }
 
+/* Set name of renaming
+ *
+ * Conditions:
+ * 1. Did select `Rename` in files options menu
+ */
+@JsExport
+fun appShouldResetFilesRenameName(c: AppContext): AppContext {
+    if (c.recentField == "renameFileId") {
+        val name = appFileIdToName(c.renameFileId, c.inputDirs, c.inputMDFiles)
+        c.filesRenameName = name
+        c.recentField = "filesRenameName"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set header contents
  *
  * Conditions:

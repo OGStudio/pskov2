@@ -27,6 +27,7 @@ data class AppContext(
     var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
     var filesCopyDefaultName: String = "",
+    var filesRenameName: String = "",
     var header: Array<String> = arrayOf(),
     var hideFileOptions: Array<Int> = arrayOf(),
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
@@ -108,6 +109,8 @@ data class AppContext(
             return editorContents as T
         } else if (name == "filesCopyDefaultName") {
             return filesCopyDefaultName as T
+        } else if (name == "filesRenameName") {
+            return filesRenameName as T
         } else if (name == "header") {
             return header as T
         } else if (name == "hideFileOptions") {
@@ -230,6 +233,8 @@ data class AppContext(
             editorContents = value as String
         } else if (name == "filesCopyDefaultName") {
             filesCopyDefaultName = value as String
+        } else if (name == "filesRenameName") {
+            filesRenameName = value as String
         } else if (name == "header") {
             header = value as Array<String>
         } else if (name == "hideFileOptions") {

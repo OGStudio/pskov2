@@ -30,6 +30,7 @@ AppContext:
         editedFileContents: [String: String]
         editorContents: String
         filesCopyDefaultName: String
+        filesRenameName: String
         header: [String]
         hideFileOptions: [Int]
         inputDirFiles: [Int: [FSFile]]
