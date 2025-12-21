@@ -139,6 +139,7 @@ function AppComponent() {
 
     this.setupShoulds = function() {
         [
+            KT.appShouldDeleteFile,
             KT.appShouldHideFileOptions,
             KT.appShouldHideSplash,
             KT.appShouldInstallEditor,
@@ -149,6 +150,7 @@ function AppComponent() {
             KT.appShouldReadFile,
             KT.appShouldRenderPage,
             KT.appShouldResetConverterInput,
+            KT.appShouldResetDeleteFileOrigin,
             KT.appShouldResetDidCopyFile,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,

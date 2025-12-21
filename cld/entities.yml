@@ -12,7 +12,9 @@ AppContext:
         converterInput: String
         converterOutput: String
         copyFileId: [Int]
+        deleteFile: String
         deleteFileId: [Int]
+        deleteFileOrigin: String
         didClickEditorTab: Bool
         didClickFilesCopyOK: Bool
         didClickFilesDeleteOK: Bool

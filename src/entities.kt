@@ -9,7 +9,9 @@ data class AppContext(
     var converterInput: String = "",
     var converterOutput: String = "",
     var copyFileId: Array<Int> = arrayOf(),
+    var deleteFile: String = "",
     var deleteFileId: Array<Int> = arrayOf(),
+    var deleteFileOrigin: String = "",
     var didClickEditorTab: Boolean = false,
     var didClickFilesCopyOK: Boolean = false,
     var didClickFilesDeleteOK: Boolean = false,
@@ -77,8 +79,12 @@ data class AppContext(
             return converterOutput as T
         } else if (name == "copyFileId") {
             return copyFileId as T
+        } else if (name == "deleteFile") {
+            return deleteFile as T
         } else if (name == "deleteFileId") {
             return deleteFileId as T
+        } else if (name == "deleteFileOrigin") {
+            return deleteFileOrigin as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
         } else if (name == "didClickFilesCopyOK") {
@@ -209,8 +215,12 @@ data class AppContext(
             converterOutput = value as String
         } else if (name == "copyFileId") {
             copyFileId = value as Array<Int>
+        } else if (name == "deleteFile") {
+            deleteFile = value as String
         } else if (name == "deleteFileId") {
             deleteFileId = value as Array<Int>
+        } else if (name == "deleteFileOrigin") {
+            deleteFileOrigin = value as String
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
         } else if (name == "didClickFilesCopyOK") {

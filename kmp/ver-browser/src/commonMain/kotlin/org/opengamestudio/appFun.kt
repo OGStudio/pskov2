@@ -20,6 +20,26 @@ import kotlin.js.JsExport
 
 //<!-- Shoulds -->
 
+/* Delete a file from disk
+ *
+ * Conditions:
+ * 1. User selected `OK` to delete the file
+ */
+@JsExport
+fun appShouldDeleteFile(c: AppContext): AppContext {
+    /* 1 */ if (
+        c.recentField == "deleteFileOrigin" &&
+        c.deleteFileOrigin == "didClickFilesDeleteOK"
+    ) {
+        c.deleteFile = c.filesDeleteName
+        c.recentField = "deleteFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Hide file options' menu
  *
  * Conditions:
@@ -112,6 +132,7 @@ fun appShouldInstallMDConverter(c: AppContext): AppContext {
  * 5. Save edited file
  * 6. Save rendered file
  * 7. Save copied file
+ * 8. Delete file
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
@@ -203,6 +224,17 @@ fun appShouldLoad(c: AppContext): AppContext {
                 body,
                 CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_WRITE),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    if (c.recentField == "deleteFile") {
+        c.request =
+            NetRequest(
+                c.deleteFile,
+                CONST_HTTP_POST,
+                appURL(c.baseURL, CONST_API_DELETE),
             )
         c.recentField = "request"
         return c
@@ -338,6 +370,23 @@ fun appShouldResetConverterInput(c: AppContext): AppContext {
     if (c.recentField == "page") {
         c.converterInput = c.page.contents
         c.recentField = "converterInput"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Who wants to delete a file
+ *
+ * Conditions:
+ * 1. User selected `OK` to delete the file
+ */
+@JsExport
+fun appShouldResetDeleteFileOrigin(c: AppContext): AppContext {
+    /* 1 */ if (c.recentField == "didClickFilesDeleteOK") {
+        c.deleteFileOrigin = "didClickFilesDeleteOK"
+        c.recentField = "deleteFileOrigin"
         return c
     }
 
