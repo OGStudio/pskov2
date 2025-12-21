@@ -531,6 +531,48 @@ fun appShouldResetFilesCopyDialogVisibility(c: AppContext): AppContext {
     return c
 }
 
+/* Show / hide files' delete dialog
+ *
+ * Conditions:
+ * 1. Did select `Delete` in files options menu
+ * 2. Did delete file
+ */
+@JsExport
+fun appShouldResetFilesDeleteDialogVisibility(c: AppContext): AppContext {
+    if (c.recentField == "deleteFileId") {
+        c.isFilesDeleteDialogVisible = true
+        c.recentField = "isFilesDeleteDialogVisible"
+        return c
+    }
+
+    if (c.recentField == "didDeleteFile") {
+        c.isFilesDeleteDialogVisible = false
+        c.recentField = "isFilesDeleteDialogVisible"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Set name of deleted file
+ *
+ * Conditions:
+ * 1. Did select `Delete` in files options menu
+ */
+@JsExport
+fun appShouldResetFilesDeleteName(c: AppContext): AppContext {
+    if (c.recentField == "deleteFileId") {
+        val name = appFileIdToName(c.deleteFileId, c.inputDirs, c.inputMDFiles)
+        c.filesDeleteName = name
+        c.recentField = "filesDeleteName"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Show / hide files' rename dialog
  *
  * Conditions:

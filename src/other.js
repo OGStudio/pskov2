@@ -85,6 +85,16 @@ function setUIInputValue(id, value) {
     }
 }
 
+// Set modal visible
+function setUIModalVisibility(id, isVisible) {
+    let el = deId(id);
+    if (isVisible) {
+        UIkit.modal(el).show();
+    } else {
+        UIkit.modal(el).hide();
+    }
+}
+
 // Change element text
 function setUIText(id, text) {
     let el = deId(id);
