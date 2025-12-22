@@ -25,6 +25,7 @@ import kotlin.js.JsExport
  *
  * Conditions:
  * 1. User selected `OK` to delete the file
+ * 2. Renamed file has been copied
  */
 @JsExport
 fun appShouldDeleteFile(c: AppContext): AppContext {
@@ -33,6 +34,15 @@ fun appShouldDeleteFile(c: AppContext): AppContext {
         c.deleteFileOrigin == "didClickFilesDeleteOK"
     ) {
         c.deleteFile = c.filesDeleteName
+        c.recentField = "deleteFile"
+        return c
+    }
+
+    /* 2 */ if (
+        c.recentField == "deleteFileOrigin" &&
+        c.deleteFileOrigin == "didCopyRenamedFile"
+    ) {
+        c.deleteFile = c.filesRenameName
         c.recentField = "deleteFile"
         return c
     }
@@ -134,10 +144,11 @@ fun appShouldInstallMDConverter(c: AppContext): AppContext {
  * 6. Save rendered file
  * 7. Save copied file
  * 8. Delete file
+ * 9. Save renamed file
  */
 @JsExport
 fun appShouldLoad(c: AppContext): AppContext {
-    if (c.recentField == "didLaunch") {
+    /* 1 */ if (c.recentField == "didLaunch") {
         c.request =
             NetRequest(
                 "",
@@ -148,7 +159,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "projectPath") {
+    /* 2 */ if (c.recentField == "projectPath") {
         c.request =
             NetRequest(
                 APP_CFG_FILE,
@@ -159,7 +170,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "listInputDirId") {
+    /* 3 */ if (c.recentField == "listInputDirId") {
         val dir = c.inputDirs[c.listInputDirId]
         c.request =
             NetRequest(
@@ -171,7 +182,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "readFile") {
+    /* 4 */ if (c.recentField == "readFile") {
         c.request =
             NetRequest(
                 c.readFile,
@@ -182,7 +193,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "saveFileId") {
+    /* 5 */ if (c.recentField == "saveFileId") {
         val file = c.saveFiles[c.saveFileId]
         val contents = c.editedFileContents[file]!!
         val body = fileContentsToJSON(file, contents)
@@ -196,7 +207,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "renderedFile") {
+    /* 6 */ if (c.recentField == "renderedFile") {
         val pageURL = "${c.page.slug}.$CONST_EXT_HTML"
         val o = c.itemTemplates[c.selectedFileId[0]]
             ?.replace(APP_PAGE_CONTENTS, c.converterOutput)
@@ -215,7 +226,7 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (
+    /* 7 */ if (
         c.recentField == "readFileContents" &&
         c.readFileOrigin == "didClickFilesCopyOK"
     ) {
@@ -230,12 +241,27 @@ fun appShouldLoad(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "deleteFile") {
+    /* 8 */ if (c.recentField == "deleteFile") {
         c.request =
             NetRequest(
                 c.deleteFile,
                 CONST_HTTP_POST,
                 appURL(c.baseURL, CONST_API_DELETE),
+            )
+        c.recentField = "request"
+        return c
+    }
+
+    /* 9 */ if (
+        c.recentField == "readFileContents" &&
+        c.readFileOrigin == "didClickFilesRenameOK"
+    ) {
+        val body = fileContentsToJSON(c.inputFilesRename, c.readFileContents)
+        c.request =
+            NetRequest(
+                body,
+                CONST_HTTP_POST,
+                appURL(c.baseURL, CONST_API_WRITE),
             )
         c.recentField = "request"
         return c
@@ -252,6 +278,7 @@ fun appShouldLoad(c: AppContext): AppContext {
  * 2. Input dir files received a new entry
  * 3. File has been copied successfully
  * 4. File has been deleted successfully
+ * 5. File has been renamed
  */
 @JsExport
 fun appShouldListInputDir(c: AppContext): AppContext {
@@ -284,8 +311,15 @@ fun appShouldListInputDir(c: AppContext): AppContext {
 
     /* 4 */ if (
         c.recentField == "didDeleteFile" &&
+        c.deleteFileOrigin == "didClickFilesDeleteOK" &&
         c.didDeleteFile
     ) {
+        c.listInputDirId = 0
+        c.recentField = "listInputDirId"
+        return c
+    }
+
+    /* 5 */ if (c.recentField == "didRenameFile") {
         c.listInputDirId = 0
         c.recentField = "listInputDirId"
         return c
@@ -323,10 +357,11 @@ fun appShouldParseCfg(c: AppContext): AppContext {
  * 1. User selected a file
  * 2. Editor has contents of a selected file
  * 3. User selected `OK` to make a copy
+ * 4. User selected `OK` to rename
  */
 @JsExport
 fun appShouldReadFile(c: AppContext): AppContext {
-    if (
+    /* 1 */ if (
         c.recentField == "readFileOrigin" &&
         c.readFileOrigin == "selectedFileName"
     ) {
@@ -335,7 +370,7 @@ fun appShouldReadFile(c: AppContext): AppContext {
         return c
     }
 
-    if (
+    /* 2 */ if (
         c.recentField == "readFileOrigin" &&
         c.readFileOrigin == "editorContents"
     ) {
@@ -344,11 +379,20 @@ fun appShouldReadFile(c: AppContext): AppContext {
         return c
     }
 
-    if (
+    /* 3 */ if (
         c.recentField == "readFileOrigin" &&
         c.readFileOrigin == "didClickFilesCopyOK"
     ) {
         c.readFile = appFileIdToName(c.copyFileId, c.inputDirs, c.inputMDFiles)
+        c.recentField = "readFile"
+        return c
+    }
+
+    /* 4 */ if (
+        c.recentField == "readFileOrigin" &&
+        c.readFileOrigin == "didClickFilesRenameOK"
+    ) {
+        c.readFile = appFileIdToName(c.renameFileId, c.inputDirs, c.inputMDFiles)
         c.recentField = "readFile"
         return c
     }
@@ -395,11 +439,18 @@ fun appShouldResetConverterInput(c: AppContext): AppContext {
  *
  * Conditions:
  * 1. User selected `OK` to delete the file
+ * 2. File has been copied for renaming
  */
 @JsExport
 fun appShouldResetDeleteFileOrigin(c: AppContext): AppContext {
     /* 1 */ if (c.recentField == "didClickFilesDeleteOK") {
         c.deleteFileOrigin = "didClickFilesDeleteOK"
+        c.recentField = "deleteFileOrigin"
+        return c
+    }
+
+    /* 2 */ if (c.recentField == "didCopyRenamedFile") {
+        c.deleteFileOrigin = "didCopyRenamedFile"
         c.recentField = "deleteFileOrigin"
         return c
     }
@@ -428,6 +479,26 @@ fun appShouldResetDidCopyFile(c: AppContext): AppContext {
     return c
 }
 
+/* Mark the end of copying a renamed file
+ *
+ * Conditions:
+ * 1. File has been copied as part of renaming
+ */
+@JsExport
+fun appShouldResetDidCopyRenamedFile(c: AppContext): AppContext {
+    /* 1 */ if (
+        c.recentField == "didSaveFile" &&
+        c.readFileOrigin == "didClickFilesRenameOK"
+    ) {
+        c.didCopyRenamedFile = true
+        c.recentField = "didCopyRenamedFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Mark the end of deleting a file
  *
  * Conditions:
@@ -442,6 +513,26 @@ fun appShouldResetDidDeleteFile(c: AppContext): AppContext {
     ) {
         c.didDeleteFile = c.response.contents.isEmpty()
         c.recentField = "didDeleteFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Mark the end of renaming a file
+ *
+ * Conditions:
+ * 1. File has been deleted
+ */
+@JsExport
+fun appShouldResetDidRenameFile(c: AppContext): AppContext {
+    /* 1 */ if (
+        c.recentField == "didDeleteFile" &&
+        c.deleteFileOrigin == "didCopyRenamedFile"
+    ) {
+        c.didRenameFile = true
+        c.recentField = "didRenameFile"
         return c
     }
 
@@ -629,7 +720,10 @@ fun appShouldResetFilesDeleteDialogVisibility(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "didDeleteFile") {
+    if (
+        c.recentField == "didDeleteFile" &&
+        c.deleteFileOrigin == "didClickFilesDeleteOK"
+    ) {
         c.isFilesDeleteDialogVisible = false
         c.recentField = "isFilesDeleteDialogVisible"
         return c
@@ -889,10 +983,11 @@ fun appShouldResetReadFileContents(c: AppContext): AppContext {
  * 1. User selected a file
  * 2. Editor has contents of a selected file
  * 3. User selected `OK` to make a copy
+ * 4. User selected `OK` to rename
  */
 @JsExport
 fun appShouldResetReadFileOrigin(c: AppContext): AppContext {
-    if (
+    /* 1 */ if (
         c.recentField == "selectedFileName" &&
         c.editedFileContents[c.selectedFileName] == null
     ) {
@@ -901,7 +996,7 @@ fun appShouldResetReadFileOrigin(c: AppContext): AppContext {
         return c
     }
 
-    if (
+    /* 2 */ if (
         c.recentField == "editorContents" &&
         c.itemTemplates[c.selectedFileId[0]] == null
     ) {
@@ -910,8 +1005,14 @@ fun appShouldResetReadFileOrigin(c: AppContext): AppContext {
         return c
     }
 
-    if (c.recentField == "didClickFilesCopyOK") {
+    /* 3 */ if (c.recentField == "didClickFilesCopyOK") {
         c.readFileOrigin = "didClickFilesCopyOK"
+        c.recentField = "readFileOrigin"
+        return c
+    }
+
+    /* 4 */ if (c.recentField == "didClickFilesRenameOK") {
+        c.readFileOrigin = "didClickFilesRenameOK"
         c.recentField = "readFileOrigin"
         return c
     }

@@ -23,6 +23,7 @@ AppContext:
         didClickRenderTab: Bool
         didClickSaveBtn: Bool
         didCopyFile: Bool
+        didCopyRenamedFile: Bool
         didDeleteFile: Bool
         didLaunch: Bool
         didRenameFile: Bool
