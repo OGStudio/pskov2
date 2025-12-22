@@ -12,6 +12,27 @@ import kotlin.js.JsExport
 @JsExport val SRV_INDEX = "index.html"
 
 //<!-- Shoulds -->
+
+/* Delete a file
+ *
+ * Conditions:
+ * 1. POST /delete
+ */
+@JsExport
+fun srvShouldDeleteFile(c: SrvContext): SrvContext {
+    /* 1 */ if (
+        c.recentField == "request" &&
+        c.request.method == CONST_HTTP_POST && 
+        c.request.url == CONST_API_DELETE
+    ) {
+        c.deleteFile = "${c.projectAbsPath}/${c.request.body}"
+        c.recentField = "deleteFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
  
 /* List directory files
  *
@@ -179,16 +200,17 @@ fun srvShouldResetProjectDir(c: SrvContext): SrvContext {
  * 2. GET /path
  * 3. Did receive contents of the requested directory
  * 4. Did finish writing a file
+ * 5. Did finish deleting a file
  */
 @JsExport
 fun srvShouldResetResponse(c: SrvContext): SrvContext {
-    if (c.recentField == "readFileContents") {
+    /* 1 */ if (c.recentField == "readFileContents") {
         c.response = NetResponse(c.readFileContents, c.request)
         c.recentField = "response"
         return c
     }
 
-    if (
+    /* 2 */ if (
         c.recentField == "request" &&
         c.request.method == CONST_HTTP_GET &&
         c.request.url == CONST_API_PATH
@@ -198,17 +220,27 @@ fun srvShouldResetResponse(c: SrvContext): SrvContext {
         return c
     }
 
-    if (c.recentField == "dirFiles") {
+    /* 3 */ if (c.recentField == "dirFiles") {
         val json = filesToJSON(c.dirFiles)
         c.response = NetResponse(json, c.request)
         c.recentField = "response"
         return c
     }
 
-    if (c.recentField == "didWriteFile") {
+    /* 4 */ if (c.recentField == "didWriteFile") {
         var reply = ""
         if (!c.didWriteFile) {
             reply = "ERR write"
+        }
+        c.response = NetResponse(reply, c.request)
+        c.recentField = "response"
+        return c
+    }
+
+    /* 5 */ if (c.recentField == "didDeleteFile") {
+        var reply = ""
+        if (!c.didDeleteFile) {
+            reply = "ERR delete"
         }
         c.response = NetResponse(reply, c.request)
         c.recentField = "response"

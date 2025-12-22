@@ -117,6 +117,8 @@ SrvContext:
         browserDir: String
         defaultBrowserDir: String
         defaultHTTPPort: Int
+        deleteFile: String
+        didDeleteFile: Bool
         didLaunch: Bool
         didWriteFile: Bool
         dirFiles: [FSFile]

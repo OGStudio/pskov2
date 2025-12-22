@@ -5,6 +5,7 @@ import kotlin.js.JsExport
 
 @JsExport val APP_CFG_FILE = "pskov.cfg"
 @JsExport val APP_CFG_KEY_INPUT = "input"
+@JsExport val APP_DELETE_FAILURE_TITLE = "Failed to delete the file"
 @JsExport val APP_HEADER_KEY_FILE = "File"
 @JsExport val APP_HEADER_KEY_PROJECT = "Project"
 @JsExport val APP_ITEM_TEMPLATE_FILE = "item.template"
@@ -244,12 +245,13 @@ fun appShouldLoad(c: AppContext): AppContext {
     return c
 }
 
-/* Start, continue, or finish listing contents of one of the input dirs
+/* Start, continue, or finish listing contents of input dirs
  *
  * Conditions:
  * 1. Input dirs are available and not empty
  * 2. Input dir files received a new entry
- * 3. File has been copied
+ * 3. File has been copied successfully
+ * 4. File has been deleted successfully
  */
 @JsExport
 fun appShouldListInputDir(c: AppContext): AppContext {
@@ -271,7 +273,19 @@ fun appShouldListInputDir(c: AppContext): AppContext {
         return c
     }
 
-    /* 3 */ if (c.recentField == "didCopyFile") {
+    /* 3 */ if (
+        c.recentField == "didCopyFile" &&
+        c.didCopyFile
+    ) {
+        c.listInputDirId = 0
+        c.recentField = "listInputDirId"
+        return c
+    }
+
+    /* 4 */ if (
+        c.recentField == "didDeleteFile" &&
+        c.didDeleteFile
+    ) {
         c.listInputDirId = 0
         c.recentField = "listInputDirId"
         return c
@@ -407,6 +421,27 @@ fun appShouldResetDidCopyFile(c: AppContext): AppContext {
     ) {
         c.didCopyFile = true
         c.recentField = "didCopyFile"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Mark the end of deleting a file
+ *
+ * Conditions:
+ * 1. File has been deleted
+ */
+@JsExport
+fun appShouldResetDidDeleteFile(c: AppContext): AppContext {
+    if (
+        c.recentField == "response" &&
+        c.response.req.method == CONST_HTTP_POST &&
+        c.response.req.url == appURL(c.baseURL, CONST_API_DELETE)
+    ) {
+        c.didDeleteFile = c.response.contents.isEmpty()
+        c.recentField = "didDeleteFile"
         return c
     }
 

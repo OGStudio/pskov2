@@ -48,6 +48,22 @@ function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     });
 }
 
+// Report failure as UIkit modal
+function reportFailure(title, details) {
+    let html = `
+<h2>${title}</h2>
+<p>Error: '${details}'</p>
+    `;
+    UIkit.modal.alert(html);
+}
+
+// Report failure only if the first value is true
+function reportFailureIf(isTrue, title, details) {
+    if (isTrue) {
+        reportFailure(title, details);
+    }
+}
+
 // Report success as UIkit notification
 //
 // A tiny delay is used to overcome the conflict of UIkit and CLDController
@@ -62,6 +78,13 @@ function reportSuccess(text, timeout = 500) {
         },
         0
     );
+}
+
+// Report success only if the first value is true
+function reportSuccessIf(isTrue, text, timeout = 500) {
+    if (isTrue) {
+        reportSuccess(text, timeout)
+    }
 }
 
 // Toggle element class

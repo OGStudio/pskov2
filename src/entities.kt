@@ -413,6 +413,8 @@ data class SrvContext(
     var browserDir: String = "",
     var defaultBrowserDir: String = "",
     var defaultHTTPPort: Int = 0,
+    var deleteFile: String = "",
+    var didDeleteFile: Boolean = false,
     var didLaunch: Boolean = false,
     var didWriteFile: Boolean = false,
     var dirFiles: Array<FSFile> = arrayOf(),
@@ -439,6 +441,10 @@ data class SrvContext(
             return defaultBrowserDir as T
         } else if (name == "defaultHTTPPort") {
             return defaultHTTPPort as T
+        } else if (name == "deleteFile") {
+            return deleteFile as T
+        } else if (name == "didDeleteFile") {
+            return didDeleteFile as T
         } else if (name == "didLaunch") {
             return didLaunch as T
         } else if (name == "didWriteFile") {
@@ -489,6 +495,10 @@ data class SrvContext(
             defaultBrowserDir = value as String
         } else if (name == "defaultHTTPPort") {
             defaultHTTPPort = value as Int
+        } else if (name == "deleteFile") {
+            deleteFile = value as String
+        } else if (name == "didDeleteFile") {
+            didDeleteFile = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
         } else if (name == "didWriteFile") {

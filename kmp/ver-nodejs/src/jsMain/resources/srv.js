@@ -33,6 +33,7 @@ function SrvComponent() {
 
     this.setupEffects = function() {
         let oneliners = [ 
+            "deleteFile", (c) => { srvDeleteFile(c.deleteFile) },
             "listDir", (c) => { srvListDir(c.listDir) },
             "projectDir", (c) => { srvResolvePath(c.projectDir) },
             "readFile", (c) => { srvReadFile(c.readFile) },
@@ -44,6 +45,7 @@ function SrvComponent() {
 
     this.setupShoulds = function() {
         [
+            KT.srvShouldDeleteFile,
             KT.srvShouldListDir,
             KT.srvShouldOpenURL,
             KT.srvShouldReadFile,
@@ -61,6 +63,17 @@ function SrvComponent() {
 }
 
 //<!-- Effects -->
+
+function srvDeleteFile(fileName) {
+    var isOk = true;
+    try {
+        fs.rmSync(fileName);
+    } catch (e) {
+        console.error("ERR srvDF e:", e);
+        isOk = false;
+    }
+    srvCtrl().set("didDeleteFile", isOk);
+}
 
 function srvListDir(path) {
     var files = [];
