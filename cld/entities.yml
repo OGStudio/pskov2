@@ -50,6 +50,7 @@ AppContext:
         isFilesCopyDialogVisible: Bool
         isFilesDeleteDialogVisible: Bool
         isFilesRenameDialogVisible: Bool
+        isSaveVisible: Bool
         itemTemplates: [Int: String]
         listInputDirId: Int
         page: Page

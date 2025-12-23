@@ -1052,6 +1052,36 @@ fun appShouldResetReadFileOrigin(c: AppContext): AppContext {
     return c
 }
 
+/* Save button isn't always visible
+ *
+ * Conditions:
+ * 1. User selected non-`Render` tab
+ * 2. User selected `Render` tab
+ */
+@JsExport
+fun appShouldResetSaveVisibility(c: AppContext): AppContext {
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId != APP_TAB_RENDER_INDEX
+    ) {
+        c.isSaveVisible = true
+        c.recentField = "isSaveVisible"
+        return c
+    }
+
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId == APP_TAB_RENDER_INDEX
+    ) {
+        c.isSaveVisible = false
+        c.recentField = "isSaveVisible"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Detect when editor needs to be resized
  *
  * Conditions:

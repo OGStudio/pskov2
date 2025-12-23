@@ -47,6 +47,7 @@ data class AppContext(
     var isFilesCopyDialogVisible: Boolean = false,
     var isFilesDeleteDialogVisible: Boolean = false,
     var isFilesRenameDialogVisible: Boolean = false,
+    var isSaveVisible: Boolean = false,
     var itemTemplates: Map<Int, String> = mapOf(),
     var listInputDirId: Int = 0,
     var page: Page = Page(),
@@ -157,6 +158,8 @@ data class AppContext(
             return isFilesDeleteDialogVisible as T
         } else if (name == "isFilesRenameDialogVisible") {
             return isFilesRenameDialogVisible as T
+        } else if (name == "isSaveVisible") {
+            return isSaveVisible as T
         } else if (name == "itemTemplates") {
             return itemTemplates as T
         } else if (name == "listInputDirId") {
@@ -297,6 +300,8 @@ data class AppContext(
             isFilesDeleteDialogVisible = value as Boolean
         } else if (name == "isFilesRenameDialogVisible") {
             isFilesRenameDialogVisible = value as Boolean
+        } else if (name == "isSaveVisible") {
+            isSaveVisible = value as Boolean
         } else if (name == "itemTemplates") {
             itemTemplates = value as Map<Int, String>
         } else if (name == "listInputDirId") {

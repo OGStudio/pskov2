@@ -31,6 +31,7 @@ let APP_FILES_DELETE_NAME_ID = "filesDeleteName";
 let APP_FILES_RENAME_DIALOG_ID = "filesRenameDialog";
 let APP_FILES_RENAME_INPUT_ID = "filesRenameInput";
 let APP_HEADER_KEY_ID = "headerKey";
+let APP_HEADER_SAVE_ID = "headerSave";
 let APP_HEADER_VALUE_ID = "headerValue";
 
 let APP_INPUT_DIR_FILE_T = `
@@ -121,6 +122,7 @@ function AppComponent() {
             "isFilesCopyDialogVisible", (c) => { setUIModalVisibility(APP_FILES_COPY_DIALOG_ID, c.isFilesCopyDialogVisible) },
             "isFilesDeleteDialogVisible", (c) => { setUIModalVisibility(APP_FILES_DELETE_DIALOG_ID, c.isFilesDeleteDialogVisible) },
             "isFilesRenameDialogVisible", (c) => { setUIModalVisibility(APP_FILES_RENAME_DIALOG_ID, c.isFilesRenameDialogVisible) },
+            "isSaveVisible", (c) => { appResetSaveVisibility(c.isSaveVisible) },
             "renderPage", (c) => { appRenderPage(c.renderPage) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
@@ -179,6 +181,7 @@ function AppComponent() {
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
             KT.appShouldResetReadFileOrigin,
+            KT.appShouldResetSaveVisibility,
             KT.appShouldResizeEditor,
             KT.appShouldResizeRenderer,
             KT.appShouldSaveFileId,
@@ -304,6 +307,39 @@ function appResetEditorContents(cmp, contents) {
 function appResetHeader(texts) {
     setUIText(APP_HEADER_KEY_ID, texts[0]);
     setUIText(APP_HEADER_VALUE_ID, texts[1]);
+}
+
+function appResetSaveVisibility(isVisible) {
+    let id = APP_HEADER_SAVE_ID;
+    if (isVisible) {
+        setUIClassActive(id, "uk-animation-fade", true);
+    }
+    if (!isVisible) {
+        setUIClassActive(id, "uk-animation-reverse", true);
+    }
+    //setUIClassActive(id, "uk-animation-fade", isVisible);
+    //setUIClassActive(id, "uk-animation-fade", true);
+    /*
+    if (isVisible) {
+        el.classList.add(className);
+    }
+    if (!isVisible) {
+        el.classList.remove(className);
+    }
+    */
+    /*
+    let el = deId(APP_HEADER_SAVE_ID);
+    // Hide
+    if (!isVisible) {
+        el.style.opacity = 0;
+        el.style.pointerEvents = "none";
+    }
+    // Show
+    if (isVisible) {
+        el.style.opacity = 1;
+        el.style.pointerEvents = "auto";
+    }
+    */
 }
 
 function appResizeEditor() {
