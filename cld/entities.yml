@@ -46,6 +46,7 @@ AppContext:
         inputMDFiles: [Int: [String]]
         installEditor: Bool
         installMDConverter: Bool
+        isCfgValid: Bool
         isFilesCopyDialogVisible: Bool
         isFilesDeleteDialogVisible: Bool
         isFilesRenameDialogVisible: Bool

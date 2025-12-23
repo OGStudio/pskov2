@@ -3,6 +3,8 @@ import kotlin.js.JsExport
 
 //<!-- Constants -->
 
+@JsExport val APP_CFG_ERROR_DETAILS = "pskov.cfg is missing or empty"
+@JsExport val APP_CFG_ERROR_TITLE = "Project config is invalid"
 @JsExport val APP_CFG_FILE = "pskov.cfg"
 @JsExport val APP_CFG_KEY_INPUT = "input"
 @JsExport val APP_DELETE_FAILURE_TITLE = "Failed to delete the file"
@@ -411,6 +413,35 @@ fun appShouldRenderPage(c: AppContext): AppContext {
     if (c.recentField == "didSaveRenderedFile") {
         c.renderPage = CONST_API_RENDER + "/" + c.renderedFile
         c.recentField = "renderPage"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
+/* Validate config
+ *
+ * Conditions:
+ * 1. Config has been parsed
+ * 2. Config is absent
+ */
+@JsExport
+fun appShouldResetCfgValidity(c: AppContext): AppContext {
+    /* 1 */ if (c.recentField == "cfg") {
+        c.isCfgValid = !c.cfg.isEmpty()
+        c.recentField = "isCfgValid"
+        return c
+    }
+
+    /* 2 */ if (
+        c.recentField == "responseError" &&
+        c.responseError.req.method == CONST_HTTP_POST &&
+        c.responseError.req.url == appURL(c.baseURL, CONST_API_READ) &&
+        c.responseError.req.body == APP_CFG_FILE
+    ) {
+        c.isCfgValid = false
+        c.recentField = "isCfgValid"
         return c
     }
 

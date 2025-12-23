@@ -43,6 +43,7 @@ data class AppContext(
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
     var installMDConverter: Boolean = false,
+    var isCfgValid: Boolean = false,
     var isFilesCopyDialogVisible: Boolean = false,
     var isFilesDeleteDialogVisible: Boolean = false,
     var isFilesRenameDialogVisible: Boolean = false,
@@ -148,6 +149,8 @@ data class AppContext(
             return installEditor as T
         } else if (name == "installMDConverter") {
             return installMDConverter as T
+        } else if (name == "isCfgValid") {
+            return isCfgValid as T
         } else if (name == "isFilesCopyDialogVisible") {
             return isFilesCopyDialogVisible as T
         } else if (name == "isFilesDeleteDialogVisible") {
@@ -286,6 +289,8 @@ data class AppContext(
             installEditor = value as Boolean
         } else if (name == "installMDConverter") {
             installMDConverter = value as Boolean
+        } else if (name == "isCfgValid") {
+            isCfgValid = value as Boolean
         } else if (name == "isFilesCopyDialogVisible") {
             isFilesCopyDialogVisible = value as Boolean
         } else if (name == "isFilesDeleteDialogVisible") {
