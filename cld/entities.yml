@@ -20,8 +20,11 @@ AppContext:
         didClickFilesDeleteOK: Bool
         didClickFilesRenameOK: Bool
         didClickFilesTab: Bool
+        didClickOpenWindowBtn: Bool
         didClickRenderTab: Bool
         didClickSaveBtn: Bool
+        didClickT1: Bool
+        didClickT2: Bool
         didCopyFile: Bool
         didCopyRenamedFile: Bool
         didDeleteFile: Bool

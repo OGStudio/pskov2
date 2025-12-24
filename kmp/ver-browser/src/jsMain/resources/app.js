@@ -122,7 +122,11 @@ function AppComponent() {
             "isFilesCopyDialogVisible", (c) => { setUIModalVisibility(APP_FILES_COPY_DIALOG_ID, c.isFilesCopyDialogVisible) },
             "isFilesDeleteDialogVisible", (c) => { setUIModalVisibility(APP_FILES_DELETE_DIALOG_ID, c.isFilesDeleteDialogVisible) },
             "isFilesRenameDialogVisible", (c) => { setUIModalVisibility(APP_FILES_RENAME_DIALOG_ID, c.isFilesRenameDialogVisible) },
-            "isSaveVisible", (c) => { appResetSaveVisibility(c.isSaveVisible) },
+
+            //"isSaveVisible", (c) => { appResetSaveVisibility(c.isSaveVisible) },
+            "didClickT1", (c) => { appT1() },
+            "didClickT2", (c) => { appT2() },
+
             "renderPage", (c) => { appRenderPage(c.renderPage) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
@@ -366,6 +370,22 @@ function appSelectTab(id) {
     setUIClassActive(APP_TAB_FILES_ID, "uk-active", id == KT.APP_TAB_FILES_INDEX);
     setUIClassActive(APP_TAB_EDITOR_ID, "uk-active", id == KT.APP_TAB_EDITOR_INDEX);
     setUIClassActive(APP_TAB_RENDER_ID, "uk-active", id == KT.APP_TAB_RENDER_INDEX);
+}
+
+function appT1() {
+    let id = APP_HEADER_SAVE_ID;
+    let el = deId(id);
+    el.style.opacity = 0;
+    setUIClassActive(id, "uk-animation-reverse", false);
+    setUIClassActive(id, "uk-animation-slide-right", false);
+
+    setUIClassActive(id, "uk-animation-slide-right", true);
+}
+
+function appT2() {
+    let id = APP_HEADER_SAVE_ID;
+    setUIClassActive(id, "uk-animation-reverse", true);
+    setUIClassActive(id, "uk-animation-slide-right", true);
 }
 
 //<!-- Other functions -->

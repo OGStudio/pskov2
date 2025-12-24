@@ -17,8 +17,11 @@ data class AppContext(
     var didClickFilesDeleteOK: Boolean = false,
     var didClickFilesRenameOK: Boolean = false,
     var didClickFilesTab: Boolean = false,
+    var didClickOpenWindowBtn: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didClickSaveBtn: Boolean = false,
+    var didClickT1: Boolean = false,
+    var didClickT2: Boolean = false,
     var didCopyFile: Boolean = false,
     var didCopyRenamedFile: Boolean = false,
     var didDeleteFile: Boolean = false,
@@ -98,10 +101,16 @@ data class AppContext(
             return didClickFilesRenameOK as T
         } else if (name == "didClickFilesTab") {
             return didClickFilesTab as T
+        } else if (name == "didClickOpenWindowBtn") {
+            return didClickOpenWindowBtn as T
         } else if (name == "didClickRenderTab") {
             return didClickRenderTab as T
         } else if (name == "didClickSaveBtn") {
             return didClickSaveBtn as T
+        } else if (name == "didClickT1") {
+            return didClickT1 as T
+        } else if (name == "didClickT2") {
+            return didClickT2 as T
         } else if (name == "didCopyFile") {
             return didCopyFile as T
         } else if (name == "didCopyRenamedFile") {
@@ -240,10 +249,16 @@ data class AppContext(
             didClickFilesRenameOK = value as Boolean
         } else if (name == "didClickFilesTab") {
             didClickFilesTab = value as Boolean
+        } else if (name == "didClickOpenWindowBtn") {
+            didClickOpenWindowBtn = value as Boolean
         } else if (name == "didClickRenderTab") {
             didClickRenderTab = value as Boolean
         } else if (name == "didClickSaveBtn") {
             didClickSaveBtn = value as Boolean
+        } else if (name == "didClickT1") {
+            didClickT1 = value as Boolean
+        } else if (name == "didClickT2") {
+            didClickT2 = value as Boolean
         } else if (name == "didCopyFile") {
             didCopyFile = value as Boolean
         } else if (name == "didCopyRenamedFile") {
