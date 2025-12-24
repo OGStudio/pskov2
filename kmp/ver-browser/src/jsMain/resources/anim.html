@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="uikit-3.23.11.min.js"></script>
+    <script src="uikit-icons-3.23.11.min.js"></script>
+    <link rel="stylesheet" href="css/uikit-3.23.11.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Anim test</title>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-bottom">
+      <div class="uk-container">
+        <strong id="headerKey">TODO-Header-key</strong><strong>:</strong>
+        <span id="headerValue">TODO-Header-value</span>
+        <div class="uk-align-right">
+          <button id='headerOpenWindow' class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickOpenWindowBtn", true)'>
+            <span uk-icon="link-external"></span>
+          </button>
+          <button id='headerSave' class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickSaveBtn", true)'>
+            <img src="img/diskette.svg" width="20" height="20">
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="uk-container">
+          <button class='uk-button uk-button-default uk-button-small' onclick='do1()'>1</button>
+
+          <button class='uk-button uk-button-default uk-button-small' onclick='do2()'>2</button>
+
+          <button class='uk-button uk-button-default uk-button-small' onclick='do3()'>3</button>
+    </div>
+
+    <script>
+        function deId(id) {
+            return document.getElementById(id);
+        }
+    </script>
+
+    <script>
+        let save = deId("headerSave");
+        save.addEventListener("animationend", (e) => {
+            console.log("ИГР headerS animationend, e:", e);
+        });
+
+        function do1() {
+          save.classList.add("uk-animation-slide-right", "uk-animation-reverse");
+        }
+    </script>
+  </body>
+</html>
