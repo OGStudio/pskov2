@@ -32,6 +32,7 @@ data class AppContext(
     var editedContents: String = "",
     var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
+    var externalURL: String = "",
     var filesCopyDefaultName: String = "",
     var filesDeleteName: String = "",
     var filesRenameName: String = "",
@@ -129,6 +130,8 @@ data class AppContext(
             return editedFileContents as T
         } else if (name == "editorContents") {
             return editorContents as T
+        } else if (name == "externalURL") {
+            return externalURL as T
         } else if (name == "filesCopyDefaultName") {
             return filesCopyDefaultName as T
         } else if (name == "filesDeleteName") {
@@ -273,6 +276,8 @@ data class AppContext(
             editedFileContents = value as Map<String, String>
         } else if (name == "editorContents") {
             editorContents = value as String
+        } else if (name == "externalURL") {
+            externalURL = value as String
         } else if (name == "filesCopyDefaultName") {
             filesCopyDefaultName = value as String
         } else if (name == "filesDeleteName") {

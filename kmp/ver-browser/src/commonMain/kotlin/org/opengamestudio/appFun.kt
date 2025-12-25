@@ -723,6 +723,23 @@ fun appShouldResetExternalButtonVisibility(c: AppContext): AppContext {
     return c
 }
 
+/* URL to open in a separate browser page
+ *
+ * Conditions:
+ * 1. User did click `External` button
+ */
+@JsExport
+fun appShouldResetExternalURL(c: AppContext): AppContext {
+    if (c.recentField == "didClickExternalButton") {
+        c.externalURL = CONST_API_RENDER + "/" + c.renderedFile
+        c.recentField = "externalURL"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set default name of a copy
  *
  * Conditions:

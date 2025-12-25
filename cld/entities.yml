@@ -35,6 +35,7 @@ AppContext:
         editedContents: String
         editedFileContents: [String: String]
         editorContents: String
+        externalURL: String
         filesCopyDefaultName: String
         filesDeleteName: String
         filesRenameName: String
