@@ -98,7 +98,7 @@ fun srvShouldReadFile(c: SrvContext): SrvContext {
         c.request.method == CONST_HTTP_GET && 
         c.request.url.startsWith(CONST_API_RENDER)
     ) {
-        val path = c.request.url.replace(CONST_API_RENDER, "")
+        val path = c.request.url.replaceFirst(CONST_API_RENDER, "")
         c.readFile = "${c.projectAbsPath}$path"
         c.recentField = "readFile"
         return c
