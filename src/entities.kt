@@ -13,15 +13,13 @@ data class AppContext(
     var deleteFileId: Array<Int> = arrayOf(),
     var deleteFileOrigin: String = "",
     var didClickEditorTab: Boolean = false,
+    var didClickExternalButton: Boolean = false,
     var didClickFilesCopyOK: Boolean = false,
     var didClickFilesDeleteOK: Boolean = false,
     var didClickFilesRenameOK: Boolean = false,
     var didClickFilesTab: Boolean = false,
-    var didClickOpenWindowBtn: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didClickSaveBtn: Boolean = false,
-    var didClickT1: Boolean = false,
-    var didClickT2: Boolean = false,
     var didCopyFile: Boolean = false,
     var didCopyRenamedFile: Boolean = false,
     var didDeleteFile: Boolean = false,
@@ -47,10 +45,10 @@ data class AppContext(
     var installEditor: Boolean = false,
     var installMDConverter: Boolean = false,
     var isCfgValid: Boolean = false,
+    var isExternalButtonVisible: Boolean = false,
     var isFilesCopyDialogVisible: Boolean = false,
     var isFilesDeleteDialogVisible: Boolean = false,
     var isFilesRenameDialogVisible: Boolean = false,
-    var isSaveVisible: Boolean = false,
     var itemTemplates: Map<Int, String> = mapOf(),
     var listInputDirId: Int = 0,
     var page: Page = Page(),
@@ -93,6 +91,8 @@ data class AppContext(
             return deleteFileOrigin as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
+        } else if (name == "didClickExternalButton") {
+            return didClickExternalButton as T
         } else if (name == "didClickFilesCopyOK") {
             return didClickFilesCopyOK as T
         } else if (name == "didClickFilesDeleteOK") {
@@ -101,16 +101,10 @@ data class AppContext(
             return didClickFilesRenameOK as T
         } else if (name == "didClickFilesTab") {
             return didClickFilesTab as T
-        } else if (name == "didClickOpenWindowBtn") {
-            return didClickOpenWindowBtn as T
         } else if (name == "didClickRenderTab") {
             return didClickRenderTab as T
         } else if (name == "didClickSaveBtn") {
             return didClickSaveBtn as T
-        } else if (name == "didClickT1") {
-            return didClickT1 as T
-        } else if (name == "didClickT2") {
-            return didClickT2 as T
         } else if (name == "didCopyFile") {
             return didCopyFile as T
         } else if (name == "didCopyRenamedFile") {
@@ -161,14 +155,14 @@ data class AppContext(
             return installMDConverter as T
         } else if (name == "isCfgValid") {
             return isCfgValid as T
+        } else if (name == "isExternalButtonVisible") {
+            return isExternalButtonVisible as T
         } else if (name == "isFilesCopyDialogVisible") {
             return isFilesCopyDialogVisible as T
         } else if (name == "isFilesDeleteDialogVisible") {
             return isFilesDeleteDialogVisible as T
         } else if (name == "isFilesRenameDialogVisible") {
             return isFilesRenameDialogVisible as T
-        } else if (name == "isSaveVisible") {
-            return isSaveVisible as T
         } else if (name == "itemTemplates") {
             return itemTemplates as T
         } else if (name == "listInputDirId") {
@@ -241,6 +235,8 @@ data class AppContext(
             deleteFileOrigin = value as String
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
+        } else if (name == "didClickExternalButton") {
+            didClickExternalButton = value as Boolean
         } else if (name == "didClickFilesCopyOK") {
             didClickFilesCopyOK = value as Boolean
         } else if (name == "didClickFilesDeleteOK") {
@@ -249,16 +245,10 @@ data class AppContext(
             didClickFilesRenameOK = value as Boolean
         } else if (name == "didClickFilesTab") {
             didClickFilesTab = value as Boolean
-        } else if (name == "didClickOpenWindowBtn") {
-            didClickOpenWindowBtn = value as Boolean
         } else if (name == "didClickRenderTab") {
             didClickRenderTab = value as Boolean
         } else if (name == "didClickSaveBtn") {
             didClickSaveBtn = value as Boolean
-        } else if (name == "didClickT1") {
-            didClickT1 = value as Boolean
-        } else if (name == "didClickT2") {
-            didClickT2 = value as Boolean
         } else if (name == "didCopyFile") {
             didCopyFile = value as Boolean
         } else if (name == "didCopyRenamedFile") {
@@ -309,14 +299,14 @@ data class AppContext(
             installMDConverter = value as Boolean
         } else if (name == "isCfgValid") {
             isCfgValid = value as Boolean
+        } else if (name == "isExternalButtonVisible") {
+            isExternalButtonVisible = value as Boolean
         } else if (name == "isFilesCopyDialogVisible") {
             isFilesCopyDialogVisible = value as Boolean
         } else if (name == "isFilesDeleteDialogVisible") {
             isFilesDeleteDialogVisible = value as Boolean
         } else if (name == "isFilesRenameDialogVisible") {
             isFilesRenameDialogVisible = value as Boolean
-        } else if (name == "isSaveVisible") {
-            isSaveVisible = value as Boolean
         } else if (name == "itemTemplates") {
             itemTemplates = value as Map<Int, String>
         } else if (name == "listInputDirId") {

@@ -32,12 +32,10 @@
         <strong id="headerKey">TODO-Header-key</strong><strong>:</strong>
         <span id="headerValue">TODO-Header-value</span>
         <div class="uk-align-right">
-          <button class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickT1", true)'>T1</button>
-          <button class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickT2", true)'>T2</button>
-          <button id='headerOpenWindow' class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickOpenWindowBtn", true)'>
+          <button id='headerExternal' class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickExternalButton", true)' hidden>
             <span uk-icon="link-external"></span>
           </button>
-          <button id='headerSave' class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickSaveBtn", true)'>
+          <button class='uk-button uk-button-default uk-button-small' onclick='appCtrl().set("didClickSaveBtn", true)'>
             <img src="img/diskette.svg" width="20" height="20">
           </button>
         </div>

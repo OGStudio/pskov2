@@ -16,15 +16,13 @@ AppContext:
         deleteFileId: [Int]
         deleteFileOrigin: String
         didClickEditorTab: Bool
+        didClickExternalButton: Bool
         didClickFilesCopyOK: Bool
         didClickFilesDeleteOK: Bool
         didClickFilesRenameOK: Bool
         didClickFilesTab: Bool
-        didClickOpenWindowBtn: Bool
         didClickRenderTab: Bool
         didClickSaveBtn: Bool
-        didClickT1: Bool
-        didClickT2: Bool
         didCopyFile: Bool
         didCopyRenamedFile: Bool
         didDeleteFile: Bool
@@ -50,10 +48,10 @@ AppContext:
         installEditor: Bool
         installMDConverter: Bool
         isCfgValid: Bool
+        isExternalButtonVisible: Bool
         isFilesCopyDialogVisible: Bool
         isFilesDeleteDialogVisible: Bool
         isFilesRenameDialogVisible: Bool
-        isSaveVisible: Bool
         itemTemplates: [Int: String]
         listInputDirId: Int
         page: Page

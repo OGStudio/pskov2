@@ -693,6 +693,36 @@ fun appShouldResetEditorContents(c: AppContext): AppContext {
     return c
 }
 
+/* External button visibility
+ *
+ * Conditions:
+ * 1. User selected non-`Render` tab
+ * 2. User selected `Render` tab
+ */
+@JsExport
+fun appShouldResetExternalButtonVisibility(c: AppContext): AppContext {
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId != APP_TAB_RENDER_INDEX
+    ) {
+        c.isExternalButtonVisible = false
+        c.recentField = "isExternalButtonVisible"
+        return c
+    }
+
+    if (
+        c.recentField == "selectedTabId" &&
+        c.selectedTabId == APP_TAB_RENDER_INDEX
+    ) {
+        c.isExternalButtonVisible = true
+        c.recentField = "isExternalButtonVisible"
+        return c
+    }
+
+    c.recentField = "none"
+    return c
+}
+
 /* Set default name of a copy
  *
  * Conditions:
@@ -1045,36 +1075,6 @@ fun appShouldResetReadFileOrigin(c: AppContext): AppContext {
     /* 4 */ if (c.recentField == "didClickFilesRenameOK") {
         c.readFileOrigin = "didClickFilesRenameOK"
         c.recentField = "readFileOrigin"
-        return c
-    }
-
-    c.recentField = "none"
-    return c
-}
-
-/* Save button isn't always visible
- *
- * Conditions:
- * 1. User selected non-`Render` tab
- * 2. User selected `Render` tab
- */
-@JsExport
-fun appShouldResetSaveVisibility(c: AppContext): AppContext {
-    if (
-        c.recentField == "selectedTabId" &&
-        c.selectedTabId != APP_TAB_RENDER_INDEX
-    ) {
-        c.isSaveVisible = true
-        c.recentField = "isSaveVisible"
-        return c
-    }
-
-    if (
-        c.recentField == "selectedTabId" &&
-        c.selectedTabId == APP_TAB_RENDER_INDEX
-    ) {
-        c.isSaveVisible = false
-        c.recentField = "isSaveVisible"
         return c
     }
 
