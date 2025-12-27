@@ -13,3 +13,6 @@ tmux new-window -n n-kt
 
 cd $SCRIPT_DIR/../src
 tmux new-window -n src
+
+cd $SCRIPT_DIR/../ver-android/app/src/main/kotlin/org/opengamestudio
+tmux new-window -n and

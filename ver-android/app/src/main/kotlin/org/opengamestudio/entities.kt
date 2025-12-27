@@ -1,30 +1,18 @@
 package org.opengamestudio
-import kotlin.js.JsExport
 
 
-@JsExport
+
+
 data class AppContext(
     var baseURL: String = "",
     var cfg: Map<String, String> = mapOf(),
     var converterInput: String = "",
     var converterOutput: String = "",
-    var copyFileId: Array<Int> = arrayOf(),
-    var deleteFile: String = "",
-    var deleteFileId: Array<Int> = arrayOf(),
-    var deleteFileOrigin: String = "",
     var didClickEditorTab: Boolean = false,
-    var didClickExternalButton: Boolean = false,
-    var didClickFilesCopyOK: Boolean = false,
-    var didClickFilesDeleteOK: Boolean = false,
-    var didClickFilesRenameOK: Boolean = false,
     var didClickFilesTab: Boolean = false,
     var didClickRenderTab: Boolean = false,
     var didClickSaveBtn: Boolean = false,
-    var didCopyFile: Boolean = false,
-    var didCopyRenamedFile: Boolean = false,
-    var didDeleteFile: Boolean = false,
     var didLaunch: Boolean = false,
-    var didRenameFile: Boolean = false,
     var didResize: Boolean = false,
     var didSaveEditedFiles: Boolean = false,
     var didSaveFile: Boolean = false,
@@ -32,32 +20,18 @@ data class AppContext(
     var editedContents: String = "",
     var editedFileContents: Map<String, String> = mapOf(),
     var editorContents: String = "",
-    var externalURL: String = "",
-    var filesCopyDefaultName: String = "",
-    var filesDeleteName: String = "",
-    var filesRenameName: String = "",
     var header: Array<String> = arrayOf(),
-    var hideFileOptions: Array<Int> = arrayOf(),
     var inputDirFiles: Map<Int, Array<FSFile>> = mapOf(),
     var inputDirs: Array<String> = arrayOf(),
-    var inputFilesCopy: String = "",
-    var inputFilesRename: String = "",
     var inputMDFiles: Map<Int, Array<String>> = mapOf(),
     var installEditor: Boolean = false,
     var installMDConverter: Boolean = false,
-    var isCfgValid: Boolean = false,
-    var isExternalButtonVisible: Boolean = false,
-    var isFilesCopyDialogVisible: Boolean = false,
-    var isFilesDeleteDialogVisible: Boolean = false,
-    var isFilesRenameDialogVisible: Boolean = false,
     var itemTemplates: Map<Int, String> = mapOf(),
     var listInputDirId: Int = 0,
     var page: Page = Page(),
     var projectPath: String = "",
     var readFile: String = "",
     var readFileContents: String = "",
-    var readFileOrigin: String = "",
-    var renameFileId: Array<Int> = arrayOf(),
     var renderPage: String = "",
     var renderedFile: String = "",
     var request: NetRequest = NetRequest(),
@@ -82,40 +56,16 @@ data class AppContext(
             return converterInput as T
         } else if (name == "converterOutput") {
             return converterOutput as T
-        } else if (name == "copyFileId") {
-            return copyFileId as T
-        } else if (name == "deleteFile") {
-            return deleteFile as T
-        } else if (name == "deleteFileId") {
-            return deleteFileId as T
-        } else if (name == "deleteFileOrigin") {
-            return deleteFileOrigin as T
         } else if (name == "didClickEditorTab") {
             return didClickEditorTab as T
-        } else if (name == "didClickExternalButton") {
-            return didClickExternalButton as T
-        } else if (name == "didClickFilesCopyOK") {
-            return didClickFilesCopyOK as T
-        } else if (name == "didClickFilesDeleteOK") {
-            return didClickFilesDeleteOK as T
-        } else if (name == "didClickFilesRenameOK") {
-            return didClickFilesRenameOK as T
         } else if (name == "didClickFilesTab") {
             return didClickFilesTab as T
         } else if (name == "didClickRenderTab") {
             return didClickRenderTab as T
         } else if (name == "didClickSaveBtn") {
             return didClickSaveBtn as T
-        } else if (name == "didCopyFile") {
-            return didCopyFile as T
-        } else if (name == "didCopyRenamedFile") {
-            return didCopyRenamedFile as T
-        } else if (name == "didDeleteFile") {
-            return didDeleteFile as T
         } else if (name == "didLaunch") {
             return didLaunch as T
-        } else if (name == "didRenameFile") {
-            return didRenameFile as T
         } else if (name == "didResize") {
             return didResize as T
         } else if (name == "didSaveEditedFiles") {
@@ -130,42 +80,18 @@ data class AppContext(
             return editedFileContents as T
         } else if (name == "editorContents") {
             return editorContents as T
-        } else if (name == "externalURL") {
-            return externalURL as T
-        } else if (name == "filesCopyDefaultName") {
-            return filesCopyDefaultName as T
-        } else if (name == "filesDeleteName") {
-            return filesDeleteName as T
-        } else if (name == "filesRenameName") {
-            return filesRenameName as T
         } else if (name == "header") {
             return header as T
-        } else if (name == "hideFileOptions") {
-            return hideFileOptions as T
         } else if (name == "inputDirFiles") {
             return inputDirFiles as T
         } else if (name == "inputDirs") {
             return inputDirs as T
-        } else if (name == "inputFilesCopy") {
-            return inputFilesCopy as T
-        } else if (name == "inputFilesRename") {
-            return inputFilesRename as T
         } else if (name == "inputMDFiles") {
             return inputMDFiles as T
         } else if (name == "installEditor") {
             return installEditor as T
         } else if (name == "installMDConverter") {
             return installMDConverter as T
-        } else if (name == "isCfgValid") {
-            return isCfgValid as T
-        } else if (name == "isExternalButtonVisible") {
-            return isExternalButtonVisible as T
-        } else if (name == "isFilesCopyDialogVisible") {
-            return isFilesCopyDialogVisible as T
-        } else if (name == "isFilesDeleteDialogVisible") {
-            return isFilesDeleteDialogVisible as T
-        } else if (name == "isFilesRenameDialogVisible") {
-            return isFilesRenameDialogVisible as T
         } else if (name == "itemTemplates") {
             return itemTemplates as T
         } else if (name == "listInputDirId") {
@@ -178,10 +104,6 @@ data class AppContext(
             return readFile as T
         } else if (name == "readFileContents") {
             return readFileContents as T
-        } else if (name == "readFileOrigin") {
-            return readFileOrigin as T
-        } else if (name == "renameFileId") {
-            return renameFileId as T
         } else if (name == "renderPage") {
             return renderPage as T
         } else if (name == "renderedFile") {
@@ -228,40 +150,16 @@ data class AppContext(
             converterInput = value as String
         } else if (name == "converterOutput") {
             converterOutput = value as String
-        } else if (name == "copyFileId") {
-            copyFileId = value as Array<Int>
-        } else if (name == "deleteFile") {
-            deleteFile = value as String
-        } else if (name == "deleteFileId") {
-            deleteFileId = value as Array<Int>
-        } else if (name == "deleteFileOrigin") {
-            deleteFileOrigin = value as String
         } else if (name == "didClickEditorTab") {
             didClickEditorTab = value as Boolean
-        } else if (name == "didClickExternalButton") {
-            didClickExternalButton = value as Boolean
-        } else if (name == "didClickFilesCopyOK") {
-            didClickFilesCopyOK = value as Boolean
-        } else if (name == "didClickFilesDeleteOK") {
-            didClickFilesDeleteOK = value as Boolean
-        } else if (name == "didClickFilesRenameOK") {
-            didClickFilesRenameOK = value as Boolean
         } else if (name == "didClickFilesTab") {
             didClickFilesTab = value as Boolean
         } else if (name == "didClickRenderTab") {
             didClickRenderTab = value as Boolean
         } else if (name == "didClickSaveBtn") {
             didClickSaveBtn = value as Boolean
-        } else if (name == "didCopyFile") {
-            didCopyFile = value as Boolean
-        } else if (name == "didCopyRenamedFile") {
-            didCopyRenamedFile = value as Boolean
-        } else if (name == "didDeleteFile") {
-            didDeleteFile = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
-        } else if (name == "didRenameFile") {
-            didRenameFile = value as Boolean
         } else if (name == "didResize") {
             didResize = value as Boolean
         } else if (name == "didSaveEditedFiles") {
@@ -276,42 +174,18 @@ data class AppContext(
             editedFileContents = value as Map<String, String>
         } else if (name == "editorContents") {
             editorContents = value as String
-        } else if (name == "externalURL") {
-            externalURL = value as String
-        } else if (name == "filesCopyDefaultName") {
-            filesCopyDefaultName = value as String
-        } else if (name == "filesDeleteName") {
-            filesDeleteName = value as String
-        } else if (name == "filesRenameName") {
-            filesRenameName = value as String
         } else if (name == "header") {
             header = value as Array<String>
-        } else if (name == "hideFileOptions") {
-            hideFileOptions = value as Array<Int>
         } else if (name == "inputDirFiles") {
             inputDirFiles = value as Map<Int, Array<FSFile>>
         } else if (name == "inputDirs") {
             inputDirs = value as Array<String>
-        } else if (name == "inputFilesCopy") {
-            inputFilesCopy = value as String
-        } else if (name == "inputFilesRename") {
-            inputFilesRename = value as String
         } else if (name == "inputMDFiles") {
             inputMDFiles = value as Map<Int, Array<String>>
         } else if (name == "installEditor") {
             installEditor = value as Boolean
         } else if (name == "installMDConverter") {
             installMDConverter = value as Boolean
-        } else if (name == "isCfgValid") {
-            isCfgValid = value as Boolean
-        } else if (name == "isExternalButtonVisible") {
-            isExternalButtonVisible = value as Boolean
-        } else if (name == "isFilesCopyDialogVisible") {
-            isFilesCopyDialogVisible = value as Boolean
-        } else if (name == "isFilesDeleteDialogVisible") {
-            isFilesDeleteDialogVisible = value as Boolean
-        } else if (name == "isFilesRenameDialogVisible") {
-            isFilesRenameDialogVisible = value as Boolean
         } else if (name == "itemTemplates") {
             itemTemplates = value as Map<Int, String>
         } else if (name == "listInputDirId") {
@@ -324,10 +198,6 @@ data class AppContext(
             readFile = value as String
         } else if (name == "readFileContents") {
             readFileContents = value as String
-        } else if (name == "readFileOrigin") {
-            readFileOrigin = value as String
-        } else if (name == "renameFileId") {
-            renameFileId = value as Array<Int>
         } else if (name == "renderPage") {
             renderPage = value as String
         } else if (name == "renderedFile") {
@@ -359,14 +229,14 @@ data class AppContext(
 }
 
 
-@JsExport
+
 data class FSFile(
     var isFile: Boolean = false,
     var path: String = "",
 ) {}
 
 
-@JsExport
+
 data class NetRequest(
     var body: String = "",
     var method: String = "",
@@ -374,14 +244,14 @@ data class NetRequest(
 ) {}
 
 
-@JsExport
+
 data class NetResponse(
     var contents: String = "",
     var req: NetRequest = NetRequest(),
 ) {}
 
 
-@JsExport
+
 data class Page(
     var contents: String = "",
     var date: String = "",
@@ -432,14 +302,12 @@ data class PlayContext(
 }
 
 
-@JsExport
+
 data class SrvContext(
     var arguments: Array<String> = arrayOf(),
     var browserDir: String = "",
     var defaultBrowserDir: String = "",
     var defaultHTTPPort: Int = 0,
-    var deleteFile: String = "",
-    var didDeleteFile: Boolean = false,
     var didLaunch: Boolean = false,
     var didWriteFile: Boolean = false,
     var dirFiles: Array<FSFile> = arrayOf(),
@@ -466,10 +334,6 @@ data class SrvContext(
             return defaultBrowserDir as T
         } else if (name == "defaultHTTPPort") {
             return defaultHTTPPort as T
-        } else if (name == "deleteFile") {
-            return deleteFile as T
-        } else if (name == "didDeleteFile") {
-            return didDeleteFile as T
         } else if (name == "didLaunch") {
             return didLaunch as T
         } else if (name == "didWriteFile") {
@@ -520,10 +384,6 @@ data class SrvContext(
             defaultBrowserDir = value as String
         } else if (name == "defaultHTTPPort") {
             defaultHTTPPort = value as Int
-        } else if (name == "deleteFile") {
-            deleteFile = value as String
-        } else if (name == "didDeleteFile") {
-            didDeleteFile = value as Boolean
         } else if (name == "didLaunch") {
             didLaunch = value as Boolean
         } else if (name == "didWriteFile") {

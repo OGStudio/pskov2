@@ -6,27 +6,73 @@ function appCtrl() {
 
 //<!-- Constants -->
 
+let APP_FILE_OPTIONS = `
+<table class="uk-table uk-table-divider uk-table-hover uk-table-middle">
+    <tbody>
+        <tr class="cursor-pointer" onclick='appCtrl().set("copyFileId", [%PAGE_ID%])'><td>
+            <span uk-icon="copy"></span> Make a copy
+        </td></tr>
+        <tr class="cursor-pointer" onclick='appCtrl().set("renameFileId", [%PAGE_ID%])'><td>
+            <span uk-icon="pencil"></span> Rename
+        </td></tr>
+        <tr class="cursor-pointer" onclick='appCtrl().set("deleteFileId", [%PAGE_ID%])'><td>
+            <span uk-icon="trash"></span> Delete
+        </td></tr>
+    </tbody>
+</table>
+`;
+let APP_FILE_OPTIONS_ID_T = "fileOptions-%ID%";
 let APP_FILES_ID = "files";
+let APP_FILES_CONTENTS_ID = "filesContents";
+let APP_FILES_COPY_DIALOG_ID = "filesCopyDialog";
+let APP_FILES_COPY_INPUT_ID = "filesCopyInput";
+let APP_FILES_DELETE_DIALOG_ID = "filesDeleteDialog";
+let APP_FILES_DELETE_NAME_ID = "filesDeleteName";
+let APP_FILES_RENAME_DIALOG_ID = "filesRenameDialog";
+let APP_FILES_RENAME_INPUT_ID = "filesRenameInput";
 let APP_HEADER_KEY_ID = "headerKey";
+let APP_HEADER_EXTERNAL_ID = "headerExternal";
 let APP_HEADER_VALUE_ID = "headerValue";
 
 let APP_INPUT_DIR_FILE_T = `
-    <div>
-        <div class='uk-card uk-card-default uk-card-hover uk-card-body cursor-pointer' onclick='appCtrl().set("selectedFileId", [%PAGE_ID%])'>
-            <p><span uk-icon="file-text"></span>%NAME%</p>
-            <p>TODO-Date</p>
-            <h3 class="uk-card-title">TODO-Title</h3>
+<tr>
+    <td>%YEAR%</td>
+    <td>
+        <a onclick='appCtrl().set("selectedFileId", [%PAGE_ID%])'>
+            <span uk-icon="file-text"></span>
+            %NAME%
+        </a>
+    </td>
+    <td class="uk-inline">
+        <button class="uk-button uk-button-default">
+            <span uk-icon="more-vertical"></span>
+        </button>
+        <div id="%OPTIONS_ID%" uk-dropdown="mode: click">
+            %OPTIONS%
         </div>
-    </div>
+    </td>
+</tr>
 `;
 let APP_INPUT_DIR_SECTION_ID_T = "input-dir-%I%";
 let APP_INPUT_DIR_SECTION_T = `
-<div class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom">
-    <span class="uk-article-title highlight-article-digit">%NUM%</span>
-    <span class="uk-article-title">%NAME%</span>
-</div>
-<div id="%ID%" class="uk-padding uk-padding-remove-left uk-padding-remove-right uk-padding-remove-bottom uk-grid-small uk-grid-match uk-child-width-1-3@m" uk-grid>
-</div>
+<li>
+    <a class="uk-accordion-title" href>
+        <span uk-icon="folder"></span>
+        %NAME%
+        <span uk-accordion-icon></span>
+    </a>
+    <table class="uk-accordion-content uk-table uk-table-divider uk-table-middle">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>File</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody id="%ID%">
+        </tbody>
+    </table>
+</li>
 `;
 
 let APP_EDITOR_ID = "editor";
@@ -58,13 +104,26 @@ function AppComponent() {
     this.setupEffects = function() {
         let oneliners = [
             "converterInput", (c) => { appResetConverterInput(this, c.converterInput) },
+            "didCopyFile", (c) => { reportSuccessIf(c.didCopyFile, '<span uk-icon="copy"></span> 👌') },
+            "didDeleteFile", (c) => { reportFailureIf(!c.didDeleteFile, KT.APP_DELETE_FAILURE_TITLE, c.deleteFile) },
+            "didDeleteFile", (c) => { reportSuccessIf(c.didDeleteFile, '<span uk-icon="trash"></span> 👌') },
             "didSaveEditedFiles", (c) => { reportSuccess("💾 👌") },
             "editorContents", (c) => { appResetEditorContents(this, c.editorContents) },
+            "externalURL", (c) => { open(c.externalURL, "_blank") },
+            "filesCopyDefaultName", (c) => { setUIInputValue(APP_FILES_COPY_INPUT_ID, c.filesCopyDefaultName) },
+            "filesDeleteName", (c) => { setUIText(APP_FILES_DELETE_NAME_ID, c.filesDeleteName) },
+            "filesRenameName", (c) => { setUIInputValue(APP_FILES_RENAME_INPUT_ID, c.filesRenameName) },
             "header", (c) => { appResetHeader(c.header) },
+            "hideFileOptions", (c) => { appHideFileOptions(c.hideFileOptions) },
             "inputDirs", (c) => { appDisplayInputDirSections(c.inputDirs) },
             "inputMDFiles", (c) => { appDisplayInputMDFiles(c.inputMDFiles) },
             "installEditor", (c) => { appInstallEditor(this) },
             "installMDConverter", (c) => { appInstallMDConverter(this) },
+            "isCfgValid", (c) => { reportFailureIf(!c.isCfgValid, KT.APP_CFG_ERROR_TITLE, KT.APP_CFG_ERROR_DETAILS) },
+            "isFilesCopyDialogVisible", (c) => { setUIModalVisibility(APP_FILES_COPY_DIALOG_ID, c.isFilesCopyDialogVisible) },
+            "isFilesDeleteDialogVisible", (c) => { setUIModalVisibility(APP_FILES_DELETE_DIALOG_ID, c.isFilesDeleteDialogVisible) },
+            "isFilesRenameDialogVisible", (c) => { setUIModalVisibility(APP_FILES_RENAME_DIALOG_ID, c.isFilesRenameDialogVisible) },
+            "isExternalButtonVisible", (c) => { setUIVisibility(APP_HEADER_EXTERNAL_ID, c.isExternalButtonVisible) },
             "renderPage", (c) => { appRenderPage(c.renderPage) },
             "request", (c) => { appLoad(c.request) },
             "resizeEditor", (c) => { appResizeEditor() },
@@ -86,6 +145,8 @@ function AppComponent() {
 
     this.setupShoulds = function() {
         [
+            KT.appShouldDeleteFile,
+            KT.appShouldHideFileOptions,
             KT.appShouldHideSplash,
             KT.appShouldInstallEditor,
             KT.appShouldInstallMDConverter,
@@ -94,12 +155,26 @@ function AppComponent() {
             KT.appShouldParseCfg,
             KT.appShouldReadFile,
             KT.appShouldRenderPage,
+            KT.appShouldResetCfgValidity,
             KT.appShouldResetConverterInput,
+            KT.appShouldResetDeleteFileOrigin,
+            KT.appShouldResetDidCopyFile,
+            KT.appShouldResetDidCopyRenamedFile,
+            KT.appShouldResetDidDeleteFile,
+            KT.appShouldResetDidRenameFile,
             KT.appShouldResetDidSaveEditedFiles,
             KT.appShouldResetDidSaveFile,
             KT.appShouldResetDidSaveRenderedFile,
             KT.appShouldResetEditedFileContents,
             KT.appShouldResetEditorContents,
+            KT.appShouldResetExternalButtonVisibility,
+            KT.appShouldResetExternalURL,
+            KT.appShouldResetFilesCopyDefaultName,
+            KT.appShouldResetFilesCopyDialogVisibility,
+            KT.appShouldResetFilesDeleteDialogVisibility,
+            KT.appShouldResetFilesDeleteName,
+            KT.appShouldResetFilesRenameDialogVisibility,
+            KT.appShouldResetFilesRenameName,
             KT.appShouldResetHeader,
             KT.appShouldResetInputDirFiles,
             KT.appShouldResetInputDirs,
@@ -108,6 +183,7 @@ function AppComponent() {
             KT.appShouldResetPage,
             KT.appShouldResetProjectPath,
             KT.appShouldResetReadFileContents,
+            KT.appShouldResetReadFileOrigin,
             KT.appShouldResizeEditor,
             KT.appShouldResizeRenderer,
             KT.appShouldSaveFileId,
@@ -125,6 +201,12 @@ function AppComponent() {
 
 //<!-- Effects -->
 
+function appHideFileOptions(id) {
+    let menuId = APP_FILE_OPTIONS_ID_T.replaceAll("%ID%", id);
+    let el = deId(menuId);
+    UIkit.dropdown(el).hide(false);
+}
+
 function appDisplayInputDirSections(items) {
     var html = "";
     for (let i in items) {
@@ -135,20 +217,40 @@ function appDisplayInputDirSections(items) {
             .replaceAll("%NAME%", item)
             .replaceAll("%NUM%", Number(i) + 1);
     }
-    setUIText(APP_FILES_ID, html);
+    setUIText(APP_FILES_CONTENTS_ID, html);
 }
 
 function appDisplayInputMDFiles(d) {
     // For each section
     KT.forKIntVArrayString(d, (id, files) => {
         var html = "";
+
+        // Find out if this is a list of year sorted files
+        let isYearSorted = (KT.appYear(files[0]) != 0);
+        // Reverse year sorted files
+        if (isYearSorted) {
+            files.reverse()
+        }
+        var lastYear = "";
         // For each file
         for (let i in files) {
             let name = files[i];
             let pageId = [id, i];
+            // Leave only differing years
+            let year = KT.appYear(name);
+            if (year != lastYear) {
+                lastYear = year;
+            } else {
+                year = "";
+            }
+            let optionsId = APP_FILE_OPTIONS_ID_T.replaceAll("%ID%", pageId)
+
             html += APP_INPUT_DIR_FILE_T
                 .replaceAll("%NAME%", name)
-                .replaceAll("%PAGE_ID%", pageId);
+                .replaceAll("%OPTIONS%", APP_FILE_OPTIONS)
+                .replaceAll("%OPTIONS_ID%", optionsId)
+                .replaceAll("%PAGE_ID%", pageId)
+                .replaceAll("%YEAR%", year);
         }
         let sectionId = APP_INPUT_DIR_SECTION_ID_T.replaceAll("%I%", id);
         setUIText(sectionId, html);

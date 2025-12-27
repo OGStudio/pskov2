@@ -48,6 +48,22 @@ function registerCtrlDbgOutput(ctrl, cmpName, KT) {
     });
 }
 
+// Report failure as UIkit modal
+function reportFailure(title, details) {
+    let html = `
+<h2>${title}</h2>
+<p>Error: '${details}'</p>
+    `;
+    UIkit.modal.alert(html);
+}
+
+// Report failure only if the first value is true
+function reportFailureIf(isTrue, title, details) {
+    if (isTrue) {
+        reportFailure(title, details);
+    }
+}
+
 // Report success as UIkit notification
 //
 // A tiny delay is used to overcome the conflict of UIkit and CLDController
@@ -64,6 +80,13 @@ function reportSuccess(text, timeout = 500) {
     );
 }
 
+// Report success only if the first value is true
+function reportSuccessIf(isTrue, text, timeout = 500) {
+    if (isTrue) {
+        reportSuccess(text, timeout)
+    }
+}
+
 // Toggle element class
 function setUIClassActive(id, className, isActive) {
     let el = deId(id);
@@ -72,6 +95,26 @@ function setUIClassActive(id, className, isActive) {
     }
     if (!isActive) {
         el.classList.remove(className);
+    }
+}
+
+// Set input value
+function setUIInputValue(id, value) {
+    let el = deId(id);
+    if (el != null) {
+        el.value = value;
+        // Make sure everyone sees the change
+        el.dispatchEvent(new Event("input"));
+    }
+}
+
+// Set modal visible
+function setUIModalVisibility(id, isVisible) {
+    let el = deId(id);
+    if (isVisible) {
+        UIkit.modal(el).show();
+    } else {
+        UIkit.modal(el).hide();
     }
 }
 

@@ -11,11 +11,23 @@ AppContext:
         cfg: [String: String]
         converterInput: String
         converterOutput: String
+        copyFileId: [Int]
+        deleteFile: String
+        deleteFileId: [Int]
+        deleteFileOrigin: String
         didClickEditorTab: Bool
+        didClickExternalButton: Bool
+        didClickFilesCopyOK: Bool
+        didClickFilesDeleteOK: Bool
+        didClickFilesRenameOK: Bool
         didClickFilesTab: Bool
         didClickRenderTab: Bool
         didClickSaveBtn: Bool
+        didCopyFile: Bool
+        didCopyRenamedFile: Bool
+        didDeleteFile: Bool
         didLaunch: Bool
+        didRenameFile: Bool
         didResize: Bool
         didSaveEditedFiles: Bool
         didSaveFile: Bool
@@ -23,18 +35,32 @@ AppContext:
         editedContents: String
         editedFileContents: [String: String]
         editorContents: String
+        externalURL: String
+        filesCopyDefaultName: String
+        filesDeleteName: String
+        filesRenameName: String
         header: [String]
+        hideFileOptions: [Int]
         inputDirFiles: [Int: [FSFile]]
         inputDirs: [String]
+        inputFilesCopy: String
+        inputFilesRename: String
         inputMDFiles: [Int: [String]]
         installEditor: Bool
         installMDConverter: Bool
+        isCfgValid: Bool
+        isExternalButtonVisible: Bool
+        isFilesCopyDialogVisible: Bool
+        isFilesDeleteDialogVisible: Bool
+        isFilesRenameDialogVisible: Bool
         itemTemplates: [Int: String]
         listInputDirId: Int
         page: Page
         projectPath: String
         readFile: String
         readFileContents: String
+        readFileOrigin: String
+        renameFileId: [Int]
         renderedFile: String
         renderPage: String
         request: NetRequest
@@ -80,6 +106,14 @@ Page:
         slug: String
         title: String
 
+PlayContext:
+    type: context
+    fields:
+        didLaunch: Bool
+        didResetWebView: Bool
+        isPlaygroundVisible: Bool
+        url: String
+
 SrvContext:
     prefix-kotlin: @JsExport
     type: context
@@ -88,6 +122,8 @@ SrvContext:
         browserDir: String
         defaultBrowserDir: String
         defaultHTTPPort: Int
+        deleteFile: String
+        didDeleteFile: Bool
         didLaunch: Bool
         didWriteFile: Bool
         dirFiles: [FSFile]

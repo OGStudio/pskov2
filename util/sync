@@ -1,16 +1,14 @@
 #!/bin/bash -e
 SDIR=$(cd "$(dirname "$0")" ; pwd -P)
+T=$SDIR/step
+source $SDIR/other
 
+AND_DIR=$SDIR/../ver-android/app/src/main/kotlin/org/opengamestudio
 CLD_DIR=$SDIR/../../cross-language-dialect
+NODE_DIR=$SDIR/../kmp/ver-nodejs/src/commonMain/kotlin/org/opengamestudio
 SRC_DIR=$SDIR/../src
 
-function replace {
-    file=$1
-    was=$2
-    now=$3
-    cmd="sed -i '' 's/$was/$now/g' $file"
-    eval "$cmd"
-}
+STEP=0
 
 ####
 echo -e "\nSynchronize CLD files..."
@@ -24,7 +22,8 @@ FILES=(
 
 for file in ${FILES[@]}; do
     echo "> $file"
-    # Copy original files CLD
+
+    # Copy original CLD files for browser and Node.js
     cp $CLD_DIR/kotlin/$file $SRC_DIR
     cd $SRC_DIR
     # Add JS export
@@ -33,3 +32,6 @@ for file in ${FILES[@]}; do
     replace $file "class CLD" "@JsExport\nclass CLD"
     replace $file "fun registerOne" "@JsExport\nfun registerOne"
 done
+
+source $T/copyCLDForAndroid
+source $T/copySrcForAndroid
