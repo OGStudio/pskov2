@@ -1,6 +1,7 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(cd "$(dirname "$0")" ; pwd -P)
 DIST_DIR=$SCRIPT_DIR/dist
+PROJECT_DIR=$1
 
 # Only run server
 cd $DIST_DIR
