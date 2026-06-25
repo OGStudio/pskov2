@@ -171,12 +171,13 @@ let srv = http.createServer((req, res) => {
     // Collect request body
     var body = "";
     req.on("data", (chunk) => {
-        body = chunk.toString();
+        body += chunk.toString();
     });
 
     // Process request when finished collecting the body
     req.on("end", () => {
         let netRequest = new KT.NetRequest(body, req.method, req.url);
+        body = "";
         srvCtrl().set("request", netRequest);
         let response = srvCtrl().context.response;
  
